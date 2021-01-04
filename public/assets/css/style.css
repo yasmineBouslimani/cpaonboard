@@ -1,0 +1,72 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+:root {
+    --blueCPA: #4D9FE2;
+    --lightBlackCPA: #424242;
+    --darkBlackCPA: #777777;
+    --whiteCPA : #EAEAEA;
+}
+a {
+    font-family: 'Roboto', sans-serif;
+}
+h1, h2, nav, p {
+    font-family: 'Roboto', sans-serif;
+}
+
+.pad-top {
+    padding-top: 10vh;
+}
+.fas {
+    padding: 8px;
+}
+
+.fab:hover {
+    color: var(--lightBlackCPA);
+}
+.footer-copyright a:hover {
+    color: var(--lightBlackCPA);
+}
+
+.fa-heart {
+    color: var(--lightBlackCPA);
+}
+.color-white {
+    color: var(--whiteCPA);
+}
+
+.far {
+    height: 20px;
+}
+.pad-foot {
+    padding-top: 60px;
+}
+.page-footer {
+    background-color: var(--blueCPA);
+}
+
+.li-style {
+    list-style-type: none;
+}
+.li-style a {
+    text-decoration: none;
+}
+.overflow-auto {
+    height: 60vh;
+}
+
+.card-img-top {
+    width: 167px;
+}
+
+
+@media screen and (max-width: 768px) {
+    .heading {
+        display: flex;
+        justify-content: center;
+    }
+}
+@media screen and (max-width: 571px) {
+    .title-pl h2 {
+        text-align: center;
+    }
+}
