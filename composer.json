@@ -1,16 +1,19 @@
 {
     "name": "utilisateur/cpaonboard",
+    "description": "Complete from scratch PHP MVC for CPAOnBoard company",
     "authors": [
         {
-            "name": "Yasmine",
-            "email": "yasmine.bouslimani@gmail.com"
+            "name": "Marie-Cécile, Thomas, Yasmine"
         }
     ],
     "minimum-stability": "stable",
     "require": {
-        "php" : ">=7.2",
         "ext-pdo" : "*",
         "twig/twig": "^3.1"
+    },
+    "require-dev": {
+        "phpro/grumphp": "^1.0",
+        "squizlabs/php_codesniffer": "^3.5"
     },
     "autoload": {
         "psr-4": {
