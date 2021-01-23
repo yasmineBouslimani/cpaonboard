@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Controller;
-
 
 class AdminController extends AbstractController
 {
@@ -10,5 +8,4 @@ class AdminController extends AbstractController
     {
         return $this->twig->render('Admin/index.html.twig');
     }
-
 }
