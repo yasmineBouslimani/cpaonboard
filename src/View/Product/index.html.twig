@@ -1,0 +1,13 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <h1>Liste des produits</h1>
+    <ul>
+        {% for product in products %}
+            <li><a href="/product/show/{{ product.id }}">{{ product.id }}. {{ product.title }}</a></li>
+        {% else %}
+            <li>Nothing to display</li>
+        {% endfor %}
+    </ul>
+    <a href="/product/add">Ajouter</a>
+{% endblock %}

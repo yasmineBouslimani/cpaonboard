@@ -1,0 +1,35 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Fiche collaborateur{% endblock %}
+
+{% block bannerInfo %}{{ employee['lastName'] }} {{ employee['firstName'] }} - {{ employee['employee_hr_id'] }}{% endblock %}
+
+{% block content %}
+<div>
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            {% include '_nav.html.twig' %}
+            <main class="col">
+                <div class="container">
+                    <div class="row center-align">
+                        <h1>{% block bannerTitle %}{% block bannerTitle %}FICHE COLLABORATEUR{% endblock %}{% endblock %}</h1>
+                    </div>
+                    <form method="post" action="EmployeeController.php" class="form-group">
+                        {#             PENDING DB CONNECTION ___________________#}
+                        <p>TRUE ID : {{ tempEmployeeId }} </p>
+                        {#            END PENDING DB CONNECTION ___________________#}
+                        {# active#}(-
+                        <input type="text" name="employeeHrId" value={{ employee['employee_hr_id'] }}/></br>
+                        <input type="text" name="employeefirstName" value={{ employee['firstName'] }}/></br>
+                        <input type="text" name="employeelastName" value={{ employee['lastName'] }}/></br>
+                        <input type="submit" value="Valider" class="btn btn-primary"/>
+                    </form>
+                    <form method="post" action="/employee/index">
+                        <input type="submit" value="Retour liste collaborateurs"/>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+{% endblock %}
