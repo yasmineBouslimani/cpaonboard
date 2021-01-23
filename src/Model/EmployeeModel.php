@@ -3,7 +3,7 @@
 class EmployeeModel
 {
 
-    function getEmployeesForTable()
+    function getEmployeesForTable(int $resultsPerPage, int $firstResult)
     {
         //List all employees for display on table.
 
@@ -11,7 +11,7 @@ class EmployeeModel
         $db = connectToDb();
 
         $req = $db->query('SELECT id_employee, active, employee_hr_id, last_name, first_name, department, function FROM employee 
-            ORDER BY id_employee LIMIT 0, 5');
+            ORDER BY id_employee LIMIT $firstResult, $resultsPerPage');
         return $req;
     }
 

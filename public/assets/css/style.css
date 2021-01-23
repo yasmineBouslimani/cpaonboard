@@ -83,3 +83,7 @@ h1, h2, nav, p {
     background-color: var(--blueCPA);
     border-color: var(--blueCPA);
 }
+
+.page-link.selected {
+    color: coral;
+}

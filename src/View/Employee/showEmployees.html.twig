@@ -42,14 +42,58 @@
         {%  endfor %}
 {#            <th>{{test}}</th>#}
         </table>
-        <p> Nb résultats :  {{employeesCount}}</p>
-        <nav>
-            <ul class="pagination">
-                <!-- Lien vers la page précédente (désactivé si on se trouve sur la 1ère page) -->
-                <li class="page-item">
-                <a href="/employee/index/2" class="page-link">Suivante</a>
-                </li>
-            </ul>
-        </nav>
+       {# <p> Nb résultats par page :  {{resultPerPage}}</p>
+        <p> Nb résultats par page :  {{pagesNeeded}}</p>
+        <p> Current page :  {{currentPage}}</p>
+        <p>Test on page : {{test}} </p>#}
+        <div class="row">
+            <div class="col-6">
+                <nav class="float-right">
+                    <ul class="pagination">
+                        {% if currentPage != 1 %}
+                            <li class="page-item">
+                                <a class="page-link" href="/employee/index/{{ currentPage-1 }}" aria-label="Previous">
+                                    <span aria-hidden="true">&Lang;</span>
+                                    <span class="sr-only">Précédente</span>
+                                </a>
+                            </li>
+                        {%  endif %}
+                        <li class="page-item">
+                            <a href="/employee/index/1"
+                               class={% if currentPage == 1 %} "page-link selected" {% else %} "page-link"{%  endif %}>
+                                1
+                            </a>
+                        </li>
+                        {% if pagesNeeded > 2 %}
+                            {% for i in 2..pagesNeeded - 1 %}
+                            <li class="page-item">
+                                <a href="/employee/index/{{ i }}"
+                                   class={% if currentPage == i %} "page-link selected" {% else %} "page-link"{%  endif %}>
+                                    {{ i }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        {%  endif %}
+                        <li class="page-item">
+                            <a href="/employee/index/{{ pagesNeeded }}"
+                               class={% if currentPage == pagesNeeded %} "page-link selected" {% else %} "page-link"{%  endif %}>
+                                {{ pagesNeeded }}
+                            </a>
+                        </li>
+                        {% if currentPage != pagesNeeded %}
+                        <li class="page-item">
+                            <a class="page-link" href="/employee/index/{{ currentPage+1 }}" aria-label="Next">
+                                <span aria-hidden="true">&Rang;</span>
+                                <span class="sr-only">Suivante</span>
+                            </a>
+                        </li>
+                        {%  endif %}
+                    </ul>
+                </nav>
+            </div>
+            <div class="col" >
+                <p class="float-right mr-3"> Nb résultats :  {{employeesCount}}</p>
+            </div>
+        </div>
     </div>
 {% endblock %}
