@@ -34,9 +34,9 @@
                 <th>{{employee['function']}}</th>
                 <th></th>
                 <th>
-                    <form method="post" action="/employee/show">
-                        <input type="hidden" name="employeeId" value={{employee['employeeId']}} />
-                        <input type="submit" value="Valider" /></form>
+                    {#<form method="post" action="/employee/show/{{employee['employeeId']}}" />
+                        <input type="submit" value="Valider" /></form>#}
+                    <a href="/employee/show/{{employee['employeeId']}}" class="btn btn-primary btn-sm">Valider</a>
                 </th>
             </tr>
         {%  endfor %}
@@ -47,7 +47,7 @@
             <ul class="pagination">
                 <!-- Lien vers la page précédente (désactivé si on se trouve sur la 1ère page) -->
                 <li class="page-item">
-                <a href="/employee/index?2" class="page-link">Suivante</a>
+                <a href="/employee/index/2" class="page-link">Suivante</a>
                 </li>
             </ul>
         </nav>

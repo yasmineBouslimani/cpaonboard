@@ -78,3 +78,8 @@ h1, h2, nav, p {
         text-align: center;
     }
 }
+
+.btn-primary {
+    background-color: var(--blueCPA);
+    border-color: var(--blueCPA);
+}

@@ -54,17 +54,15 @@ class EmployeeController extends AbstractController
             'employeesCount' => $employeesCount]);
     }
 
-    public function show()
+    public function show(int $id)
     {
         // PENDING DB CONNECTION ___________________
-        $tempEmployeeId = $_POST['employeeId'];
         $employee=['employeeId' => 1, 'active' => '1','employee_hr_id' => 'BDX2389','firstName' => 'Nathalie', 'lastName' => 'De Lauret',
             'service' => 'Direction', 'function' => 'Directeur'];
-        //$tempEmployeeId = $test;
         // END PENDING DB CONNECTION ___________________
 
         return $this->twig->render('Employee/showEmployee.html.twig', ['employee' => $employee, 'tempEmployeeId' =>
-            $tempEmployeeId]);
+            $id]);
     
     }
 
