@@ -13,6 +13,10 @@ h1, h2, nav, p {
     font-family: 'Roboto', sans-serif;
 }
 
+.nav-item {
+    font-size: 1.3em;
+}
+
 .pad-top {
     padding-top: 10vh;
 }
@@ -58,6 +62,10 @@ h1, h2, nav, p {
     width: 167px;
 }
 
+.admin-card a,a:hover {
+    color: #212529;
+    text-decoration: none;
+}
 
 @media screen and (max-width: 768px) {
     .heading {

@@ -2,11 +2,14 @@
 
 {% block title %}Tableau de bord{% endblock %}
 
+{% block bannerTitle %}BIENVENUE SUR CPAONBOARD{% endblock %}
+{% block bannerInfo %}[Insérer le slogan de l'entreprise]]{% endblock %}
+
 {% block content %}
 
     <div class="container-fluid h-100">
         <div class="row h-100">
-            <aside class="col-12 col-md-2 p-0 bg-dark">
+{#            <aside class="col-12 col-md-2 p-0 bg-dark">
                 <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start">
                     <div class="collapse navbar-collapse">
                         <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
@@ -33,13 +36,13 @@
                         </ul>
                     </div>
                 </nav>
-            </aside>
+            </aside>#}
             <main class="col">
 
                 <div class="container">
-                    <div class="row center-align">
+{#                    <div class="row center-align">
                         <h1>Tableau de bord</h1>
-                    </div>
+                    </div>'#}
                     <div class="row">
                         <div class="col s12 l3 admin-card" id="users-card-admin">
                             {% include 'Admin/admin_components/_employees.html.twig' %}

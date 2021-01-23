@@ -2,9 +2,14 @@
 
 {% block title %}Collaborateurs{% endblock %}
 
+
+{% block bannerTitle %}LISTE DES COLLABORATEURS{% endblock %}
+
+
+
 {% block content %}
     <div>
-        <table id="datatable_users" class="table table-striped table-hover"">
+        <table id="datatable_users" class="table table-striped table-hover">
         <thead class="thead-dark">
                 <tr>
                     <th>Référence</th>
@@ -29,20 +34,22 @@
                 <th>{{employee['function']}}</th>
                 <th></th>
                 <th>
-                    <form method="post" action="controllerEmployee.php">
-                        <input type="hidden" name="employeeId" value=<?= {{employee['id_employee']}}/>
-                        <input type="submit" value="Valider" />
-                    </form>
+                    <form method="post" action="/employee/show">
+                        <input type="hidden" name="employeeId" value={{employee['employeeId']}} />
+                        <input type="submit" value="Valider" /></form>
                 </th>
             </tr>
         {%  endfor %}
-
 {#            <th>{{test}}</th>#}
-
-
-
-
-
         </table>
+        <p> Nb résultats :  {{employeesCount}}</p>
+        <nav>
+            <ul class="pagination">
+                <!-- Lien vers la page précédente (désactivé si on se trouve sur la 1ère page) -->
+                <li class="page-item">
+                <a href="/employee/index?2" class="page-link">Suivante</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 {% endblock %}
