@@ -34,65 +34,63 @@
                 <th>{{employee['function']}}</th>
                 <th></th>
                 <th>
-                    {#<form method="post" action="/employee/show/{{employee['employeeId']}}" />
-                        <input type="submit" value="Valider" /></form>#}
                     <a href="/employee/show/{{employee['employeeId']}}" class="btn btn-primary btn-sm">Valider</a>
                 </th>
             </tr>
         {%  endfor %}
-{#            <th>{{test}}</th>#}
         </table>
        {# <p> Nb résultats par page :  {{resultPerPage}}</p>
-        <p> Nb résultats par page :  {{pagesNeeded}}</p>
+        <p> Nb résultats par page :  {{pagesCount}}</p>
         <p> Current page :  {{currentPage}}</p>
         <p>Test on page : {{test}} </p>#}
+        {% set minimumPageQuantityAround = min(currentPage - 1, pagesCount - currentPage) %}
+        {% set conditionBefore = currentPage != 1 and minimumPageQuantityAround <= currentPage - 1 %}
+        {% set conditionAfter = currentPage != pagesCount and minimumPageQuantityAround <= pagesCount - currentPage %}
+        {% set PageQuantityAroundBefore = conditionBefore ? paginationDefaultPagesGap : minimumPageQuantityAround %}
+        {% set PageQuantityAroundAfter = conditionAfter ? paginationDefaultPagesGap : minimumPageQuantityAround %}
         <div class="row">
             <div class="col-6">
                 <nav class="float-right">
                     <ul class="pagination">
-                        {% if currentPage != 1 %}
-                            <li class="page-item">
-                                <a class="page-link" href="/employee/index/{{ currentPage-1 }}" aria-label="Previous">
+                        {# Previous link #}
+                        {% if currentPage - 1 != 0 %}
+                            <li><a class="page-link" href="/employee/index/{{ currentPage-1 }}" aria-label="Previous">
                                     <span aria-hidden="true">&Lang;</span>
                                     <span class="sr-only">Précédente</span>
-                                </a>
-                            </li>
-                        {%  endif %}
-                        <li class="page-item">
-                            <a href="/employee/index/1"
-                               class={% if currentPage == 1 %} "page-link selected" {% else %} "page-link"{%  endif %}>
-                                1
-                            </a>
-                        </li>
-                        {% if pagesNeeded > 2 %}
-                            {% for i in 2..pagesNeeded - 1 %}
+                                </a></li>
+                        {% endif %}
+                        {% for i in 1..pagesCount %}
+                            {# Current page to show #}
+                            {% if currentPage == i %}
+                                <li class="page-link selected">{{ i }}</li>
+                                {# Show "..." before current page depending on page numbers to show before #}
+                            {% elseif (i < currentPage and 1 != i) and (i == currentPage - PageQuantityAroundBefore - 1) %}
+                                <li class="m-2">...</li>
+                                {# Show "..." after current page depending on page numbers to show after #}
+                            {% elseif (i > currentPage and pagesCount != i) and (i == currentPage + PageQuantityAroundAfter + 1) %}
+                                <li class="m-2">...</li>
+                            {% elseif i == 1 or i == pagesCount %}
+                                <li><a class="page-link" href="/employee/index/{{ i }}">{{ i }}</a></li>
+                            {% elseif (i != 1) and (i > currentPage - PageQuantityAroundBefore - 1) %}
+                                <li><a class="page-link" href="/employee/index/{{ i }}">{{ i }}</a></li>
+                            {% elseif (pagesCount != i) and (i < currentPage + PageQuantityAroundAfter + 1) %}
+                                <li><a class="page-link" href="/employee/index/{{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {# Next link #}
+                        {% if currentPage + 1 <= pagesCount %}
                             <li class="page-item">
-                                <a href="/employee/index/{{ i }}"
-                                   class={% if currentPage == i %} "page-link selected" {% else %} "page-link"{%  endif %}>
-                                    {{ i }}
+                                <a class="page-link" href="/employee/index/{{ currentPage+1 }}" aria-label="Next">
+                                    <span aria-hidden="true">&Rang;</span>
+                                    <span class="sr-only">Suivante</span>
                                 </a>
                             </li>
-                            {% endfor %}
-                        {%  endif %}
-                        <li class="page-item">
-                            <a href="/employee/index/{{ pagesNeeded }}"
-                               class={% if currentPage == pagesNeeded %} "page-link selected" {% else %} "page-link"{%  endif %}>
-                                {{ pagesNeeded }}
-                            </a>
-                        </li>
-                        {% if currentPage != pagesNeeded %}
-                        <li class="page-item">
-                            <a class="page-link" href="/employee/index/{{ currentPage+1 }}" aria-label="Next">
-                                <span aria-hidden="true">&Rang;</span>
-                                <span class="sr-only">Suivante</span>
-                            </a>
-                        </li>
-                        {%  endif %}
+                        {% endif %}
                     </ul>
                 </nav>
             </div>
             <div class="col" >
-                <p class="float-right mr-3"> Nb résultats :  {{employeesCount}}</p>
+                <p class="float-right mr-3"> Nb résultats : {{employeesCount}}</p>
             </div>
         </div>
     </div>

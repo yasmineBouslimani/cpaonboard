@@ -12,8 +12,9 @@ class EmployeeController extends AbstractController
 
         $employeesCount=26;
         $resultsPerPage = 5;
-        $pagesNeeded = ceil($employeesCount / $resultsPerPage);
+        $pagesCount = ceil($employeesCount / $resultsPerPage);
         $firstResult = ($currentPage * $resultsPerPage) - $resultsPerPage;
+        $paginationDefaultPagesGap = 2;
 
         /*$employeeModel = new EmployeeModel();
         $employeesCount = $employeeModel->getEmployeesCountForTable($firstResult, $resultsPerPage);
@@ -110,7 +111,8 @@ class EmployeeController extends AbstractController
             $test = 'on page 2';
 
         return $this->twig->render('Employee/showEmployees.html.twig', ['resultPerPage' => $resultsPerPage, 'employees' => $employees,
-            'employeesCount' => $employeesCount, 'pagesNeeded' => $pagesNeeded, 'currentPage' => $currentPage, 'test' => $test]);
+            'employeesCount' => $employeesCount, 'pagesCount' => $pagesCount, 'currentPage' => $currentPage, 'test' => $test,
+            'paginationDefaultPagesGap' => $paginationDefaultPagesGap]);
     }
 
     public function show(int $id)
