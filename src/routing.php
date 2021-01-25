@@ -14,6 +14,7 @@ $controller = 'App\Controller\\' . ucfirst($routeParts[0] ?? '') . 'Controller';
 $method = $routeParts[1] ?? '';
 $vars = array_slice($routeParts, 2);
 
+
 if (class_exists($controller) && method_exists(new $controller(), $method)) {
     echo (new $controller())->$method(...$vars);
 } else {

@@ -2,55 +2,116 @@
 
 namespace App\Controller;
 
-use App\Model\EmployeeModel;
+use EmployeeModel;
 
 class EmployeeController extends AbstractController
 {
-    public function index()
+    public function index(int $currentPage=1)
     {
-//            PENDING DB CONNECTION ___________________
-//        $employeeModel = new EmployeeModel();
-//        $employees = $employeeModel->selectAll();
-//
-//        return $this->twig->render('Employee/showEmployees.html.twig',
-//            ['employees' => $employees]);
+
+        $employeesCount=26;
+        $resultsPerPage = 5;
+        $pagesCount = ceil($employeesCount / $resultsPerPage);
+        $firstResult = ($currentPage * $resultsPerPage) - $resultsPerPage;
+        $paginationDefaultPagesGap = 2;
+
+        /*$employeeModel = new EmployeeModel();
+        $employeesCount = $employeeModel->getEmployeesCountForTable($firstResult, $resultsPerPage);
+
+        $employees = $employeeModel->getEmployeesForTable();*/
 
 
-        $employees1 = [
-            ['employeeId' => 1, 'active' => '1', 'employee_hr_id' => 'BDX2389', 'firstName' => 'Nathalie', 'lastName' => 'De Lauret', 'service' =>
+        //            PENDING DB CONNECTION ___________________
+        $employees1=[
+            ['employeeId' => 1, 'active' => '1','employee_hr_id' => 'BDX2389','firstName' => 'Nathalie', 'lastName' => 'De Lauret', 'service' =>
                 'Direction', 'function' => 'Directeur'],
-            ['employeeId' => 2, 'active' => '1', 'employee_hr_id' => 'BDX78JU', 'firstName' => 'Myriam', 'lastName' => 'Mitier', 'service' =>
+            ['employeeId' => 2, 'active' => '1', 'employee_hr_id' => 'BDX78JU','firstName' => 'Myriam', 'lastName' => 'Mitier', 'service' =>
                 'Accueil', 'function' => 'Assistante RH'],
-            ['employeeId' => 3, 'active' => '0', 'employee_hr_id' => 'BDX6783', 'firstName' => 'Mathilde', 'lastName' => 'Dubois', 'service' =>
+            ['employeeId' => 3, 'active' => '0', 'employee_hr_id' => 'BDX6783','firstName' => 'Mathilde', 'lastName' => 'Dubois', 'service' =>
                 'Finance & achats', 'function' => 'Commerciale'],
-            ['employeeId' => 4, 'employee_hr_id' => 'BDXYH89', 'firstName' => 'Laurent', 'lastName' => 'Dupuis', 'service' =>
+            ['employeeId' => 4, 'employee_hr_id' => 'BDXYH89','firstName' => 'Laurent', 'lastName' => 'Dupuis', 'service' =>
                 'Moteur & dépendance', 'function' => 'Vendeur'],
-            ['employeeId' => 5, 'active' => '1', 'employee_hr_id' => 'BDX4624', 'firstName' => 'Chloé', 'lastName' => 'Laforge', 'service' =>
+            ['employeeId' => 5, 'active' => '1', 'employee_hr_id' => 'BDX4624','firstName' => 'Chloé', 'lastName' => 'Laforge', 'service' =>
                 'Stock & Magasin', 'function' => 'Magasinier'],
         ];
-        //            END PENDING DB CONNECTION ___________________
+        $employees2=[
+            ['employeeId' => 1, 'active' => '1','employee_hr_id' => 'BDX2378','firstName' => 'Prenom2', 'lastName' => 'Nom2', 'service' =>
+                'Direction', 'function' => 'Directeur'],
+            ['employeeId' => 2, 'active' => '1', 'employee_hr_id' => 'BDX78JU','firstName' => 'Prenom2', 'lastName' => 'Nom2', 'service' =>
+                'Accueil', 'function' => 'Assistante RH'],
+            ['employeeId' => 3, 'active' => '0', 'employee_hr_id' => 'BDX6783','firstName' => 'Prenom2', 'lastName' => 'Nom2', 'service' =>
+                'Finance & achats', 'function' => 'Commerciale'],
+            ['employeeId' => 4, 'employee_hr_id' => 'BDXYH89','firstName' => 'Prenom2', 'lastName' => 'Nom2', 'service' =>
+                'Moteur & dépendance', 'function' => 'Vendeur'],
+            ['employeeId' => 5, 'active' => '1', 'employee_hr_id' => 'BDX4624','firstName' => 'Prenom2', 'lastName' => 'Nom2', 'service' =>
+                'Stock & Magasin', 'function' => 'Magasinier'],
+        ];
+        $employees3=[
+            ['employeeId' => 1, 'active' => '1','employee_hr_id' => 'BDX2378','firstName' => 'Prenom3', 'lastName' => 'Nom3', 'service' =>
+                'Direction', 'function' => 'Directeur'],
+            ['employeeId' => 2, 'active' => '1', 'employee_hr_id' => 'BDX78JU','firstName' => 'Prenom3', 'lastName' => 'Nom3', 'service' =>
+                'Accueil', 'function' => 'Assistante RH'],
+            ['employeeId' => 3, 'active' => '0', 'employee_hr_id' => 'BDX6783','firstName' => 'Prenom3', 'lastName' => 'Nom3', 'service' =>
+                'Finance & achats', 'function' => 'Commerciale'],
+            ['employeeId' => 4, 'employee_hr_id' => 'BDXYH89','firstName' => 'Prenom3', 'lastName' => 'Nom3', 'service' =>
+                'Moteur & dépendance', 'function' => 'Vendeur'],
+            ['employeeId' => 5, 'active' => '1', 'employee_hr_id' => 'BDX4624','firstName' => 'Prenom3', 'lastName' => 'Nom3', 'service' =>
+                'Stock & Magasin', 'function' => 'Magasinier'],
+        ];
+        $employees4=[
+            ['employeeId' => 1, 'active' => '1','employee_hr_id' => 'BDX2378','firstName' => 'Prenom4', 'lastName' => 'Nom4', 'service' =>
+                'Direction', 'function' => 'Directeur'],
+            ['employeeId' => 2, 'active' => '1', 'employee_hr_id' => 'BDX78JU','firstName' => 'Prenom4', 'lastName' => 'Nom4', 'service' =>
+                'Accueil', 'function' => 'Assistante RH'],
+            ['employeeId' => 3, 'active' => '0', 'employee_hr_id' => 'BDX6783','firstName' => 'Prenom4', 'lastName' => 'Nom4', 'service' =>
+                'Finance & achats', 'function' => 'Commerciale'],
+            ['employeeId' => 4, 'employee_hr_id' => 'BDXYH89','firstName' => 'Prenom4', 'lastName' => 'Nom4', 'service' =>
+                'Moteur & dépendance', 'function' => 'Vendeur'],
+            ['employeeId' => 5, 'active' => '1', 'employee_hr_id' => 'BDX4624','firstName' => 'Prenom4', 'lastName' => 'Nom4', 'service' =>
+                'Stock & Magasin', 'function' => 'Magasinier'],
+        ];
+        $employees5=[
+            ['employeeId' => 1, 'active' => '1','employee_hr_id' => 'BDX2378','firstName' => 'Prenom5', 'lastName' => 'Nom5', 'service' =>
+                'Direction', 'function' => 'Directeur'],
+            ['employeeId' => 2, 'active' => '1', 'employee_hr_id' => 'BDX78JU','firstName' => 'Prenom5', 'lastName' => 'Nom5', 'service' =>
+                'Accueil', 'function' => 'Assistante RH'],
+            ['employeeId' => 3, 'active' => '0', 'employee_hr_id' => 'BDX6783','firstName' => 'Prenom5', 'lastName' => 'Nom5', 'service' =>
+                'Finance & achats', 'function' => 'Commerciale'],
+            ['employeeId' => 4, 'employee_hr_id' => 'BDXYH89','firstName' => 'Prenom5', 'lastName' => 'Nom5', 'service' =>
+                'Moteur & dépendance', 'function' => 'Vendeur'],
+            ['employeeId' => 5, 'active' => '1', 'employee_hr_id' => 'BDX4624','firstName' => 'Prenom5', 'lastName' => 'Nom5', 'service' =>
+                'Stock & Magasin', 'function' => 'Magasinier'],
+        ];
 
-        if (isset($_GET['page']) && !empty($_GET['page'])) {
-            $currentPage = (int)strip_tags($_GET['page']);
-//            PENDING DB CONNECTION ___________________
-            if ($currentPage == 1) {
-                $employees = $employees1;
-            } elseif ($currentPage == 2) {
-                $employees = ['employee_id' => 6, 'active' => '1', 'employee_hr_id' => 'BDX4624', 'firstName' => 'Chloé',
-                    'lastName' => 'Laforge', 'service' => 'Stock & Magasin', 'function' => 'Magasinier'];
-            }
-            //            END PENDING DB CONNECTION ___________________
-        } else {
-            $currentPage = 1;
-            //            PENDING DB CONNECTION ___________________
-            $employees = $employees1;
-            //            END PENDING DB CONNECTION ___________________
+        $employees6= [['employee_id' => 6, 'active' => '1', 'employee_hr_id' => 'BDX4624','firstName' => 'Chloé',
+            'lastName' => 'Laforge', 'service' => 'Stock & Magasin', 'function' => 'Magasinier']];
+//           END PENDING DB CONNECTION ___________________
+
+
+        // PENDING DB CONNECTION ___________________
+        if ($currentPage == 1)
+        {
+            $employees=$employees1;
+        }elseif ($currentPage == 2) {
+            $employees= $employees2;
+        } elseif ($currentPage == 3) {
+            $employees= $employees3;
+        } elseif ($currentPage == 4) {
+            $employees= $employees4;
+        } elseif ($currentPage == 5) {
+            $employees= $employees5;
+        } elseif ($currentPage == 6) {
+            $employees= $employees6;
         }
+        // END PENDING DB CONNECTION ___________________
 
-        $employeesCount = 6;
+            $test = 'on page 1';
+        if ($currentPage == 2)
+            $test = 'on page 2';
 
-        return $this->twig->render('Employee/showEmployees.html.twig', ['test' => 'it works', 'employees' => $employees,
-            'employeesCount' => $employeesCount]);
+        return $this->twig->render('Employee/showEmployees.html.twig', ['resultPerPage' => $resultsPerPage, 'employees' => $employees,
+            'employeesCount' => $employeesCount, 'pagesCount' => $pagesCount, 'currentPage' => $currentPage, 'test' => $test,
+            'paginationDefaultPagesGap' => $paginationDefaultPagesGap]);
     }
 
     public function show(int $id)
@@ -69,4 +130,5 @@ class EmployeeController extends AbstractController
         return $this->twig->render('Employee/showEmployee.html.twig', ['employee' => $employee, 'tempEmployeeId' =>
             $id]);
     }
+
 }
