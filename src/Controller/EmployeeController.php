@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Controller;
 
 use EmployeeModel;
@@ -117,15 +116,19 @@ class EmployeeController extends AbstractController
 
     public function show(int $id)
     {
-        // PENDING DB CONNECTION ___________________
-        $employee=['employeeId' => 1, 'active' => '1','employee_hr_id' => 'BDX2389','firstName' => 'Nathalie', 'lastName' => 'De Lauret',
+//        PENDING DB CONNECTION ___________________
+//        $employeeModel = new EmployeeModel();
+//        $employee = $employeeModel->selectOneById($id);
+//        return $this->twig->render('Employee/showEmployees.html.twig',
+//            ['employee' => $employee]);
+
+
+        $employee = ['employeeId' => 1, 'active' => '1', 'employee_hr_id' => 'BDX2389', 'firstName' => 'Nathalie', 'lastName' => 'De Lauret',
             'service' => 'Direction', 'function' => 'Directeur'];
         // END PENDING DB CONNECTION ___________________
 
         return $this->twig->render('Employee/showEmployee.html.twig', ['employee' => $employee, 'tempEmployeeId' =>
             $id]);
-    
     }
-
 
 }

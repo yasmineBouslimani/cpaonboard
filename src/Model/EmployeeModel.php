@@ -1,31 +1,16 @@
 <?php
 
-class EmployeeModel
+namespace App\Model;
+
+class EmployeeModel extends AbstractManager
 {
+    public const TABLE = 'employee';
 
-    function getEmployeesForTable(int $resultsPerPage, int $firstResult)
+    /**
+     *  Initializes this class.
+     */
+    public function __construct()
     {
-        //List all employees for display on table.
-
-        require('config/dbConnect.php');
-        $db = connectToDb();
-
-        $req = $db->query('SELECT id_employee, active, employee_hr_id, last_name, first_name, department, function FROM employee 
-            ORDER BY id_employee LIMIT $firstResult, $resultsPerPage');
-        return $req;
+        parent::__construct(self::TABLE);
     }
-
-    function getEmployee($employeeId)
-    {
-        //Get data for this employee's record.
-        require('config/dbConnect.php');
-        $db = connectToDb();
-
-        $req = $db->prepare('SELECT * FROM `employee` WHERE `id_employee` = :idEmployee');
-        $req->execute(array(':idEmployee' => $employeeId));
-        $employee = $req->fetch();
-
-        return $employee;
-    }
-
 }

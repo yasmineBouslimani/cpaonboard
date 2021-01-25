@@ -1,0 +1,7 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+    <h1>Editer un produit {{ product.title }}</h1>
+    {% include 'Product/_form.html.twig' %}
+    <a href="/product/show/{{ product.id }}">Back</a>
+{% endblock %}
