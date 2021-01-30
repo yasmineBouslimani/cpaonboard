@@ -10,13 +10,30 @@
 {% block content %}
     <div>
         <form method="post" action="EmployeeController.php" class="form-group">
-{#             PENDING DB CONNECTION ___________________#}
-                <p>TRUE ID : {{ id_employee }} </p>
-{#            END PENDING DB CONNECTION ___________________#}
-            {# active#}(-
-            <input type="text" name="employeeHrId" value={{employee['employee_hr_id']}} /></br>
-            <input type="text" name="employeefirstName" value={{employee['firstName']}} /></br>
-            <input type="text" name="employeelastName" value={{employee['lastName']}} /></br>
+            <div class="row">
+                <div class="col-1">
+                    <label for="employeeHrId" class="mr-4">Matricule</label>
+                </div>
+                <div class="col-1">
+                    <input type="text" name="employeeHrId" id="employeeHrId" value={{employee[0]['employee_hr_id']}} /></br>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-1">
+                    <label for="employeefirstName" class="mr-4">Prénom</label>
+                </div>
+                <div class="col-1">
+                    <input type="text" id="employeefirstName" name="employeefirstName" value={{employee[0]['first_name']}} /></br>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-1">
+                    <label for="employeelastName" class="mr-3">Nom</label>
+                </div>
+                <div class="col-1">
+                    <input type="text" name="employeelastName" id="employeelastName" value={{employee[0]['last_name']}} /></br>
+                </div>
+            </div>
             <input type="submit" value="Valider" class="btn btn-primary"/>
         </form>
         <form method="post" action="/employee/index">

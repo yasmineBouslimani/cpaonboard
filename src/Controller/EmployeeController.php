@@ -44,8 +44,7 @@ class EmployeeController extends AbstractController
          */
 
         $employeeModel = new EmployeeModel();
-        $id_name = 'id_employee';
-        $employee=$employeeModel->selectOneById($id_name, $id);
+        $employee=$employeeModel->selectEmployeeById($id);
 
         return $this->twig->render('Employee/showEmployee.html.twig', ['employee' => $employee]);
     }

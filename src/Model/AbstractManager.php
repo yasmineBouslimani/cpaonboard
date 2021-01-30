@@ -45,10 +45,10 @@ abstract class AbstractManager
      *
      * @return array
      */
-    public function selectOneById(string $idName, int $id)
+    public function selectOneById(int $id)
     {
         // prepared request
-        $statement = $this->pdo->prepare("SELECT * FROM $this->table WHERE '.$idName.' =:id");
+        $statement = $this->pdo->prepare("SELECT * FROM $this->table WHERE id=:id");
         $statement->bindValue('id', $id, \PDO::PARAM_INT);
         $statement->execute();
 

@@ -22,12 +22,23 @@ class EmployeeModel extends AbstractManager
          *
          * @return array
          */
-        $test = 'last_name';
         return $this->pdo->query('SELECT employee.id_employee, employee.employee_hr_id, employee.active, contact.last_name,
             contact.first_name, employee.department FROM employee
             LEFT JOIN contact ON employee.id_employee = contact.fk_id_employee2
             ORDER BY contact.last_name ASC, contact.first_name ASC
             LIMIT '.$limit.' OFFSET '.$offset.';')->fetchAll();
+    }
+
+    public function selectEmployeeById(int $id): array
+    {
+        /**
+         * Get an employee record in database.
+         *
+         * @return array
+         */
+        return $this->pdo->query('SELECT * FROM employee
+            LEFT JOIN contact ON employee.id_employee = contact.fk_id_employee2
+            WHERE id_employee = '.$id.';')->fetchAll();
     }
 
 
