@@ -7,14 +7,7 @@ use App\Model\ProductManager;
 
 class ProductController extends AbstractController
 {
-    /**
-     * Display product listing
-     *
-     * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     */
+
     public function index()
     {
         $productManager = new ProductManager();

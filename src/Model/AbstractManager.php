@@ -45,13 +45,24 @@ abstract class AbstractManager
      *
      * @return array
      */
-    public function selectOneById(int $id)
+    public function selectOneById(string $idName, int $id)
     {
         // prepared request
-        $statement = $this->pdo->prepare("SELECT * FROM $this->table WHERE id=:id");
+        $statement = $this->pdo->prepare("SELECT * FROM $this->table WHERE '.$idName.' =:id");
         $statement->bindValue('id', $id, \PDO::PARAM_INT);
         $statement->execute();
 
         return $statement->fetch();
+    }
+
+    public function countRecords(): array
+    {
+        /**
+         * Get the number of records in database for a particular table.
+         *
+         * @return array
+         */
+        $test = 'last_name';
+        return $this->pdo->query("SELECT COUNT(*) AS countRecords FROM . $this->table")->fetchAll();
     }
 }
