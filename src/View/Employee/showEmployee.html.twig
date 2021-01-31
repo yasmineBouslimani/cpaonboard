@@ -3,41 +3,142 @@
 {% block title %}Fiche collaborateur{% endblock %}
 
 {% block bannerTitle %}FICHE COLLABORATEUR{% endblock %}
-{% block bannerInfo %}{{ employee['lastName'] }} {{ employee['firstName'] }} - {{ employee['employee_hr_id'] }}{% endblock %}
 
 
 
 {% block content %}
     <div>
         <form method="post" action="EmployeeController.php" class="form-group">
-            <div class="row">
-                <div class="col-1">
-                    <label for="employeeHrId" class="mr-4">Matricule</label>
+            <div class="card mr-4 mb-4">
+                <div class="card-header uppercase">informations personnelles</div>
+                {% set fieldToDisplayCol1 = [
+                    {'record': 'employee_hr_id', 'nameInput': 'employeeHrId', 'idInput': 'employeeHrId', 'labelValue': 'Matricule'},
+                    {'record': 'civility', 'nameInput': 'civility', 'idInput': 'civility', 'labelValue': 'Civilité'},
+                    {'record': 'last_name', 'nameInput': 'lastName', 'idInput': 'lastName', 'labelValue': 'Nom'},
+                    {'record': 'first_name', 'nameInput': 'firstName', 'idInput': 'firstName', 'labelValue': 'Prénom'}
+                ] %}
+                {% set fieldToDisplayCol2 = [
+                    {'record': 'birth_date', 'nameInput': 'birthDate', 'idInput': 'birthDate', 'labelValue': 'Date de naissance'},
+                    {'record': 'birth_place', 'nameInput': 'birthPlace', 'idInput': 'birthPlace', 'labelValue': 'Lieu de naissance'},
+                    {'record': 'social_security_number', 'nameInput': 'socialSecurityNumber', 'idInput': 'socialSecurityNumber', 'labelValue': 'Numéro de sécurité sociale'}
+                    ] %}
+                {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
+                {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
+                {% set CountRow = LengthArrayCol1 > LengthArrayCol2 ? LengthArrayCol1 : LengthArrayCol2%}
+                {% set currentIndiceArrayCol1 = 0 %}
+                {% set currentIndiceArrayCol2 = 0 %}
+                {% set tabIndex = 1 %}
+                <div class="card-body">
+                    {% for i in 1..CountRow %}
+                        <div class="row mb-1 mt-1">
+                            {% if currentIndiceArrayCol1 < LengthArrayCol1 %}
+                                <div class="col-2">
+{#                                    <p>{{ tabIndex }}</p>#}
+                                    <label for="{{ fieldToDisplayCol1[currentIndiceArrayCol1]['idInput'] }}" class="mr-1">
+                                        {{ fieldToDisplayCol1[currentIndiceArrayCol1]['labelValue'] }}
+                                    </label>
+                                </div>
+                                <div class="col-2 ">
+                                    <input type="text" name="{{ fieldToDisplayCol1[currentIndiceArrayCol1]['nameInput'] }}"
+                                           id="{{ fieldToDisplayCol1[currentIndiceArrayCol1]['idInput'] }}" tabindex="{{ tabIndex }}"
+                                           value="{{ employee[0][fieldToDisplayCol1[currentIndiceArrayCol1]['record']] }}" /></br>
+                                </div>
+                                {% set currentIndiceArrayCol1 = currentIndiceArrayCol1 + 1 %}
+                                {% set tabIndex = tabIndex + 1 %}
+                            {% endif %}
+                            <div class="col-2"></div>
+                            {% if currentIndiceArrayCol2 < LengthArrayCol2 %}
+                                <div class="row mb-1 mt-1">
+                                    <div class="col-2">
+{#                                        <p>{{ tabIndex }}</p>#}
+                                        <label for="{{ fieldToDisplayCol2[currentIndiceArrayCol2]['idInput'] }}" class="mr-1">
+                                            {{ fieldToDisplayCol2[currentIndiceArrayCol2]['labelValue'] }}
+                                        </label>
+                                    </div>
+                                    <div class="col-2 ">
+                                        <input type="text" name="{{ fieldToDisplayCol2[currentIndiceArrayCol2]['nameInput'] }}"
+                                               id="{{ fieldToDisplayCol2[currentIndiceArrayCol2]['idInput'] }}" tabindex="{{ tabIndex }}"
+                                               value="{{ employee[0][fieldToDisplayCol2[currentIndiceArrayCol2]['record']] }}" /></br>
+                                    </div>
+                                </div>
+                                {% set currentIndiceArrayCol2 = currentIndiceArrayCol2 + 1 %}
+                                {% set tabIndex = tabIndex + 1 %}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
                 </div>
-                <div class="col-1">
-                    <input type="text" name="employeeHrId" id="employeeHrId" value={{employee[0]['employee_hr_id']}} /></br>
+
+            </div>
+            <div class="card mr-4">
+                <div class="card-header uppercase">coordonnees</div>
+                <div class="card-body">
+                    <div class="row mb-1 mt-1">
+                        <div class="col-2">
+                            <label for="addressStreetNumber" class="mr-4">Numéro de rue</label>
+                        </div>
+                        <div class="col-2 ">
+                            <input type="text" name="addressStreetNumber" id="addressStreetNumber" tabindex="8"
+                                   value="{{employee[0]['address_street_number']}}" /></br>
+                        </div>
+                        <div class="col-2"></div>
+                        <div class="col-2">
+                            <label for="phoneNumber" class="mr-4">Numéro de tél. fixe perso.</label>
+                        </div>
+                        <div class="col-2">
+                            <input type="text" name="phoneNumber" id="phoneNumber" tabindex="12"
+                                   value="{{employee[0]['phone_number']}}" /></br>
+                        </div>
+                    </div>
+                    <div class="col-2"></div>
+                    <div class="row mb-1 mt-1">
+                        <div class="col-2">
+                            <label for="addressStreet" class="mr-4">Voie</label>
+                        </div>
+                        <div class="col-2">
+                            <input type="text" name="addressStreet" id="addressStreet" tabindex="9"
+                                   value="{{employee[0]['address_street']}}" /></br>
+                        </div>
+                        <div class="col-2"></div>
+                        <div class="col-2">
+                            <label for="cellphoneNumber" class="mr-4">Numéro de tél. portable perso.</label>
+                        </div>
+                        <div class="col-2">
+                            <input type="text" name="cellphoneNumber" id="cellphoneNumber" tabindex="13"
+                                   value="{{employee[0]['cellphone_number']}}" /></br>
+                        </div>
+                    </div>
+                    <div class="row mb-1 mt-1">
+                        <div class="col-2">
+                            <label for="addressZipCode" class="mr-3">Code postal</label>
+                        </div>
+                        <div class="col-2">
+                            <input type="text" name="addressZipCode" id="addressZipCode" tabindex="10"
+                                   value="{{employee[0]['address_zip_code']}}" /></br>
+                        </div>
+                        <div class="col-2"></div>
+                        <div class="col-2">
+                            <label for="personalEmailAddress" class="mr-4">Adresse mail perso.</label>
+                        </div>
+                        <div class="col-2">
+                            <input type="text" name="personalEmailAddress" id="personalEmailAddress" tabindex="14"
+                                   value="{{employee[0]['personal_email_address']}}" /></br>
+                        </div>
+                    </div>
+                    <div class="row mb-1 mt-1">
+                        <div class="col-2">
+                            <label for="addressCity" class="mr-4">Ville</label>
+                        </div>
+                        <div class="col-2">
+                            <input type="text" id="addressCity" name="addressCity" tabindex="11"
+                                   value="{{employee[0]['address_city']}}" /></br>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-1">
-                    <label for="employeefirstName" class="mr-4">Prénom</label>
-                </div>
-                <div class="col-1">
-                    <input type="text" id="employeefirstName" name="employeefirstName" value={{employee[0]['first_name']}} /></br>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-1">
-                    <label for="employeelastName" class="mr-3">Nom</label>
-                </div>
-                <div class="col-1">
-                    <input type="text" name="employeelastName" id="employeelastName" value={{employee[0]['last_name']}} /></br>
-                </div>
-            </div>
-            <input type="submit" value="Valider" class="btn btn-primary"/>
+{#            <input type="submit" value="" class="btn btn-primary"/>#}
         </form>
         <form method="post" action="/employee/index">
-            <input type="submit" value="Retour liste collaborateurs" />
+            <input type="submit" class ="mb-4 mt-4" value="Retour liste collaborateurs" />
         </form>
     </div>
 {% endblock %}
