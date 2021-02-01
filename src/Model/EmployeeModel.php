@@ -15,7 +15,7 @@ class EmployeeModel extends AbstractManager
     }
 
 
-    public function selectEmployeesForTable(int $limit, int $offset): array
+    public function selectEmployeesAndContactsData(int $limit, int $offset): array
     {
         /**
          * Get all row from table employee when criterion are meet.

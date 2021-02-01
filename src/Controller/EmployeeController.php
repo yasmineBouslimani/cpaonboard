@@ -24,7 +24,7 @@ class EmployeeController extends AbstractController
         $resultsPerPage = 5;
         $pagesCount = ceil($employeesCount / $resultsPerPage);
         $firstResult = ($currentPage * $resultsPerPage) - $resultsPerPage;
-        $employees = $employeeModel->selectEmployeesForTable($resultsPerPage, $firstResult);
+        $employees = $employeeModel->selectEmployeesAndContactsData($resultsPerPage, $firstResult);
         $paginationDefaultPagesGap = 2;
 
         return $this->twig->render('Employee/index.html.twig', ['resultPerPage' => $resultsPerPage, 'employees' => $employees,
