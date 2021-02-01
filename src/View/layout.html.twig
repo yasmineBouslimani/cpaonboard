@@ -9,20 +9,26 @@
     <script src="https://kit.fontawesome.com/c66c66f866.js" crossorigin="anonymous"></script>
     <title>{% block title %}CPA On Board{% endblock %}</title>
     {% block stylesheet %}{% endblock %}
-   <link rel="icon" href="/assets/images/logo_cpa_on_board.png">
+    <link rel="icon" href="/assets/images/logo_cpa_on_board.png">
     <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
+{% if block("bannerTitle") is defined %}
+    {% include '_header.html.twig' with {bannerTitle: block('bannerTitle')} %}
+{% endif %}
 
-{% include '_header.html.twig' with {bannerTitle: block('bannerTitle')} %}
-<div class="row">
-    <div class="col-2">
-        {% include '_nav.html.twig' %}
+{% if session.login %}
+    <div class="row">
+        <div class="col-2">
+            {% include '_nav.html.twig' %}
+        </div>
+        <div class="col-10 mt-4">
+            {% block content %}{% endblock %}
+        </div>
     </div>
-    <div class="col-10 mt-4">
-        {% block content %}{% endblock %}
-    </div>
-</div>
+{% else %}
+    {% block login %}{% endblock %}
+{% endif %}
 {% include '_footer.html.twig' %}
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
