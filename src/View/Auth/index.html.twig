@@ -1,4 +1,4 @@
-{#{% extends 'layout.html.twig' %}#}
+{% extends 'layout.html.twig' %}
 {% block content %}
 <div class="background-cars min-vh-100" style="background-size: cover;
 background-position: center;
@@ -9,10 +9,10 @@ background-repeat: no-repeat; background-image: url('https://file1.autoplus.fr/v
             <div class="d-flex mt-4" style="justify-content: center">
                 <img src="/assets/images/logo_cpa_on_board.png">
             </div>
-            <form action='/user/check' method="post">
+            <form action='/auth/check' method="post">
                 <div class="form-group">
-                    <label class="text-white" for="nickname">Votre identifiant :</label>
-                    <input type="text" name="nickname" class="form-control" id="nickname"
+                    <label class="text-white" for="login">Votre identifiant :</label>
+                    <input type="email" name="login" class="form-control" id="login"
                            placeholder="Entrez votre identifiant" value="">
                     <div class="text-danger mt-1">{{ detailsError }}</div>
                     <div class="text-danger mt-1">{{ errors.password }}</div>
