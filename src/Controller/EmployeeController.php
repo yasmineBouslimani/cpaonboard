@@ -2,23 +2,25 @@
 
 namespace App\Controller;
 
-use EmployeeModel;
+use App\Model\EmployeeManager;
 
 class EmployeeController extends AbstractController
 {
     public function index(int $currentPage=1)
     {
-
+        if ($_SESSION['is_admin'] == "1") {
+            header('location:/auth/login');
+        }
         $employeesCount=26;
         $resultsPerPage = 5;
         $pagesCount = ceil($employeesCount / $resultsPerPage);
         $firstResult = ($currentPage * $resultsPerPage) - $resultsPerPage;
         $paginationDefaultPagesGap = 2;
 
-        /*$employeeModel = new EmployeeModel();
-        $employeesCount = $employeeModel->getEmployeesCountForTable($firstResult, $resultsPerPage);
+        /*$employeeManager = new EmployeeManager();
+        $employeesCount = $employeeManager->getEmployeesCountForTable($firstResult, $resultsPerPage);
 
-        $employees = $employeeModel->getEmployeesForTable();*/
+        $employees = $employeeManager->getEmployeesForTable();*/
 
 
         //            PENDING DB CONNECTION ___________________
@@ -116,9 +118,12 @@ class EmployeeController extends AbstractController
 
     public function show(int $id)
     {
+        if ($_SESSION['is_admin'] == "1") {
+            header('location:/auth/login');
+        }
 //        PENDING DB CONNECTION ___________________
-//        $employeeModel = new EmployeeModel();
-//        $employee = $employeeModel->selectOneById($id);
+//        $employeeManager = new EmployeeManager();
+//        $employee = $employeeManager->selectOneById($id);
 //        return $this->twig->render('Employee/showEmployees.html.twig',
 //            ['employee' => $employee]);
 
