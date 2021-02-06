@@ -23,8 +23,9 @@ class EmployeeManager extends AbstractManager
          * @return array
          */
         return $this->pdo->query('SELECT employee.id_employee, employee.employee_hr_id, employee.active, contact.last_name,
-            contact.first_name, employee.department FROM employee
+            contact.first_name, employee.department, contract.type_contract FROM employee
             LEFT JOIN contact ON employee.id_employee = contact.fk_id_employee2
+            LEFT JOIN contract ON employee.id_employee = contract.fk_employee AND contract.on_going = TRUE
             ORDER BY contact.last_name ASC, contact.first_name ASC
             LIMIT '.$limit.' OFFSET '.$offset.';')->fetchAll();
     }
@@ -38,6 +39,7 @@ class EmployeeManager extends AbstractManager
          */
         return $this->pdo->query('SELECT * FROM employee
             LEFT JOIN contact ON employee.id_employee = contact.fk_id_employee2
+            LEFT JOIN contract ON employee.id_employee = contract.fk_employee AND contract.on_going = TRUE
             WHERE id_employee = '.$id.';')->fetchAll();
     }
 

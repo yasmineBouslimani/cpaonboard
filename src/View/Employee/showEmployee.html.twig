@@ -122,13 +122,70 @@
                     {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
                 </div>
                 <div>
+                    {% set titleCardToDisplay = 'contrat en cours' %}
+                    {% set  idCard =  'bank_data'%}
+{#                    TODO : select#}
+                    {% set fieldToDisplayCol1 = [
+                        {
+                            'record': 'type_contract',
+                            'inputType': 'select',
+                            'selectRequest': 'civilityEnum',
+                            'nameInput': 'typeContract',
+                            'idInput': 'typeContract',
+                            'labelValue': 'Type de contrat'},
+                        {
+                            'record': 'starting_date',
+                            'inputType': 'date',
+                            'nameInput': 'startingDate',
+                            'idInput': 'startingDate',
+                            'labelValue': 'Date de début'},
+                        {
+                            'record': 'end_date',
+                            'inputType': 'date',
+                            'nameInput': 'endDate',
+                            'idInput': 'endDate',
+                            'labelValue': 'Date de fin'},
+                        {
+                            'record': 'on_going',
+                            'inputType': 'checkbox_one',
+                            'nameInput': 'onGoing',
+                            'idInput': 'onGoing',
+                            'labelValue': 'En cours'}
+                    ] %}
+                    {% set fieldToDisplayCol2 = [
+                        {
+                            'record': '	wage_first_year',
+                            'inputType': 'text',
+                            'nameInput': 'wageFirstYear',
+                            'idInput': 'wageFirstYear',
+                            'labelValue': 'Salaire 1e année'},
+                        {
+                            'record': '	wage_second_year',
+                            'inputType': 'text',
+                            'nameInput': 'wageSecondYear',
+                            'idInput': 'wageSecondYear',
+                            'labelValue': 'Salaire 2e année'},
+                        {
+                            'record': '	wage_third_year',
+                            'inputType': 'text',
+                            'nameInput': 'wageThirdYear',
+                            'idInput': 'wageThirdYear',
+                            'labelValue': 'Salaire 3e année'}
+                    ] %}
+                    {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
+                    {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
+                    {% set tabIndexBeforeCard = tabIndex %}
+                    {% include 'Employee/employee_components/_cardForm.html.twig'%}
+                    {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
+                </div>
+                <div>
                     {% set titleCardToDisplay = 'données bancaires' %}
                     {% set  idCard =  'bank_data'%}
                     {% set fieldToDisplayCol1 = [
                         {
                             'record': 'bank_name',
                             'inputType': 'text',
-                            'nameInput': '	bankName',
+                            'nameInput': 'bankName',
                             'idInput': 'bankName',
                             'labelValue': 'Banque'},
                         {

@@ -19,16 +19,30 @@
                             </label>
                         </div>
                     <div class="col-2 ">
-                        {% if fieldToDisplayCol1[currentIndiceArrayCol1]['inputType'] == 'select' %}
+                        {% set currentInputCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['inputType'] %}
+                        {% if currentInputCol1 == 'select' %}
 {#                            <p>{{ civilityEnum}}</p>#}
 {#                            <p>{{ civilityEnum[1] }}</p>#}
-                            <select name="{{ fieldToDisplayCol2[currentIndiceArrayCol2]['labelValue'] }}">
+{#                            TODO : pb index#}
+                            <select name="{{ fieldToDisplayCol2[currentIndiceArrayCol2]['labelValue'] }}
+                                    tabindex="{{ tabIndexBeforeCard+1 }}">
                                 {% for civility in civilityEnum %}
                                     <option value="{{ civility }}">{{ civility}}</option>
                                 {%  endfor %}
                             </select>
+                        {% elseif  currentInputCol1 == 'checkbox_one'%}
+                            {% if  employee[0][fieldToDisplayCol1[currentIndiceArrayCol1]['record']] == 0%}
+                                {% set checkboxSelectedCol1 = '' %}
+                            {% else %}
+                                    {% set checkboxSelectedCol1 = 'selected'%}
+                            {% endif %}
+                            <input type="checkbox"
+                                   name="{{ fieldToDisplayCol1[currentIndiceArrayCol1]['nameInput'] }}"
+                                   id="{{ fieldToDisplayCol1[currentIndiceArrayCol1]['idInput'] }}"
+                                   tabindex="{{ tabIndexBeforeCard+1 }}"
+                                   checked="{{ checkboxSelectedCol1 }}" /></br>
                         {% else %}
-                            <input type="{{ fieldToDisplayCol1[currentIndiceArrayCol2]['inputType'] }}"
+                            <input type="{{ currentInputCol1 }}"
                                    name="{{ fieldToDisplayCol1[currentIndiceArrayCol1]['nameInput'] }}"
                                    id="{{ fieldToDisplayCol1[currentIndiceArrayCol1]['idInput'] }}"
                                    tabindex="{{ tabIndexBeforeCard+1 }}"
@@ -40,32 +54,26 @@
                     {% endif %}
                     <div class="col-2"></div>
                     {% if currentIndiceArrayCol2 < LengthArrayCol2 %}
+                        {% if LengthArrayCol1 < CountRow and currentRow == CountRow %}
+                            {% set tabIndexForCol2 = tabIndexBeforeCard+currentRow+CountRow+1 %}
+                        {% else %}
+                            {% set tabIndexForCol2 = tabIndexBeforeCard+currentRow+CountRow %}
+                        {% endif %}
                         <div class="row mb-1 mt-1">
                             <div class="col-2">
-                                {% if LengthArrayCol1 < CountRow and currentRow == CountRow %}
-                                    {% set tabIndexForCol2 = tabIndexBeforeCard+currentRow+CountRow+1 %}
-                                {% else %}
-                                    {% set tabIndexForCol2 = tabIndexBeforeCard+currentRow+CountRow %}
-                                {% endif %}
+                                <label for="{{ fieldToDisplayCol2[currentIndiceArrayCol2]['idInput'] }}" class="mr-1">
+                                    {{ fieldToDisplayCol2[currentIndiceArrayCol2]['labelValue'] }}
+                                </label>
                             </div>
                             <div class="col-2 ">
                                 {% if fieldToDisplayCol1[currentIndiceArrayCol2]['idInput'] == 'select' %}
-                                    <select name="{{ fieldToDisplayCol2[currentIndiceArrayCol2]['labelValue'] }}">
-                                        <option value="choix1">Choix 1</option>
-                                        <option value="choix2">Choix 2</option>
-                                        <option value="choix3">Choix 3</option>
-                                        <option value="choix4">Choix 4</option>
+                                    <select name="{{ fieldToDisplayCol2[currentIndiceArrayCol2]['labelValue'] }}"
+                                            tabindex="{{ tabIndexForCol2 }}" >
+                                        {% for civility in civilityEnum %}
+                                            <option value="{{ civility }}">{{ civility}}</option>
+                                        {%  endfor %}
                                     </select>
-
-                                    <input type="select"
-                                           name="{{ fieldToDisplayCol2[currentIndiceArrayCol1]['nameInput'] }}"
-                                           id="{{ fieldToDisplayCol2[currentIndiceArrayCol1]['idInput'] }}"
-                                           tabindex="{{ tabIndexForCol2 }}"
-                                           value="{{ employee[0][fieldToDisplayCol2[currentIndiceArrayCol2]['record']] }}" /></br>
                                 {% else %}
-                                    <label for="{{ fieldToDisplayCol2[currentIndiceArrayCol2]['idInput'] }}" class="mr-1">
-                                        {{ fieldToDisplayCol2[currentIndiceArrayCol2]['labelValue'] }}
-                                    </label>
                                     <input type="{{ fieldToDisplayCol2[currentIndiceArrayCol2]['inputType'] }}"
                                            name="{{ fieldToDisplayCol2[currentIndiceArrayCol1]['nameInput'] }}"
                                            id="{{ fieldToDisplayCol2[currentIndiceArrayCol1]['idInput'] }}"
