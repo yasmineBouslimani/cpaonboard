@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Model\EmployeeModel;
+use App\Model\EmployeeManager;
 
 class EmployeeController extends AbstractController
 {
@@ -16,15 +16,18 @@ class EmployeeController extends AbstractController
          * @throws \Twig\Error\RuntimeError
          * @throws \Twig\Error\SyntaxError
          */
+        if ($_SESSION['is_admin'] == "1") {
+            header('location:/auth/login');
+        }
 
-        $employeeModel = new EmployeeModel();
+        $employeeManager = new EmployeeManager();
 
-        $employeesCountRequest=$employeeModel->countRecords();
+        $employeesCountRequest=$employeeManager->countRecords();
         $employeesCount=$employeesCountRequest[0]['countRecords'];
         $resultsPerPage = 5;
         $pagesCount = ceil($employeesCount / $resultsPerPage);
         $firstResult = ($currentPage * $resultsPerPage) - $resultsPerPage;
-        $employees = $employeeModel->selectEmployeesAndContactsData($resultsPerPage, $firstResult);
+        $employees = $employeeManager->selectEmployeesAndContactsData($resultsPerPage, $firstResult);
         $paginationDefaultPagesGap = 2;
 
         return $this->twig->render('Employee/index.html.twig', ['resultPerPage' => $resultsPerPage, 'employees' => $employees,
@@ -42,11 +45,14 @@ class EmployeeController extends AbstractController
          * @throws \Twig\Error\RuntimeError
          * @throws \Twig\Error\SyntaxError
          */
+        if ($_SESSION['is_admin'] == "1") {
+            header('location:/auth/login');
+        }
 
         $employeeModel = new EmployeeModel();
+
         $employee=$employeeModel->selectEmployeeById($id);
 
         return $this->twig->render('Employee/showEmployee.html.twig', ['employee' => $employee]);
     }
-
 }

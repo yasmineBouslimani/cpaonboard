@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Controller;
 
 use Twig\Environment;
@@ -23,10 +22,11 @@ abstract class AbstractController
         $this->twig = new Environment(
             $loader,
             [
-                'cache' => !APP_DEV, // @phpstan-ignore-line
+                'cache' => !APP_DEV,
                 'debug' => APP_DEV,
             ]
         );
         $this->twig->addExtension(new DebugExtension());
+        $this->twig->addGlobal('session', $_SESSION);
     }
 }

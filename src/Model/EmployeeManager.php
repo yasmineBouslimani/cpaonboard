@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-class EmployeeModel extends AbstractManager
+class EmployeeManager extends AbstractManager
 {
     const TABLE = 'employee';
 
