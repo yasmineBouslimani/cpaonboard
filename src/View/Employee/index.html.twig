@@ -1,0 +1,93 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Collaborateurs{% endblock %}
+
+
+{% block bannerTitle %}LISTE DES COLLABORATEURS{% endblock %}
+
+
+
+{% block content %}
+    <div>
+        <table id="datatable_users" class="table table-striped table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th>Référence</th>
+                <th>Actif</th>
+                <th class="text-left">Collaborateur</th>
+                <th class="text-left">Service</th>
+                <th class="text-left">Fonction</th>
+                <th class="text-left">Type de contrat</th>
+                <th class="text-left">Actions</th>
+            </tr>
+            </thead>
+            {% for employee in employees %}
+                <tr>
+                    <th>{{employee['employee_hr_id']}}</th>
+                    <th>{% if employee['active'] == 0 %}
+                            Non
+                        {% else %}
+                            Oui
+                        {% endif %}</th>
+                    <th>{{employee['first_name']}} {{employee['last_name']}}</th>
+                    <th>{{employee['department']}}</th>
+                    <th>{{employee['function']}}</th>
+                    <th></th>
+                    <th>
+                        <a href="/employee/show/{{employee['id_employee']}}" class="btn btn-primary btn-sm">Valider</a>
+                    </th>
+                </tr>
+            {%  endfor %}
+        </table>
+        {% set minimumPageQuantityAround = min(currentPage - 1, pagesCount - currentPage) %}
+        {% set conditionBefore = currentPage != 1 and minimumPageQuantityAround <= currentPage - 1 %}
+        {% set conditionAfter = currentPage != pagesCount and minimumPageQuantityAround <= pagesCount - currentPage %}
+        {% set PageQuantityAroundBefore = conditionBefore ? paginationDefaultPagesGap : minimumPageQuantityAround %}
+        {% set PageQuantityAroundAfter = conditionAfter ? paginationDefaultPagesGap : minimumPageQuantityAround %}
+        <div class="row">
+            <div class="col-6">
+                <nav class="float-right">
+                    <ul class="pagination">
+                        {# Previous link #}
+                        {% if currentPage - 1 != 0 %}
+                            <li><a class="page-link" href="/employee/index/{{ currentPage-1 }}" aria-label="Previous">
+                                    <span aria-hidden="true">&Lang;</span>
+                                    <span class="sr-only">Précédente</span>
+                                </a></li>
+                        {% endif %}
+                        {% for i in 1..pagesCount %}
+                            {# Current page to show #}
+                            {% if currentPage == i %}
+                                <li class="page-link selected">{{ i }}</li>
+                                {# Show "..." before current page depending on page numbers to show before #}
+                            {% elseif (i < currentPage and 1 != i) and (i == currentPage - PageQuantityAroundBefore - 1) %}
+                                <li class="m-2">...</li>
+                                {# Show "..." after current page depending on page numbers to show after #}
+                            {% elseif (i > currentPage and pagesCount != i) and (i == currentPage + PageQuantityAroundAfter + 1) %}
+                                <li class="m-2">...</li>
+                            {% elseif i == 1 or i == pagesCount %}
+                                <li><a class="page-link" href="/employee/index/{{ i }}">{{ i }}</a></li>
+                            {% elseif (i != 1) and (i > currentPage - PageQuantityAroundBefore - 1) %}
+                                <li><a class="page-link" href="/employee/index/{{ i }}">{{ i }}</a></li>
+                            {% elseif (pagesCount != i) and (i < currentPage + PageQuantityAroundAfter + 1) %}
+                                <li><a class="page-link" href="/employee/index/{{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {# Next link #}
+                        {% if currentPage + 1 <= pagesCount %}
+                            <li class="page-item">
+                                <a class="page-link" href="/employee/index/{{ currentPage+1 }}" aria-label="Next">
+                                    <span aria-hidden="true">&Rang;</span>
+                                    <span class="sr-only">Suivante</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            <div class="col" >
+                <p class="float-right mr-3"> Nb résultats : {{employeesCount}}</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

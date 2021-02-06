@@ -54,4 +54,15 @@ abstract class AbstractManager
 
         return $statement->fetch();
     }
+
+    public function countRecords(): array
+    {
+        /**
+         * Get the number of records in database for a particular table.
+         *
+         * @return array
+         */
+        $test = 'last_name';
+        return $this->pdo->query("SELECT COUNT(*) AS countRecords FROM . $this->table")->fetchAll();
+    }
 }
