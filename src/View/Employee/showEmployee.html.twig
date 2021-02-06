@@ -10,171 +10,155 @@
     <div>
         <form method="post" action="EmployeeController.php" class="form-group">
             {% set tabIndex = 0 %}
-            <div>
-                {% set titleCardToDisplay = 'informations personnelles' %}
-                {% set fieldToDisplayCol1 = [
-                    {
-                        'record': 'employee_hr_id',
-                        'inputType': 'text',
-                        'nameInput': 'employeeHrId',
-                        'idInput': 'employeeHrId',
-                        'labelValue': 'Matricule'},
-                    {
-                        'record': 'civility',
-                        'inputType': 'select',
-                        'nameInput': 'civility',
-                        'idInput': 'civility',
-                        'labelValue': 'Civilité'},
-                    {
-                        'record': 'last_name',
-                        'inputType': 'text',
-                        'nameInput': 'lastName',
-                        'idInput': 'lastName',
-                        'labelValue': 'Nom'},
-                    {
-                        'record': 'first_name',
-                        'inputType': 'text',
-                        'nameInput': 'firstName',
-                        'idInput': 'firstName',
-                        'labelValue': 'Prénom'}
-                ] %}
-                {% set fieldToDisplayCol2 = [
-                    {
-                        'record': 'birth_date',
-                        'inputType': 'date',
-                        'nameInput': 'birthDate',
-                        'idInput': 'birthDate',
-                        'labelValue': 'Date de naissance'},
-                    {
-                        'record': 'birth_place',
-                        'inputType': 'text',
-                        'nameInput': 'birthPlace',
-                        'idInput': 'birthPlace',
-                        'labelValue': 'Lieu de naissance'},
-                    {
-                        'record': 'social_security_number',
-                        'nameInput': 'socialSecurityNumber',
-                        'idInput': 'socialSecurityNumber',
-                        'labelValue': 'Numéro de sécurité sociale'}
-                ] %}
-                {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
-                {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
-                {% include 'Employee/employee_components/_cardForm.html.twig' with
-                    {
-                        titleCardToDisplay: titleCardToDisplay,
-                        fieldToDisplayCol1: fieldToDisplayCol1,
-                        fieldToDisplayCol2: fieldToDisplayCol2,
-                        LengthArrayCol1: LengthArrayCol1,
-                        LengthArrayCol2: LengthArrayCol2,
-                        tabIndexBeforeCard: tabIndex
-                    } %}
-                {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
+            <div class="accordion" id="accordion">
+                <div>
+                    {% set titleCardToDisplay = 'informations personnelles' %}
+                    {% set  idCard =  'personal_informations'%}
+                    {% set fieldToDisplayCol1 = [
+                        {
+                            'record': 'employee_hr_id',
+                            'inputType': 'text',
+                            'nameInput': 'employeeHrId',
+                            'idInput': 'employeeHrId',
+                            'labelValue': 'Matricule'},
+                        {
+                            'record': 'civility',
+                            'inputType': 'select',
+                            'selectRequest': civilityEnum,
+                            'nameInput': 'civility',
+                            'idInput': 'civility',
+                            'labelValue': 'Civilité'},
+                        {
+                            'record': 'last_name',
+                            'inputType': 'text',
+                            'nameInput': 'lastName',
+                            'idInput': 'lastName',
+                            'labelValue': 'Nom'},
+                        {
+                            'record': 'first_name',
+                            'inputType': 'text',
+                            'nameInput': 'firstName',
+                            'idInput': 'firstName',
+                            'labelValue': 'Prénom'}
+                    ] %}
+                    {% set fieldToDisplayCol2 = [
+                        {
+                            'record': 'birth_date',
+                            'inputType': 'date',
+                            'nameInput': 'birthDate',
+                            'idInput': 'birthDate',
+                            'labelValue': 'Date de naissance'},
+                        {
+                            'record': 'birth_place',
+                            'inputType': 'text',
+                            'nameInput': 'birthPlace',
+                            'idInput': 'birthPlace',
+                            'labelValue': 'Lieu de naissance'},
+                        {
+                            'record': 'social_security_number',
+                            'nameInput': 'socialSecurityNumber',
+                            'idInput': 'socialSecurityNumber',
+                            'labelValue': 'Numéro de sécurité sociale'}
+                    ] %}
+                    {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
+                    {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
+                    {% set tabIndexBeforeCard = tabIndex %}
+                    {% include 'Employee/employee_components/_cardForm.html.twig'%}
+                    {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
+                </div>
+                <div>
+                    {% set titleCardToDisplay = 'coordonnées' %}
+                    {% set  idCard =  'contacts'%}
+                    {% set fieldToDisplayCol1 = [
+                        {
+                            'record': 'address_street_number',
+                            'inputType': 'text',
+                            'nameInput': 'addressStreetNumber',
+                            'idInput': 'addressStreetNumber',
+                            'labelValue': 'Numéro de rue'},
+                        {
+                            'record': 'address_street',
+                            'inputType': 'text',
+                            'nameInput': 'addressStreet',
+                            'idInput': 'addressStreet',
+                            'labelValue': 'Voie'},
+                        {
+                            'record': 'address_zip_code',
+                            'inputType': 'text',
+                            'nameInput': 'addressZipCode',
+                            'idInput': 'addressZipCode',
+                            'labelValue': 'Code postal'},
+                        {
+                            'record': 'address_city',
+                            'inputType': 'text',
+                            'nameInput': 'addressCity',
+                            'idInput': 'addressCity',
+                            'labelValue': 'Ville'}
+                    ] %}
+                    {% set fieldToDisplayCol2 = [
+                        {
+                            'record': 'phone_number',
+                            'inputType': 'text',
+                            'nameInput': 'phoneNumber',
+                            'idInput': 'phoneNumber',
+                            'labelValue': 'Numéro de tél. fixe perso.'},
+                        {
+                            'record': 'cellphone_number',
+                            'inputType': 'text',
+                            'nameInput': 'cellphoneNumber',
+                            'idInput': 'cellphoneNumber',
+                            'labelValue': 'Numéro de tél. portable perso'},
+                        {
+                            'record': 'personal_email_address',
+                            'inputType': 'text',
+                            'nameInput': 'personalEmailAddress',
+                            'idInput': 'personalEmailAddress',
+                            'labelValue': 'Adresse mail perso'}
+                    ] %}
+                    {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
+                    {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
+                    {% set tabIndexBeforeCard = tabIndex %}
+                    {% include 'Employee/employee_components/_cardForm.html.twig'%}
+                    {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
+                </div>
+                <div>
+                    {% set titleCardToDisplay = 'données bancaires' %}
+                    {% set  idCard =  'bank_data'%}
+                    {% set fieldToDisplayCol1 = [
+                        {
+                            'record': 'bank_name',
+                            'inputType': 'text',
+                            'nameInput': '	bankName',
+                            'idInput': 'bankName',
+                            'labelValue': 'Banque'},
+                        {
+                            'record': 'bank_city',
+                            'inputType': 'text',
+                            'nameInput': 'bankCity',
+                            'idInput': 'bankCity',
+                            'labelValue': 'Ville'},
+                    ] %}
+                    {% set fieldToDisplayCol2 = [
+                        {
+                            'record': 'bank_iban',
+                            'inputType': 'text',
+                            'nameInput': 'bankIban',
+                            'idInput': 'bankIban',
+                            'labelValue': 'IBAN'},
+                        {
+                            'record': 'bank_bic',
+                            'inputType': 'text',
+                            'nameInput': 'bankBic',
+                            'idInput': 'bankBic',
+                            'labelValue': 'BIC'}
+                    ] %}
+                    {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
+                    {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
+                    {% set tabIndexBeforeCard = tabIndex %}
+                    {% include 'Employee/employee_components/_cardForm.html.twig'%}
+                    {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
+                </div>
             </div>
-            <div>
-                {% set titleCardToDisplay = 'coordonnées' %}
-                {% set fieldToDisplayCol1 = [
-                    {
-                        'record': 'address_street_number',
-                        'inputType': 'text',
-                        'nameInput': 'addressStreetNumber',
-                        'idInput': 'addressStreetNumber',
-                        'labelValue': 'Numéro de rue'},
-                    {
-                        'record': 'address_street',
-                        'inputType': 'text',
-                        'nameInput': 'addressStreet',
-                        'idInput': 'addressStreet',
-                        'labelValue': 'Voie'},
-                    {
-                        'record': 'address_zip_code',
-                        'inputType': 'text',
-                        'nameInput': 'addressZipCode',
-                        'idInput': 'addressZipCode',
-                        'labelValue': 'Code postal'},
-                    {
-                        'record': 'address_city',
-                        'inputType': 'text',
-                        'nameInput': 'addressCity',
-                        'idInput': 'addressCity',
-                        'labelValue': 'Ville'}
-                ] %}
-                {% set fieldToDisplayCol2 = [
-                    {
-                        'record': 'phone_number',
-                        'inputType': 'text',
-                        'nameInput': 'phoneNumber',
-                        'idInput': 'phoneNumber',
-                        'labelValue': 'Numéro de tél. fixe perso.'},
-                    {
-                        'record': 'cellphone_number',
-                        'inputType': 'text',
-                        'nameInput': 'cellphoneNumber',
-                        'idInput': 'cellphoneNumber',
-                        'labelValue': 'Numéro de tél. portable perso'},
-                    {
-                        'record': 'personal_email_address',
-                        'inputType': 'text',
-                        'nameInput': 'personalEmailAddress',
-                        'idInput': 'personalEmailAddress',
-                        'labelValue': 'Adresse mail perso'}
-                ] %}
-                {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
-                {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
-                {% include 'Employee/employee_components/_cardForm.html.twig' with
-                    {
-                        titleCardToDisplay: titleCardToDisplay,
-                        fieldToDisplayCol1: fieldToDisplayCol1,
-                        fieldToDisplayCol2: fieldToDisplayCol2,
-                        LengthArrayCol1: LengthArrayCol1,
-                        LengthArrayCol2: LengthArrayCol2,
-                        tabIndexBeforeCard: tabIndex
-                    } %}
-                {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
-            </div>
-            <div>
-                {% set titleCardToDisplay = 'données bancaires' %}
-                {% set fieldToDisplayCol1 = [
-                    {
-                        'record': '	bank_name',
-                        'inputType': 'text',
-                        'nameInput': '	bankName',
-                        'idInput': 'bankName',
-                        'labelValue': 'Banque'},
-                    {
-                        'record': 'bank_city',
-                        'inputType': 'text',
-                        'nameInput': 'bankCity',
-                        'idInput': 'bankCity',
-                        'labelValue': 'Ville'},
-                ] %}
-                {% set fieldToDisplayCol2 = [
-                    {
-                        'record': 'bank_iban',
-                        'inputType': 'text',
-                        'nameInput': 'bankIban',
-                        'idInput': 'bankIban',
-                        'labelValue': 'IBAN'},
-                    {
-                        'record': 'bank_bic',
-                        'inputType': 'text',
-                        'nameInput': 'bankBic',
-                        'idInput': 'bankBic',
-                        'labelValue': 'BIC'}
-                ] %}
-                {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
-                {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
-                {% include 'Employee/employee_components/_cardForm.html.twig' with
-                    {
-                        titleCardToDisplay: titleCardToDisplay,
-                        fieldToDisplayCol1: fieldToDisplayCol1,
-                        fieldToDisplayCol2: fieldToDisplayCol2,
-                        LengthArrayCol1: LengthArrayCol1,
-                        LengthArrayCol2: LengthArrayCol2,
-                        tabIndexBeforeCard: tabIndex
-                    } %}
-                {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
-            </div>
-
 {#            <input type="submit" value="" class="btn btn-primary"/>#}
         </form>
         <form method="post" action="/employee/index">

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Model\EmployeeManager;
+use Symfony\Component\Console\Logger\ConsoleLogger;
 
 class EmployeeController extends AbstractController
 {
@@ -30,6 +31,7 @@ class EmployeeController extends AbstractController
         $employees = $employeeManager->selectEmployeesAndContactsData($resultsPerPage, $firstResult);
         $paginationDefaultPagesGap = 2;
 
+
         return $this->twig->render('Employee/index.html.twig', ['resultPerPage' => $resultsPerPage, 'employees' => $employees,
             'employeesCount' => $employeesCount, 'pagesCount' => $pagesCount, 'currentPage' => $currentPage,
             'paginationDefaultPagesGap' => $paginationDefaultPagesGap]);
@@ -52,7 +54,11 @@ class EmployeeController extends AbstractController
         $employeeManager = new EmployeeManager();
 
         $employee=$employeeManager->selectEmployeeById($id);
+        $civilityEnumRequest=$employeeManager->selectCivilityEnum();
+        $civilityEnum=$employeeManager->selectCivilityEnum();
+        /*$civilityEnumConcat = substr( $civilityEnumRequest['Type'], 5, -1);
+        $civilityEnum = explode( "','", $civilityEnumConcat );*/
 
-        return $this->twig->render('Employee/showEmployee.html.twig', ['employee' => $employee]);
+        return $this->twig->render('Employee/showEmployee.html.twig', ['employee' => $employee, 'civilityEnum' => $civilityEnum]);
     }
 }

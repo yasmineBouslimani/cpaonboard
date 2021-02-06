@@ -41,6 +41,16 @@ class EmployeeManager extends AbstractManager
             WHERE id_employee = '.$id.';')->fetchAll();
     }
 
+    public function selectCivilityEnum(): array
+    {
+        /**
+         * Get all civility record in database.
+         *
+         * @return array
+         */
+        return $this->pdo->query('SHOW COLUMNS FROM employee LIKE \'civility\';')->fetchAll();
+    }
+
 
 
 }
