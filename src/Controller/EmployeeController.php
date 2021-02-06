@@ -16,9 +16,9 @@ class EmployeeController extends AbstractController
          * @throws \Twig\Error\RuntimeError
          * @throws \Twig\Error\SyntaxError
          */
-        if ($_SESSION['is_admin'] == "1") {
+        /*if ($_SESSION['is_admin'] == "1") {
             header('location:/auth/login');
-        }
+        }*/
 
         $employeeManager = new EmployeeManager();
 
@@ -45,13 +45,13 @@ class EmployeeController extends AbstractController
          * @throws \Twig\Error\RuntimeError
          * @throws \Twig\Error\SyntaxError
          */
-        if ($_SESSION['is_admin'] == "1") {
+        /*if ($_SESSION['is_admin'] == "1") {
             header('location:/auth/login');
-        }
+        }*/
 
-        $employeeModel = new EmployeeModel();
+        $employeeManager = new EmployeeManager();
 
-        $employee=$employeeModel->selectEmployeeById($id);
+        $employee=$employeeManager->selectEmployeeById($id);
 
         return $this->twig->render('Employee/showEmployee.html.twig', ['employee' => $employee]);
     }

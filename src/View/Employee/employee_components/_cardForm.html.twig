@@ -1,0 +1,53 @@
+<div class="card mr-4 mb-4">
+    <div class="card-header uppercase">{{ titleCardToDisplay }}</div>
+    {% set CountRow = LengthArrayCol1 > LengthArrayCol2 ? LengthArrayCol1 : LengthArrayCol2 %}
+    {% set currentIndiceArrayCol1 = 0 %}
+    {% set currentIndiceArrayCol2 = 0 %}
+    {% set tabIndexBeforeCard = tabIndex %}
+    <div class="card-body">
+        {% for currentRow in 1..CountRow %}
+            <div class="row mb-1 mt-1">
+                {% if currentIndiceArrayCol1 < LengthArrayCol1 %}
+                    <div class="col-2">
+                        <label for="{{ fieldToDisplayCol1[currentIndiceArrayCol1]['idInput'] }}" class="mr-1">
+                            {{ fieldToDisplayCol1[currentIndiceArrayCol1]['labelValue'] }}
+                        </label>
+                    </div>
+                    <div class="col-2 ">
+                        <input type="{{ fieldToDisplayCol1[currentIndiceArrayCol1]['inputType'] }}"
+                               name="{{ fieldToDisplayCol1[currentIndiceArrayCol1]['nameInput'] }}"
+                               id="{{ fieldToDisplayCol1[currentIndiceArrayCol1]['idInput'] }}"
+                               tabindex="{{ tabIndexBeforeCard+1 }}"
+                               value="{{ employee[0][fieldToDisplayCol1[currentIndiceArrayCol1]['record']] }}" /></br>
+                    </div>
+                    {% set currentIndiceArrayCol1 = currentIndiceArrayCol1 + 1 %}
+                    {% set tabIndex = tabIndex + 1 %}
+                {% endif %}
+                <div class="col-2"></div>
+                {% if currentIndiceArrayCol2 < LengthArrayCol2 %}
+                    <div class="row mb-1 mt-1">
+                        <div class="col-2">
+                            {% if LengthArrayCol1 < CountRow and currentRow == CountRow %}
+                                {% set tabIndexForCol2 = tabIndexBeforeCard+currentRow+CountRow+1 %}
+                            {% else %}
+                                {% set tabIndexForCol2 = tabIndexBeforeCard+currentRow+CountRow %}
+                            {% endif %}
+                            <label for="{{ fieldToDisplayCol2[currentIndiceArrayCol2]['idInput'] }}" class="mr-1">
+                                {{ fieldToDisplayCol2[currentIndiceArrayCol2]['labelValue'] }}
+                            </label>
+                        </div>
+                        <div class="col-2 ">
+                            <input type="{{ fieldToDisplayCol2[currentIndiceArrayCol2]['inputType'] }}"
+                                   name="{{ fieldToDisplayCol2[currentIndiceArrayCol1]['nameInput'] }}"
+                                   id="{{ fieldToDisplayCol2[currentIndiceArrayCol1]['idInput'] }}"
+                                   tabindex="{{ tabIndexForCol2 }}"
+                                   value="{{ employee[0][fieldToDisplayCol2[currentIndiceArrayCol2]['record']] }}" /></br>
+                        </div>
+                    </div>
+                    {% set currentIndiceArrayCol2 = currentIndiceArrayCol2 + 1 %}
+                    {% set tabIndex = tabIndex + 1 %}
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+</div>
