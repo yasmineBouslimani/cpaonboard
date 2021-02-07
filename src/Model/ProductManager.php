@@ -18,6 +18,19 @@ class ProductManager extends AbstractManager
      * @param array $product
      * @return int
      */
+
+    public function selectProductById(int $id): array
+    {
+        /**
+         * Get a product record in database.
+         *
+         * @return array
+         */
+        return $this->pdo->query('SELECT * FROM product
+            LEFT JOIN producttype ON product.fk_productType = producttype.id_productType
+            WHERE id_product = '.$id.';')->fetchAll();
+    }
+
     public function insert(array $product): int
     {
         // prepared request

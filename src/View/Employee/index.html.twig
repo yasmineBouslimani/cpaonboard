@@ -34,7 +34,8 @@
                     <th>{{employee['function']}}</th>
                     <th>{{employee['type_contract']}}</th>
                     <th>
-                        <a href="/employee/show/{{employee['id_employee']}}" class="btn btn-primary btn-sm">Valider</a>
+                        <a href="/employee/show/{{employee['id_employee']}}/read" class="btn btn-primary btn-sm">Lecture</a>
+                        <a href="/employee/edit/{{employee['id_employee']}}" class="btn btn-primary btn-sm">Modifier</a>
                     </th>
                 </tr>
             {%  endfor %}

@@ -28,9 +28,9 @@ class ProductController extends AbstractController
     public function show(int $id)
     {
         $productManager = new ProductManager();
-        $product = $productManager->selectOneById($id);
+        $product = $productManager->selectProductById($id);
 
-        return $this->twig->render('Product/show.html.twig', ['product' => $product]);
+        return $this->twig->render('Product/show.html.twig', ['entityRequest' => $product]);
     }
 
     /**
@@ -45,7 +45,7 @@ class ProductController extends AbstractController
     public function edit(int $id): string
     {
         $productManager = new ProductManager();
-        $product = $productManager->selectOneById($id);
+        $product = $productManager->selectProductById($id);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $product['title'] = $_POST['title'];

@@ -37,10 +37,31 @@ class EmployeeController extends AbstractController
             'paginationDefaultPagesGap' => $paginationDefaultPagesGap]);
     }
 
+    public function getDataforEmployeeCrud(int $id): string
+    {
+        /**
+         * Display an employee record for edit purpose.
+         *
+         * @return string
+         * @throws \Twig\Error\LoaderError
+         * @throws \Twig\Error\RuntimeError
+         * @throws \Twig\Error\SyntaxError
+         */
+        $employeeManager = new EmployeeManager();
+
+        $employee=$employeeManager->selectEmployeeById($id);
+        $civilityEnumRequest=$employeeManager->selectCivilityEnum();
+        $civilityEnum=$employeeManager->selectCivilityEnum();
+        /*$civilityEnumConcat = substr( $civilityEnumRequest['Type'], 5, -1);
+        $civilityEnum = explode( "','", $civilityEnumConcat );*/
+
+        return ['employee' => $employee, 'civilityEnum' => $civilityEnum];
+    }
+
     public function show(int $id)
     {
         /**
-         * Display an employee record.
+         * Display an employee record for read purpose only.
          *
          * @return string
          * @throws \Twig\Error\LoaderError
@@ -59,6 +80,42 @@ class EmployeeController extends AbstractController
         /*$civilityEnumConcat = substr( $civilityEnumRequest['Type'], 5, -1);
         $civilityEnum = explode( "','", $civilityEnumConcat );*/
 
-        return $this->twig->render('Employee/showEmployee.html.twig', ['employee' => $employee, 'civilityEnum' => $civilityEnum]);
+//        $data = $this.getDataforEmployeeCrud($id);
+
+        /*return $this->twig->render('Employee/showEmployee.html.twig', ['employee' => $data['employe'],
+            'civilityEnum' => $data['civilityEnum'], 'operation' => 'read']);*/
+        return $this->twig->render('Employee/showEmployee.html.twig', ['entityRequest' => $employee,
+            'civilityEnum' => $civilityEnum, 'operation' => 'read']);
     }
+
+    public function edit(int $id)
+    {
+        /**
+         * Display an employee record for read purpose only.
+         *
+         * @return string
+         * @throws \Twig\Error\LoaderError
+         * @throws \Twig\Error\RuntimeError
+         * @throws \Twig\Error\SyntaxError
+         */
+        /*if ($_SESSION['is_admin'] == "1") {
+            header('location:/auth/login');
+        }*/
+
+        $employeeManager = new EmployeeManager();
+
+        $employee=$employeeManager->selectEmployeeById($id);
+        $civilityEnumRequest=$employeeManager->selectCivilityEnum();
+        $civilityEnum=$employeeManager->selectCivilityEnum();
+        /*$civilityEnumConcat = substr( $civilityEnumRequest['Type'], 5, -1);
+        $civilityEnum = explode( "','", $civilityEnumConcat );*/
+
+//        $data = $this.getDataforEmployeeCrud($id);
+
+        /*return $this->twig->render('Employee/showEmployee.html.twig', ['employee' => $data['employe'],
+            'civilityEnum' => $data['civilityEnum'], 'operation' => 'read']);*/
+        return $this->twig->render('Employee/showEmployee.html.twig', ['employee' => $employee,
+            'civilityEnum' => $civilityEnum, 'operation' => 'edit']);
+    }
+
 }
