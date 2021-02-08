@@ -54,6 +54,7 @@ class EmployeeController extends AbstractController
         $civilityEnum=$employeeManager->selectCivilityEnum();
         /*$civilityEnumConcat = substr( $civilityEnumRequest['Type'], 5, -1);
         $civilityEnum = explode( "','", $civilityEnumConcat );*/
+        var_dump($civilityEnum);
 
         return ['employee' => $employee, 'civilityEnum' => $civilityEnum];
     }
@@ -72,22 +73,12 @@ class EmployeeController extends AbstractController
             header('location:/auth/login');
         }*/
 
-        $employeeManager = new EmployeeManager();
 
-        $employee=$employeeManager->selectEmployeeById($id);
-        $civilityEnumRequest=$employeeManager->selectCivilityEnum();
-        $civilityEnum=$employeeManager->selectCivilityEnum();
-        /*$civilityEnumConcat = substr( $civilityEnumRequest['Type'], 5, -1);
-        $civilityEnum = explode( "','", $civilityEnumConcat );*/
+        $employeeController = new EmployeeController();
+        $data = $employeeController->getDataforEmployeeCrud($id);
 
-
-        return $this->twig->render('Employee/showEmployee.html.twig', ['entityRequest' => $employee,
-            'civilityEnum' => $civilityEnum, 'operation' => 'read']);
-
-//        $employeeController = new EmployeeController();
-//        $data = $employeeController->getDataforEmployeeCrud($id);
-//        return $this->twig->render('Employee/showEmployee.html.twig', ['employee' => $data['employee'],
-//            'civilityEnum' => $data['civilityEnum'], 'operation' => 'read']);
+        return $this->twig->render('Employee/showEmployee.html.twig', ['entityRequest' => $data['employee'],
+            'civilityEnum' => $data['civilityEnum'], 'operation' => 'read']);
     }
 
     public function edit(int $id)
@@ -104,16 +95,12 @@ class EmployeeController extends AbstractController
             header('location:/auth/login');
         }*/
 
-        $employeeManager = new EmployeeManager();
+        $employeeController = new EmployeeController();
+        $data = $employeeController->getDataforEmployeeCrud($id);
 
-        $employee=$employeeManager->selectEmployeeById($id);
-        $civilityEnumRequest=$employeeManager->selectCivilityEnum();
-        $civilityEnum=$employeeManager->selectCivilityEnum();
-        /*$civilityEnumConcat = substr( $civilityEnumRequest['Type'], 5, -1);
-        $civilityEnum = explode( "','", $civilityEnumConcat );*/
+        return $this->twig->render('Employee/showEmployee.html.twig', ['entityRequest' => $data['employee'],
+            'civilityEnum' => $data['civilityEnum'], 'operation' => 'edit']);
 
-        return $this->twig->render('Employee/showEmployee.html.twig', ['employee' => $employee,
-            'civilityEnum' => $civilityEnum, 'operation' => 'edit']);
     }
 
 }
