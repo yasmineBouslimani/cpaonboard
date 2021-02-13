@@ -16,19 +16,12 @@
                     {% set  idCard =  'identification' %}
                     {% set fieldToDisplayCol1 = [
                         {
-                            'record': 'label',
+                            'record': 'product_label',
                             'inputType': 'text',
-                            'nameInput': 'label',
-                            'idInput': 'label',
-                            'labelValue': 'Nom'},
-                        {
-                            'record': 'label',
-                            'inputType': 'text',
-                            'nameInput': 'label',
-                            'idInput': 'label',
-                            'labelValue': 'Nom'}
-                    ] %}
-                    {% set fieldToDisplayCol2 = [
+                            'nameInput': 'productLabel',
+                            'idInput': 'productLabel',
+                            'labelValue': 'Référence'},
+
                         {
                             'record': 'price',
                             'inputType': 'text',
@@ -36,11 +29,25 @@
                             'idInput': 'price',
                             'labelValue': 'Prix'},
                         {
-                            'record': 'stock',
+                            'record': 'ratio',
                             'inputType': 'text',
-                            'nameInput': 'stock',
-                            'idInput': 'stock',
-                            'labelValue': 'Stock'},
+                            'nameInput': 'ratio',
+                            'idInput': 'ratio',
+                            'labelValue': 'TVA (%)'}
+                    ] %}
+                    {% set fieldToDisplayCol2 = [
+                        {
+                            'record': 'product_type_label',
+                            'inputType': 'textarea',
+                            'nameInput': 'productTypeLabel',
+                            'idInput': 'productTypeLabel',
+                            'labelValue': 'Désignation produit'},
+                        {
+                            'record': 'model',
+                            'inputType': 'model',
+                            'nameInput': 'model',
+                            'idInput': 'model',
+                            'labelValue': 'Marque'}
                     ] %}
                     {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
                     {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
@@ -49,8 +56,71 @@
                     {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
                 </div>
                 <div>
-                    {% set titleCardToDisplay = 'quantité' %}
-                    {% set  idCard =  'quantity'%}
+                    {% set titleCardToDisplay = 'approvisionnement' %}
+                    {% set  idCard =  'supply'%}
+                    {% set fieldToDisplayCol1 = [
+                        {
+                            'record': 'stock',
+                            'inputType': 'text',
+                            'nameInput': 'stock',
+                            'idInput': 'stock',
+                            'labelValue': 'Stock'},
+
+                    ] %}
+                    {% set fieldToDisplayCol2 = [
+                        {
+                            'record': 'corporate_name',
+                            'inputType': 'text',
+                            'nameInput': 'corporateName',
+                            'idInput': 'corporateName',
+                            'labelValue': 'Fournisseur'},
+                    ] %}
+                    {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
+                    {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
+                    {% set tabIndexBeforeCard = tabIndex %}
+                    {% include '_form_components/_cardForm.html.twig'%}
+                    {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
+                </div>
+                <div>
+                    {% set titleCardToDisplay = 'marques de voitures compatibles' %}
+                    {% set  idCard =  'supply'%}
+                    {% set fieldToDisplayCol1 = [
+                        {
+                            'record': 'stock',
+                            'inputType': 'text',
+                            'nameInput': 'stock',
+                            'idInput': 'stock',
+                            'labelValue': 'Stock'},
+                    ] %}
+                    {% set fieldToDisplayCol2 = [] %}
+                    {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
+                    {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
+                    {% set tabIndexBeforeCard = tabIndex %}
+                    {% include '_form_components/_cardForm.html.twig'%}
+                    {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
+                </div>
+            </div>
+                <div>
+                    {% set titleCardToDisplay = 'dependances' %}
+                    {% set  idCard =  'supply'%}
+                    {% set fieldToDisplayCol1 = [
+                        {
+                            'record': 'stock',
+                            'inputType': 'text',
+                            'nameInput': 'stock',
+                            'idInput': 'stock',
+                            'labelValue': 'Stock'},
+                    ] %}
+                    {% set fieldToDisplayCol2 = [] %}
+                    {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
+                    {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
+                    {% set tabIndexBeforeCard = tabIndex %}
+                    {% include '_form_components/_cardForm.html.twig'%}
+                    {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
+                </div>
+                <div>
+                    {% set titleCardToDisplay = 'Fiche produit' %}
+                    {% set  idCard =  'supply'%}
                     {% set fieldToDisplayCol1 = [
                         {
                             'record': 'stock',

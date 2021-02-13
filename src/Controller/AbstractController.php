@@ -29,4 +29,16 @@ abstract class AbstractController
         $this->twig->addExtension(new DebugExtension());
         $this->twig->addGlobal('session', $_SESSION);
     }
+
+    public function enumRequestFormatting(array $enumRequest)
+    {
+        /**
+         * Concatenate and formate the value list of an enum database field
+         */
+
+        $enumConcat = substr($enumRequest[0]['Type'], 6, -2);
+        $enum = explode( "','", $enumConcat );
+
+        return ['enum' => $enum];
+    }
 }

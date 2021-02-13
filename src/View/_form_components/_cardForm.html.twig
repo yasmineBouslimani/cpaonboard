@@ -25,6 +25,8 @@
                         {% set currentNameInputCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['nameInput'] %}
                         {% set currentIdInputCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['idInput'] %}
                         {% set currentLabelValueCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['labelValue'] %}
+                        {% set currentSelectRequestValueCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['selectRequest'] %}
+                        <p>{{ currentSelectRequestValueCol1[0] }}</p>
                         <div class="col-2 ">
                             <label for="{{ currentIdInputCol1 }}" class="mr-1" >
                                 {{ currentLabelValueCol1 }}
@@ -36,11 +38,11 @@
 {#                            TODO : pb index#}
                             <select name="{{ currentNameInputCol1 }}
                                     tabindex="{{ tabIndexBeforeCard+1 }}" class="form-control" {{ disabled }}">
-                                {% for civility in civilityEnum %}
-                                    {% if civility == currentRecordCol1 %}
-                                        <option selected value="{{ civility }}">{{ civility}}</option>
+                                {% for item in currentSelectRequestValueCol1 %}
+                                    {% if item == currentRecordCol1 %}
+                                        <option selected value="{{ item }}">{{ item}}</option>
                                     {% else %}
-                                        <option value="{{ civility }}">{{ civility}}</option>
+                                        <option value="{{ item }}">{{ item}}</option>
                                     {% endif %}
                                 {%  endfor %}
                             </select>
@@ -80,6 +82,7 @@
                         {% set currentNameInputCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['nameInput'] %}
                         {% set currentIdInputCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['idInput'] %}
                         {% set currentLabelValueCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['labelValue'] %}
+                        {% set currentSelectRequestValueCol2 = fieldToDisplayCol1[currentIndiceArrayCol2]['selectRequest'] %}
                         {% if LengthArrayCol1 < CountRow and currentRow == CountRow %}
                             {% set tabIndexForCol2 = tabIndexBeforeCard+currentRow+CountRow+1 %}
                         {% else %}
@@ -91,13 +94,18 @@
                                 </label>
                             </div>
                             <div class="col-2 ">
+                                {# IF SELECT FIELD #}
                                 {% if currentIdInputCol2 == 'select' %}
                                     <select name="{{ currentNameInputCol2 }}"
-                                            class="form-control"
                                             tabindex="{{ tabIndexForCol2 }}"
+                                            class="form-control"
                                             {{ disabled }} >
-                                        {% for civility in civilityEnum %}
-                                            <option value="{{ civility }}">{{ civility}}</option>
+                                        {% for item in currentSelectRequestValueCol2 %}
+                                            {% if item == currentRecordCol2 %}
+                                                <option selected value="{{ item }}">{{ item}}</option>
+                                            {% else %}
+                                                <option value="{{ item }}">{{ item}}</option>
+                                            {% endif %}
                                         {%  endfor %}
                                     </select>
                                 {% else %}

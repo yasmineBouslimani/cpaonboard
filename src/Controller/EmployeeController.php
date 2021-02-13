@@ -11,11 +11,6 @@ class EmployeeController extends AbstractController
     {
         /**
          * Display employees listing
-         *
-         * @return string
-         * @throws \Twig\Error\LoaderError
-         * @throws \Twig\Error\RuntimeError
-         * @throws \Twig\Error\SyntaxError
          */
         /*if ($_SESSION['is_admin'] == "1") {
             header('location:/auth/login');
@@ -41,33 +36,31 @@ class EmployeeController extends AbstractController
     {
         /**
          * Display an employee record for edit purpose.
-         *
-         * @return string
-         * @throws \Twig\Error\LoaderError
-         * @throws \Twig\Error\RuntimeError
-         * @throws \Twig\Error\SyntaxError
          */
         $employeeManager = new EmployeeManager();
-
         $employee=$employeeManager->selectEmployeeById($id);
-        $civilityEnumRequest=$employeeManager->selectCivilityEnum();
-        $civilityEnum=$employeeManager->selectCivilityEnum();
-        /*$civilityEnumConcat = substr( $civilityEnumRequest['Type'], 5, -1);
-        $civilityEnum = explode( "','", $civilityEnumConcat );*/
+        $civilityEnumRequest=$employeeManager->SelectEnumValues('employee', 'civility');
+        $genderEnumRequest=$employeeManager->SelectEnumValues('employee', 'gender');
+        $contractTypeEnumRequest=$employeeManager->SelectEnumValues('contract','type_contract');
+
+        $employeeController = new EmployeeController();
+        $civilityEnumFormatted = $employeeController->enumRequestFormatting($civilityEnumRequest);
+        $civilityEnum=$civilityEnumFormatted['enum'];
+        $genderEnumFormatted = $employeeController->enumRequestFormatting($genderEnumRequest);
+        $genderEnum=$genderEnumFormatted['enum'];
+        $contractTypeEnumFormatted = $employeeController->enumRequestFormatting($contractTypeEnumRequest);
+        $contractTypeEnum=$contractTypeEnumFormatted['enum'];
+        var_dump($contractTypeEnum);
         var_dump($civilityEnum);
 
-        return ['employee' => $employee, 'civilityEnum' => $civilityEnum];
+        return ['employee' => $employee, 'civilityEnum' => $civilityEnum, 'genderEnum' => $genderEnum,
+            'contractTypeEnum' => $contractTypeEnum];
     }
 
     public function show(int $id)
     {
         /**
          * Display an employee record for read purpose only.
-         *
-         * @return string
-         * @throws \Twig\Error\LoaderError
-         * @throws \Twig\Error\RuntimeError
-         * @throws \Twig\Error\SyntaxError
          */
         /*if ($_SESSION['is_admin'] == "1") {
             header('location:/auth/login');
@@ -84,12 +77,7 @@ class EmployeeController extends AbstractController
     public function edit(int $id)
     {
         /**
-         * Display an employee record for read purpose only.
-         *
-         * @return string
-         * @throws \Twig\Error\LoaderError
-         * @throws \Twig\Error\RuntimeError
-         * @throws \Twig\Error\SyntaxError
+         * Display an employee record for modification purpose.
          */
         /*if ($_SESSION['is_admin'] == "1") {
             header('location:/auth/login');

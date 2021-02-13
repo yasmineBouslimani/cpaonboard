@@ -62,7 +62,17 @@ abstract class AbstractManager
          *
          * @return array
          */
-        $test = 'last_name';
         return $this->pdo->query("SELECT COUNT(*) AS countRecords FROM . $this->table")->fetchAll();
+    }
+
+    public function SelectEnumValues(string $table, string $enumField): array
+    {
+        /**
+         * Get the number of records in database for a particular table.
+         *
+         * @return array
+         */
+
+        return $this->pdo->query('SHOW COLUMNS FROM ' . $table . ' LIKE \'' . $enumField . '\';')->fetchAll();
     }
 }

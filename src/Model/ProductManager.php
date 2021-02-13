@@ -26,8 +26,11 @@ class ProductManager extends AbstractManager
          *
          * @return array
          */
-        return $this->pdo->query('SELECT * FROM product
-            LEFT JOIN producttype ON product.fk_productType = producttype.id_productType
+        return $this->pdo->query('SELECT product.label as product_label, product.price, product.stock,
+            producttype.label as product_type_label, tva.ratio
+            FROM product
+            LEFT JOIN tva ON product.fk_tva = tva.id_tva
+            LEFT JOIN producttype  ON product.fk_productType = producttype.id_productType
             WHERE id_product = '.$id.';')->fetchAll();
     }
 
