@@ -50,8 +50,6 @@ class EmployeeController extends AbstractController
         $genderEnum=$genderEnumFormatted['enum'];
         $contractTypeEnumFormatted = $employeeController->enumRequestFormatting($contractTypeEnumRequest);
         $contractTypeEnum=$contractTypeEnumFormatted['enum'];
-        var_dump($contractTypeEnum);
-        var_dump($civilityEnum);
 
         return ['employee' => $employee, 'civilityEnum' => $civilityEnum, 'genderEnum' => $genderEnum,
             'contractTypeEnum' => $contractTypeEnum];
@@ -71,7 +69,8 @@ class EmployeeController extends AbstractController
         $data = $employeeController->getDataforEmployeeCrud($id);
 
         return $this->twig->render('Employee/showEmployee.html.twig', ['entityRequest' => $data['employee'],
-            'civilityEnum' => $data['civilityEnum'], 'operation' => 'read']);
+            'civilityEnum' => $data['civilityEnum'], 'genderEnum' => $data['genderEnum'], 'contractTypeEnum' => $data['contractTypeEnum'],
+            'operation' => 'read']);
     }
 
     public function edit(int $id)
@@ -87,7 +86,8 @@ class EmployeeController extends AbstractController
         $data = $employeeController->getDataforEmployeeCrud($id);
 
         return $this->twig->render('Employee/showEmployee.html.twig', ['entityRequest' => $data['employee'],
-            'civilityEnum' => $data['civilityEnum'], 'operation' => 'edit']);
+            'civilityEnum' => $data['civilityEnum'], 'genderEnum' => $data['genderEnum'], 'contractTypeEnum' => $data['contractTypeEnum'],
+            'operation' => 'edit']);
 
     }
 
