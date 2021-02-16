@@ -6,7 +6,7 @@
  * PHP version 7
  */
 
-define('APP_DB_USER', 'user');
-define('APP_DB_PWD', 'password');
+define('APP_DB_USER', 'root');
+define('APP_DB_PWD', 'yasmine3010');
 define('APP_DB_HOST', 'localhost');
-define('APP_DB_NAME', 'database_name');
+define('APP_DB_NAME', 'cpaonboard');
