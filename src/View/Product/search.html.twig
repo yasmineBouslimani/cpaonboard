@@ -1,0 +1,23 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+
+    <p> Produits correspondant à la recherche <strong>"{{ search }}"</strong></p>
+
+    <div class="row">
+        {% if products is not empty %}
+            {% for key,product in products %}
+                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                    <div class="card index-card">
+                        <a href="/product/show/{{ product.id_product }}" class="card-header">
+                            <p class="ellipsis-title">{{ product.label }}</p>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <h3>Aucun produit ne correspond à votre recherche</h3>
+        {% endif %}
+    </div>
+
+{% endblock %}

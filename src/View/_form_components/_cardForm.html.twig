@@ -1,0 +1,120 @@
+<div class="card mr-4 mb-4">
+    <div class="card-header uppercase">{{ titleCardToDisplay }}
+        <button class="btn btn-secondary btn-sm float-right" type="button" data-toggle="collapse" data-target="#{{ idCard }}" aria-expanded="true
+            aria-controls="{{ idCard }}"> <span aria-hidden="true">&triangledown;</span>
+        <span class="sr-only">Déplier-Replier</span>
+        </button>
+    </div>
+    {% set CountRow = LengthArrayCol1 > LengthArrayCol2 ? LengthArrayCol1 : LengthArrayCol2 %}
+    {% set currentIndiceArrayCol1 = 0 %}
+    {% set currentIndiceArrayCol2 = 0 %}
+    {% set tabIndexBeforeCard = tabIndex %}
+    {% if operation == 'edit' or operation == 'add'  %}
+        {% set disabled = '' %}
+    {% else %}
+        {% set disabled = 'disabled' %}
+    {% endif %}
+    <div id="{{ idCard }}" class="collapse show" aria-labelledby="{{ idCard }}" data-parent="{{ accordion }}">
+        <div class="card-body">
+            {% for currentRow in 1..CountRow %}
+                <div class="row mb-1 mt-1">
+                    {# COL 1#}
+                    {% if currentIndiceArrayCol1 < LengthArrayCol1 %}
+                        {% set currentInputCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['inputType'] %}
+                        {% set currentRecordCol1 = entityRequest[0][fieldToDisplayCol1[currentIndiceArrayCol1]['record']] %}
+                        {% set currentNameInputCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['nameInput'] %}
+                        {% set currentIdInputCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['idInput'] %}
+                        {% set currentLabelValueCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['labelValue'] %}
+                        <div class="col-2 ">
+                            <label for="{{ currentIdInputCol1 }}" class="mr-1" >
+                                {{ currentLabelValueCol1 }}
+                            </label>
+                        </div>
+                    <div class="col-2 ">
+                        {# IF SELECT FIELD #}
+                        {% if currentInputCol1 == 'select' %}
+{#                            TODO : pb index#}
+                            <select name="{{ currentNameInputCol1 }}
+                                    tabindex="{{ tabIndexBeforeCard+1 }}" class="form-control" {{ disabled }}">
+                                {% for civility in civilityEnum %}
+                                    {% if civility == currentRecordCol1 %}
+                                        <option selected value="{{ civility }}">{{ civility}}</option>
+                                    {% else %}
+                                        <option value="{{ civility }}">{{ civility}}</option>
+                                    {% endif %}
+                                {%  endfor %}
+                            </select>
+                            {# IF CHECKBOX FIELD #}
+                        {% elseif  currentInputCol1 == 'checkbox_one'%}
+                            {% if  currentRecordCol1 == 0%}
+                                {% set checkboxSelectedCol1 = '' %}
+                            {% else %}
+                                    {% set checkboxSelectedCol1 = 'selected'%}
+                            {% endif %}
+                            <input type="checkbox"
+                                   name="{{ currentNameInputCol1 }}"
+                                   id="{{ currentIdInputCol1 }}"
+                                   class="form-control"
+                                   tabindex="{{ tabIndexBeforeCard+1 }}"
+                                   checked="{{ checkboxSelectedCol1 }}"
+                                   {{ disabled }}/></br>
+                            {# OTHERS FIELD TYPES#}
+                        {% else %}
+                            <input type="{{ currentInputCol1 }}"
+                                   name="{{ currentNameInputCol1 }}"
+                                   id="{{ currentIdInputCol1 }}"
+                                   class="form-control"
+                                   tabindex="{{ tabIndexBeforeCard+1 }}"
+                                   value="{{ currentRecordCol1 }}"
+                                   {{ disabled }} /></br>
+                        {% endif %}
+                    </div>
+                        {% set currentIndiceArrayCol1 = currentIndiceArrayCol1 + 1 %}
+                        {% set tabIndex = tabIndex + 1 %}
+                    {% endif %}
+                    <div class="col-2"></div>
+                    {# COL 2#}
+                    {% if currentIndiceArrayCol2 < LengthArrayCol2 %}
+                        {% set currentInputCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['inputType'] %}
+                        {% set currentRecordCol2 = entityRequest[0][fieldToDisplayCol2[currentIndiceArrayCol2]['record']] %}
+                        {% set currentNameInputCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['nameInput'] %}
+                        {% set currentIdInputCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['idInput'] %}
+                        {% set currentLabelValueCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['labelValue'] %}
+                        {% if LengthArrayCol1 < CountRow and currentRow == CountRow %}
+                            {% set tabIndexForCol2 = tabIndexBeforeCard+currentRow+CountRow+1 %}
+                        {% else %}
+                            {% set tabIndexForCol2 = tabIndexBeforeCard+currentRow+CountRow %}
+                        {% endif %}
+                            <div class="col-2">
+                                <label for="{{ currentIdInputCol2 }}" class="mr-1">
+                                    {{ currentLabelValueCol2}}
+                                </label>
+                            </div>
+                            <div class="col-2 ">
+                                {% if currentIdInputCol2 == 'select' %}
+                                    <select name="{{ currentNameInputCol2 }}"
+                                            class="form-control"
+                                            tabindex="{{ tabIndexForCol2 }}"
+                                            {{ disabled }} >
+                                        {% for civility in civilityEnum %}
+                                            <option value="{{ civility }}">{{ civility}}</option>
+                                        {%  endfor %}
+                                    </select>
+                                {% else %}
+                                    <input type="{{ currentInputCol2 }}"
+                                           name="{{ currentNameInputCol2 }}"
+                                           id="{{ currentIdInputCol2 }}"
+                                           class="form-control"
+                                           tabindex="{{ tabIndexForCol2 }}"
+                                           value="{{ currentRecordCol2 }}"
+                                           {{ disabled }}/></br>
+                                {% endif %}
+                            </div>
+                        {% set currentIndiceArrayCol2 = currentIndiceArrayCol2 + 1 %}
+                        {% set tabIndex = tabIndex + 1 %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

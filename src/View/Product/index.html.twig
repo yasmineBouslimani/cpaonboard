@@ -1,0 +1,48 @@
+{% extends 'layout.html.twig' %}
+
+{% block bannerTitle %}INVENTAIRE DES PRODUITS{% endblock %}
+
+{% block content %}
+
+    <div class="navbar-list-products navbar-expand py-2">
+        <div class="navbar-collapse" id="navbarSupportedContent">
+            <div class="container-bouton mr-auto w-50">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="{{ root }}/product/add">
+                            <i class="fas fa-plus mx-2"></i>Nouveau produit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="{{ root }}/product/extractcsv">
+                            <i class="fas fa-file-csv mx-2"></i> Extraire en .csv</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="{{ root }}/product/extractpdf">
+                            <i class="fas fa-file-csv mx-2"></i> Extraire en .pdf</a>
+                    </li>
+                </ul>
+            </div>
+            <form class="form-inline my-2 my-lg-0" method="post" action="{{ root }}/product/search">
+
+                <div class="d-flex align-items-center mx-2">
+                    <input class="form-control mr-sm-2" type="search" placeholder="mot-clé, tag, utilisateur" name="search" aria-label="Search">
+                    <button class="btn btn-outline-dark bouton-responsive">Rechercher</button>
+                </div>
+        </form>
+        </div>
+    </div>
+
+
+
+
+
+    <h1>Liste des produits</h1>
+    <ul>
+        {% for product in products %}
+            <li><a href="/product/show/{{ product.id_product }}">{{ product.id_product }}. {{ product.label }}</a></li>
+        {% else %}
+            <li>Nothing to display</li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
