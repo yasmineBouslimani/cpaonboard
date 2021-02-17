@@ -8,7 +8,8 @@
 
 {% block content %}
     <div>
-        <form method="post" action="EmployeeController.php" class="form-group">
+        <form method="post" action="/product/edit/{{entityRequest['id_product']}}" class="form-group">
+            <p>{{entityRequest['id_product']}}</p>
             {% set tabIndex = 0 %}
             <div class="accordion" id="accordion">
                 <div>

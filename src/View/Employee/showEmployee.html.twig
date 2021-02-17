@@ -8,23 +8,31 @@
 
 {% block content %}
     <div>
-        <form method="post" action="EmployeeController.php" class="form-group">
-            {% set tabIndex = 0 %}
-            {% if employee[0]['active'] == 0 %}
+        <form method="post" action="/employee/edit/{{ entityRequest[0]['id_employee'] }}" class="form-group">
+
+            {% if entityRequest[0]['active'] == 0 %}
                 {% set selectedActive = '' %}
             {% else %}
                 {% set selectedActive = 'selected' %}
             {% endif %}
+            <input type="hidden"
+                   name="idEmployee"
+                   id="idEmployee"
+                   class="form-control"
+                   tabindex="1"
+                   value="{{ entityRequest[0]['id_employee']}}"
+                    {{ disabled }}/></br>
             <div>
-                <label for="employeeActive" class="mr-1" >Actif</label>
+                <label for="active" class="mr-1" >Actif</label>
                 <input type="checkbox"
-                       name="employeeActive"
+                       name="active"
                        id="employeeActive"
                        class="form-control"
-                       tabindex="{{ tabIndexBeforeCard+1 }}"
+                       tabindex="2"
                        checked="{{ selectedActive }}"
                         {{ disabled }}/></br>
             </div>
+            {% set tabIndex = 3 %}
             <div class="accordion" id="accordion">
                 <div>
                     {% set titleCardToDisplay = 'informations personnelles' %}

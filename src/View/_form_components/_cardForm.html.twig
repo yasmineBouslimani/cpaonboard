@@ -35,13 +35,13 @@
                         {# IF SELECT FIELD #}
                         {% if currentInputCol1 == 'select' %}
 {#                            TODO : pb index#}
-                            <select name="{{ currentNameInputCol1 }}
+                            <select name="{{ currentNameInputCol1 }}"
                                     tabindex="{{ tabIndexBeforeCard+1 }}" class="form-control" {{ disabled }}">
                                 {% for item in currentSelectRequestValueCol1 %}
                                     {% if item == currentRecordCol1 %}
-                                        <option selected value="{{ item }}">{{ item}}</option>
+                                        <option selected value="{{ item }}">{{ item }}</option>
                                     {% else %}
-                                        <option value="{{ item }}">{{ item}}</option>
+                                        <option value="{{ item }}">{{ item }}</option>
                                     {% endif %}
                                 {%  endfor %}
                             </select>
@@ -101,13 +101,28 @@
                                             {{ disabled }} >
                                         {% for item in currentSelectRequestValueCol2 %}
                                             {% if item == currentRecordCol2 %}
-                                                <option selected value="{{ item }}">{{ item}}</option>
+                                                <option selected value="{{ item }}">{{ item }}</option>
                                             {% else %}
-                                                <option value="{{ item }}">{{ item}}</option>
+                                                <option value="{{ item }}">{{ item }}</option>
                                             {% endif %}
                                         {%  endfor %}
                                     </select>
-                                {% else %}
+                                    {# IF CHECKBOX FIELD #}
+                                    {% elseif currentInputCol2 == 'checkbox_one'%}
+                                        {% if  currentRecordCol2 == 0%}
+                                            {% set checkboxSelectedCol2 = '' %}
+                                        {% else %}
+                                            {% set checkboxSelectedCol2 = 'selected'%}
+                                        {% endif %}
+                                        <input type="checkbox"
+                                               name="{{ currentNameInputCol2 }}"
+                                               id="{{ currentIdInputCol2 }}"
+                                               class="form-control"
+                                               tabindex="{{ tabIndexForCol2 }}"
+                                               checked="{{ checkboxSelectedCol2 }}"
+                                                {{ disabled }}/></br>
+                                        {# OTHERS FIELD TYPES#}
+                                    {% else %}
                                     <input type="{{ currentInputCol2 }}"
                                            name="{{ currentNameInputCol2 }}"
                                            id="{{ currentIdInputCol2 }}"

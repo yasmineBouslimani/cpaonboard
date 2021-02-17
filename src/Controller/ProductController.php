@@ -42,7 +42,7 @@ class ProductController extends AbstractController
      * @throws \Twig\Error\RuntimeError
      * @throws \Twig\Error\SyntaxError
      */
-    public function edit(int $id): string
+    public function edit(int $id)
     {
         $productManager = new ProductManager();
         $product = $productManager->selectProductById($id);
@@ -52,7 +52,7 @@ class ProductController extends AbstractController
             $productManager->update($product);
         }
 
-        return $this->twig->render('Product/edit.html.twig', ['product' => $product]);
+        return $this->twig->render('Product/show.html.twig', ['entityRequest' => $product, 'operation' => 'edit']);
     }
 
     /**

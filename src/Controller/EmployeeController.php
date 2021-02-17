@@ -32,10 +32,10 @@ class EmployeeController extends AbstractController
             'paginationDefaultPagesGap' => $paginationDefaultPagesGap]);
     }
 
-    public function getDataforEmployeeCrud(int $id): array
+    public function getDataforEmployee(int $id): array
     {
         /**
-         * Display an employee record for edit purpose.
+         * Display an employee record for edit or show purpose.
          */
         $employeeManager = new EmployeeManager();
         $employee=$employeeManager->selectEmployeeById($id);
@@ -55,6 +55,38 @@ class EmployeeController extends AbstractController
             'contractTypeEnum' => $contractTypeEnum];
     }
 
+    /*public function getFormDataForUpdateOrAdd(int $id): array
+    {
+        /**
+         * Display an employee record for edit or show purpose.
+         */
+        $employeeManager = new EmployeeManager();
+        $allData = [];
+        foreach($_POST as $key => $value) {
+            //echo "POST parameter '$key' has '$value'";
+            $snakeKey = $employeeController->camelToSnakeCase($key);
+            $allData[$snakeKey] = $_POST[$key];
+        }
+
+        $employeeData['id_employee'] = $allData['id_employee'];
+        $employeeData['active'] = $allData['active'];
+        $employeeData['employee_hr_id'] = $allData['employee_hr_id'];
+        $employeeData['gender'] = $allData['gender'];
+        $employeeData['civility'] = $allData['civility'];
+        $employeeData['birth_date'] = $allData['birth_date'];
+        $employeeData['birth_place'] = $allData['birth_place'];
+        $employeeData['social_security_number'] = $allData['social_security_number'];
+        $employeeData['bank_name'] = $allData['bank_name'];
+        $employeeData['bank_city'] = $allData['bank_city'];
+        $employeeData['bank_iban'] = $allData['bank_iban'];
+        $employeeData['bank_bic'] = $allData['bank_bic'];
+        $employeeData['wage_ratio'] = $allData['wage_ratio'];
+        $employeeData['wage_hiring'] = $allData['wage_hiring'];
+        $employeeData['department'] = $allData['department'];
+
+        return ['employeeData' => $employeeData, 'contactData' => $contactData];*/
+    }
+
     public function show(int $id)
     {
         /**
@@ -66,7 +98,7 @@ class EmployeeController extends AbstractController
 
 
         $employeeController = new EmployeeController();
-        $data = $employeeController->getDataforEmployeeCrud($id);
+        $data = $employeeController->getDataforEmployee($id);
 
         return $this->twig->render('Employee/showEmployee.html.twig', ['entityRequest' => $data['employee'],
             'civilityEnum' => $data['civilityEnum'], 'genderEnum' => $data['genderEnum'], 'contractTypeEnum' => $data['contractTypeEnum'],
@@ -83,12 +115,46 @@ class EmployeeController extends AbstractController
         }*/
 
         $employeeController = new EmployeeController();
-        $data = $employeeController->getDataforEmployeeCrud($id);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $employeeManager = new EmployeeManager();
+            $allData = [];
+            foreach($_POST as $key => $value) {
+                //echo "POST parameter '$key' has '$value'";
+                $snakeKey = $employeeController->camelToSnakeCase($key);
+                $allData[$snakeKey] = $_POST[$key];
+            }
+
+            $employeeData['id_employee'] = $allData['id_employee'];
+            $employeeData['active'] = $allData['active'];
+            $employeeData['employee_hr_id'] = $allData['employee_hr_id'];
+            $employeeData['gender'] = $allData['gender'];
+            $employeeData['civility'] = $allData['civility'];
+            $employeeData['birth_date'] = $allData['birth_date'];
+            $employeeData['birth_place'] = $allData['birth_place'];
+            $employeeData['social_security_number'] = $allData['social_security_number'];
+            $employeeData['bank_name'] = $allData['bank_name'];
+            $employeeData['bank_city'] = $allData['bank_city'];
+            $employeeData['bank_iban'] = $allData['bank_iban'];
+            $employeeData['bank_bic'] = $allData['bank_bic'];
+            $employeeData['wage_ratio'] = $allData['wage_ratio'];
+            $employeeData['wage_hiring'] = $allData['wage_hiring'];
+            $employeeData['department'] = $allData['department'];
+
+            $employeeManager->update('employee', $employeeData);
+        }
+
+        $data = $employeeController->getDataforEmployee($id);
 
         return $this->twig->render('Employee/showEmployee.html.twig', ['entityRequest' => $data['employee'],
-            'civilityEnum' => $data['civilityEnum'], 'genderEnum' => $data['genderEnum'], 'contractTypeEnum' => $data['contractTypeEnum'],
-            'operation' => 'edit']);
+            'civilityEnum' => $data['civilityEnum'], 'genderEnum' => $data['genderEnum'],
+            'contractTypeEnum' => $data['contractTypeEnum'], 'operation' => 'edit']);
 
+    }
+
+    function camelToSnakeCase($string, $us = "_") {
+        return strtolower(preg_replace(
+            '/(?<=\d)(?=[A-Za-z])|(?<=[A-Za-z])(?=\d)|(?<=[a-z])(?=[A-Z])/', $us, $string));
     }
 
 }

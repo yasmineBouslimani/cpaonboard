@@ -75,4 +75,41 @@ abstract class AbstractManager
 
         return $this->pdo->query('SHOW COLUMNS FROM ' . $table . ' LIKE \'' . $enumField . '\';')->fetchAll();
     }
+
+    public function insert(string $table, array $record): int
+    {
+        /**
+         * Insert a record in table.
+         *
+         * @return array
+         */
+
+    // prepared request
+    $statement = $this->pdo->prepare('INSERT INTO ' . $table . ' (`title`) VALUES (:title)');
+    $statement->bindValue('title', $record['title'], \PDO::PARAM_STR);
+
+    $statement->execute();
+    return (int)$this->pdo->lastInsertId();
+    }
+
+    public function update(string $table, array $recordFields): bool
+    {
+        /**
+         * Update a record in table.
+         *
+         * @return array
+         */
+        $idFieldName = 'id_' . $table;
+        $id = $recordFields[$idFieldName];
+        $fieldsToUpdate = ' SET ';
+        foreach($recordFields as $key => $value) {
+            $fieldsToUpdate = $fieldsToUpdate . '`' . $key . '`=\'' . $value . '\',';
+
+        }
+        $fieldsToUpdate = substr($fieldsToUpdate, 0, -1);
+        $statement = $this->pdo->prepare(
+            'UPDATE ' . $table . $fieldsToUpdate . ' WHERE `' . $idFieldName . '`='. $id);
+        $statement->execute();
+        return $id;
+    }
 }
