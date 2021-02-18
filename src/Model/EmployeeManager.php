@@ -39,7 +39,7 @@ class EmployeeManager extends AbstractManager
          * @return array
          */
         return $this->pdo->query(
-            'SELECT employee.id_employee, employee.active, employee.employee_hr_id, employee.gender, employee.civility,
+            'SELECT employee.id_employee, contact.id_contact, contract.id_contract, employee.active, employee.employee_hr_id, employee.gender, employee.civility,
                 contact.last_name, contact.first_name, employee.birth_date, employee.birth_place, employee.social_security_number, employee.department,
                 employee.bank_name, employee.bank_city, employee.bank_iban, employee.bank_bic, employee.wage_ratio, employee.wage_hiring,
                 contact.address_street_number, contact.address_street, contact.address_addition, contact.address_zip_code, contact.address_city,

@@ -76,17 +76,29 @@ abstract class AbstractManager
         return $this->pdo->query('SHOW COLUMNS FROM ' . $table . ' LIKE \'' . $enumField . '\';')->fetchAll();
     }
 
-    public function insert(string $table, array $record): int
+    public function insert(string $table, array $recordFields): int
     {
         /**
          * Insert a record in table.
          *
          * @return array
          */
+        $labelsToUpdate = ' (';
+        $valuesToUpdate = ' (';
+        foreach($recordFields as $key => $value) {
+            $labelToUpdate = $labelToUpdate . '`' . $key . '`,';
+            $valuesToUpdate = $valuesToUpdate . '\'' . $value . '\',';
+
+        }
+        $labelsToUpdate = substr($labelsToUpdate, 0, -1);
+        $labelsToUpdate = $labelsToUpdate . ')';
+        $valuesToUpdate = substr($valuesToUpdate, 0, -1);
+        $valuesToUpdate = $valuesToUpdate . ')';
+        var_dump('INSERT INTO ' . $table . $labelsToUpdate .' VALUES ' . $valuesToUpdate);
 
     // prepared request
     $statement = $this->pdo->prepare('INSERT INTO ' . $table . ' (`title`) VALUES (:title)');
-    $statement->bindValue('title', $record['title'], \PDO::PARAM_STR);
+    $statement->bindValue('title', $recordFields['title'], \PDO::PARAM_STR);
 
     $statement->execute();
     return (int)$this->pdo->lastInsertId();

@@ -32,13 +32,12 @@ class EmployeeController extends AbstractController
             'paginationDefaultPagesGap' => $paginationDefaultPagesGap]);
     }
 
-    public function getDataforEmployee(int $id): array
+    public function getDataEnumforEmployee(): array
     {
         /**
-         * Display an employee record for edit or show purpose.
+         * Get in database all enum fields values for employee file.
          */
         $employeeManager = new EmployeeManager();
-        $employee=$employeeManager->selectEmployeeById($id);
         $civilityEnumRequest=$employeeManager->SelectEnumValues('employee', 'civility');
         $genderEnumRequest=$employeeManager->SelectEnumValues('employee', 'gender');
         $contractTypeEnumRequest=$employeeManager->SelectEnumValues('contract','type_contract');
@@ -51,18 +50,34 @@ class EmployeeController extends AbstractController
         $contractTypeEnumFormatted = $employeeController->enumRequestFormatting($contractTypeEnumRequest);
         $contractTypeEnum=$contractTypeEnumFormatted['enum'];
 
-        return ['employee' => $employee, 'civilityEnum' => $civilityEnum, 'genderEnum' => $genderEnum,
+        return ['civilityEnum' => $civilityEnum, 'genderEnum' => $genderEnum,
             'contractTypeEnum' => $contractTypeEnum];
     }
 
-    /*public function getFormDataForUpdateOrAdd(int $id): array
+    public function getDataforEmployee(int $id): array
     {
         /**
          * Display an employee record for edit or show purpose.
          */
         $employeeManager = new EmployeeManager();
+        $employee=$employeeManager->selectEmployeeById($id);
+
+        $employeeController = new EmployeeController();
+        $employeeAllEnumValues = $employeeController->getDataEnumforEmployee();
+
+        return ['employee' => $employee, 'civilityEnum' => $employeeAllEnumValues['civilityEnum'],
+            'genderEnum' => $employeeAllEnumValues['genderEnum'],
+            'contractTypeEnum' => $employeeAllEnumValues['contractTypeEnum']];
+    }
+
+    public function getFormDataForUpdateOrAdd(array $dataFromForm): array
+    {
+        /**
+         * Display an employee record for edit or show purpose.
+         */
+        $employeeController= new EmployeeController();
         $allData = [];
-        foreach($_POST as $key => $value) {
+        foreach($dataFromForm as $key => $value) {
             //echo "POST parameter '$key' has '$value'";
             $snakeKey = $employeeController->camelToSnakeCase($key);
             $allData[$snakeKey] = $_POST[$key];
@@ -84,7 +99,29 @@ class EmployeeController extends AbstractController
         $employeeData['wage_hiring'] = $allData['wage_hiring'];
         $employeeData['department'] = $allData['department'];
 
-        return ['employeeData' => $employeeData, 'contactData' => $contactData];*/
+        $contactData['id_contact'] = $allData['id_contact'];
+        $contactData['first_name'] = $allData['first_name'];
+        $contactData['last_name'] = $allData['last_name'];
+        $contactData['address_street_number'] = $allData['address_street_number'];
+        $contactData['address_street'] = $allData['address_street'];
+        $contactData['personal_email_address'] = $allData['personal_email_address'];
+        $contactData['cellphone_number'] = $allData['cellphone_number'];
+        $contactData['phone_number'] = $allData['phone_number'];
+        $contactData['address_city'] = $allData['address_city'];
+        $contactData['address_zip_code'] = $allData['address_zip_code'];
+        $contactData['address_addition'] = $allData['address_addition'];
+
+        $contractData['id_contract'] = $allData['id_contract'];
+        $contractData['type_contract'] = $allData['type_contract'];
+        $contractData['starting_date'] = $allData['starting_date'];
+        $contractData['end_date'] = $allData['end_date'];
+        $contractData['wage_first_year'] = $allData['wage_first_year'];
+        $contractData['wage_second_year'] = $allData['wage_second_year'];
+        $contractData['wage_third_year'] = $allData['wage_third_year'];
+        $contractData['on_going'] = $allData['on_going'] ? 1 : 0;
+
+        return ['employeeData' => $employeeData, 'contactData' => $contactData, 'contractData' => $contractData];
+
     }
 
     public function show(int $id)
@@ -118,30 +155,11 @@ class EmployeeController extends AbstractController
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $employeeManager = new EmployeeManager();
-            $allData = [];
-            foreach($_POST as $key => $value) {
-                //echo "POST parameter '$key' has '$value'";
-                $snakeKey = $employeeController->camelToSnakeCase($key);
-                $allData[$snakeKey] = $_POST[$key];
-            }
 
-            $employeeData['id_employee'] = $allData['id_employee'];
-            $employeeData['active'] = $allData['active'];
-            $employeeData['employee_hr_id'] = $allData['employee_hr_id'];
-            $employeeData['gender'] = $allData['gender'];
-            $employeeData['civility'] = $allData['civility'];
-            $employeeData['birth_date'] = $allData['birth_date'];
-            $employeeData['birth_place'] = $allData['birth_place'];
-            $employeeData['social_security_number'] = $allData['social_security_number'];
-            $employeeData['bank_name'] = $allData['bank_name'];
-            $employeeData['bank_city'] = $allData['bank_city'];
-            $employeeData['bank_iban'] = $allData['bank_iban'];
-            $employeeData['bank_bic'] = $allData['bank_bic'];
-            $employeeData['wage_ratio'] = $allData['wage_ratio'];
-            $employeeData['wage_hiring'] = $allData['wage_hiring'];
-            $employeeData['department'] = $allData['department'];
-
-            $employeeManager->update('employee', $employeeData);
+            $datafromForm = $employeeController->getFormDataForUpdateOrAdd($_POST);
+            $employeeManager->update('employee', $datafromForm['employeeData']);
+            $employeeManager->update('contact', $datafromForm['contactData']);
+            $employeeManager->update('contract', $datafromForm['contractData']);
         }
 
         $data = $employeeController->getDataforEmployee($id);
@@ -150,6 +168,40 @@ class EmployeeController extends AbstractController
             'civilityEnum' => $data['civilityEnum'], 'genderEnum' => $data['genderEnum'],
             'contractTypeEnum' => $data['contractTypeEnum'], 'operation' => 'edit']);
 
+    }
+
+    public function add()
+    {
+        /**
+         * Display employee creation page
+         *
+         * @return string
+         * @throws \Twig\Error\LoaderError
+         * @throws \Twig\Error\RuntimeError
+         * @throws \Twig\Error\SyntaxError
+         */
+
+        $employeeController = new EmployeeController();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $employeeManager = new EmployeeManager();
+
+            $datafromForm = $employeeController->getFormDataForUpdateOrAdd($_POST);
+            $employeeManager->insert('employee', $datafromForm['employeeData']);
+            $employeeManager->insert('contact', $datafromForm['contactData']);
+            $employeeManager->insert('contract', $datafromForm['contractData']);
+
+            $id = 1;
+            $data = $employeeController->getDataforEmployee($id);
+        }
+        else
+        {
+            $data = $employeeController->getDataEnumforEmployee();
+        }
+
+        return $this->twig->render('Employee/showEmployee.html.twig', [
+            'civilityEnum' => $data['civilityEnum'], 'genderEnum' => $data['genderEnum'],
+            'contractTypeEnum' => $data['contractTypeEnum'], 'operation' => 'add']);
     }
 
     function camelToSnakeCase($string, $us = "_") {

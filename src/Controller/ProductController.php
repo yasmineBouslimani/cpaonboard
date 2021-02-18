@@ -16,34 +16,36 @@ class ProductController extends AbstractController
         return $this->twig->render('Product/index.html.twig', ['products' => $products]);
     }
 
-    /**
-     * Display product informations specified by $id
-     *
-     * @param int $id
-     * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     */
+
     public function show(int $id)
     {
+        /**
+         * Display product informations specified by $id
+         *
+         * @param int $id
+         * @return string
+         * @throws \Twig\Error\LoaderError
+         * @throws \Twig\Error\RuntimeError
+         * @throws \Twig\Error\SyntaxError
+         */
         $productManager = new ProductManager();
         $product = $productManager->selectProductById($id);
 
         return $this->twig->render('Product/show.html.twig', ['entityRequest' => $product]);
     }
 
-    /**
-     * Display product edition page specified by $id
-     *
-     * @param int $id
-     * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     */
+
     public function edit(int $id)
     {
+        /**
+         * Display product edition page specified by $id
+         *
+         * @param int $id
+         * @return string
+         * @throws \Twig\Error\LoaderError
+         * @throws \Twig\Error\RuntimeError
+         * @throws \Twig\Error\SyntaxError
+         */
         $productManager = new ProductManager();
         $product = $productManager->selectProductById($id);
 
@@ -55,16 +57,17 @@ class ProductController extends AbstractController
         return $this->twig->render('Product/show.html.twig', ['entityRequest' => $product, 'operation' => 'edit']);
     }
 
-    /**
-     * Display product creation page
-     *
-     * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
-     */
+
     public function add()
     {
+        /**
+         * Display product creation page
+         *
+         * @return string
+         * @throws \Twig\Error\LoaderError
+         * @throws \Twig\Error\RuntimeError
+         * @throws \Twig\Error\SyntaxError
+         */
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $productManager = new ProductManager();
             $product = [
@@ -77,13 +80,14 @@ class ProductController extends AbstractController
         return $this->twig->render('Product/add.html.twig');
     }
 
-    /**
-     * Handle product deletion
-     *
-     * @param int $id
-     */
+
     public function delete(int $id)
     {
+        /**
+         * Handle product deletion
+         *
+         * @param int $id
+         */
         $productManager = new ProductManager();
         $productManager->delete($id);
         header('Location:/product/index');
