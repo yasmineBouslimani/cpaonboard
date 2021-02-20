@@ -26,7 +26,6 @@ class EmployeeController extends AbstractController
         $employees = $employeeManager->selectEmployeesAndContactsData($resultsPerPage, $firstResult);
         $paginationDefaultPagesGap = 2;
 
-
         return $this->twig->render('Employee/index.html.twig', ['resultPerPage' => $resultsPerPage, 'employees' => $employees,
             'employeesCount' => $employeesCount, 'pagesCount' => $pagesCount, 'currentPage' => $currentPage,
             'paginationDefaultPagesGap' => $paginationDefaultPagesGap]);
@@ -194,13 +193,12 @@ class EmployeeController extends AbstractController
             $contractFk = ['fk_employee' => $idEmployee];
             $employeeManager->insert('contract', $datafromForm['contractData'], $contractFk);
 
-            $data = $employeeController->getDataforEmployee($idEmployee);
+            header('Location:/employee/index');
         }
         else
         {
             $data = $employeeController->getDataEnumforEmployee();
         }
-
         return $this->twig->render('Employee/showEmployee.html.twig', [
             'civilityEnum' => $data['civilityEnum'], 'genderEnum' => $data['genderEnum'],
             'contractTypeEnum' => $data['contractTypeEnum'], 'operation' => 'add']);

@@ -14,7 +14,6 @@
             {% set formAction = '/employee/add' %}
         {% endif %}
         <form method="post" action="{{ formAction }}" class="form-group">
-
             {% if entityRequest[0]['active'] == 0 %}
                 {% set selectedActive = '' %}
             {% else %}
