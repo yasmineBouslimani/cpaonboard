@@ -32,10 +32,27 @@ class EmployeeController extends AbstractController
             'paginationDefaultPagesGap' => $paginationDefaultPagesGap]);
     }
 
+
+    public function getDataforEmployee(int $id): array
+    {
+        /**
+         * Get in database all data need for displaying an employee record.
+         */
+        $employeeManager = new EmployeeManager();
+        $employee=$employeeManager->selectEmployeeById($id);
+
+        $employeeController = new EmployeeController();
+        $employeeAllEnumValues = $employeeController->getDataEnumforEmployee();
+
+        return ['employee' => $employee, 'civilityEnum' => $employeeAllEnumValues['civilityEnum'],
+            'genderEnum' => $employeeAllEnumValues['genderEnum'],
+            'contractTypeEnum' => $employeeAllEnumValues['contractTypeEnum']];
+    }
+
     public function getDataEnumforEmployee(): array
     {
         /**
-         * Get in database all enum fields values for employee file.
+         * Get in database all enum fields values for displaying an employee record.
          */
         $employeeManager = new EmployeeManager();
         $civilityEnumRequest=$employeeManager->SelectEnumValues('employee', 'civility');
@@ -54,26 +71,10 @@ class EmployeeController extends AbstractController
             'contractTypeEnum' => $contractTypeEnum];
     }
 
-    public function getDataforEmployee(int $id): array
-    {
-        /**
-         * Display an employee record for edit or show purpose.
-         */
-        $employeeManager = new EmployeeManager();
-        $employee=$employeeManager->selectEmployeeById($id);
-
-        $employeeController = new EmployeeController();
-        $employeeAllEnumValues = $employeeController->getDataEnumforEmployee();
-
-        return ['employee' => $employee, 'civilityEnum' => $employeeAllEnumValues['civilityEnum'],
-            'genderEnum' => $employeeAllEnumValues['genderEnum'],
-            'contractTypeEnum' => $employeeAllEnumValues['contractTypeEnum']];
-    }
-
     public function getFormDataForUpdateOrAdd(array $dataFromForm): array
     {
         /**
-         * Display an employee record for edit or show purpose.
+         * Get all fields in an employee record form.
          */
         $employeeController= new EmployeeController();
         $allData = [];
@@ -187,12 +188,13 @@ class EmployeeController extends AbstractController
             $employeeManager = new EmployeeManager();
 
             $datafromForm = $employeeController->getFormDataForUpdateOrAdd($_POST);
-            $employeeManager->insert('employee', $datafromForm['employeeData']);
-            $employeeManager->insert('contact', $datafromForm['contactData']);
-            $employeeManager->insert('contract', $datafromForm['contractData']);
+            $idEmployee = $employeeManager->insert('employee', $datafromForm['employeeData']);
+            $contactFk = ['fk_id_employee2' => $idEmployee];
+            $employeeManager->insert('contact', $datafromForm['contactData'], $contactFk);
+            $contractFk = ['fk_employee' => $idEmployee];
+            $employeeManager->insert('contract', $datafromForm['contractData'], $contractFk);
 
-            $id = 1;
-            $data = $employeeController->getDataforEmployee($id);
+            $data = $employeeController->getDataforEmployee($idEmployee);
         }
         else
         {

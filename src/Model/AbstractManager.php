@@ -76,30 +76,32 @@ abstract class AbstractManager
         return $this->pdo->query('SHOW COLUMNS FROM ' . $table . ' LIKE \'' . $enumField . '\';')->fetchAll();
     }
 
-    public function insert(string $table, array $recordFields): int
+    public function insert(string $table, array $recordFields,array $recordFk=null): int
     {
         /**
          * Insert a record in table.
          *
          * @return array
          */
+        if (!is_null($recordFk)){
+            foreach ($recordFk as $key => $value) {
+                $recordFields = array_merge($recordFields, $recordFk);
+                var_dump($recordFields);
+            }
+        }
         $labelsToUpdate = ' (';
         $valuesToUpdate = ' (';
         foreach($recordFields as $key => $value) {
-            $labelToUpdate = $labelToUpdate . '`' . $key . '`,';
+            $labelsToUpdate = $labelsToUpdate . '`' . $key . '`,';
             $valuesToUpdate = $valuesToUpdate . '\'' . $value . '\',';
-
         }
         $labelsToUpdate = substr($labelsToUpdate, 0, -1);
         $labelsToUpdate = $labelsToUpdate . ')';
         $valuesToUpdate = substr($valuesToUpdate, 0, -1);
         $valuesToUpdate = $valuesToUpdate . ')';
-        var_dump('INSERT INTO ' . $table . $labelsToUpdate .' VALUES ' . $valuesToUpdate);
 
     // prepared request
-    $statement = $this->pdo->prepare('INSERT INTO ' . $table . ' (`title`) VALUES (:title)');
-    $statement->bindValue('title', $recordFields['title'], \PDO::PARAM_STR);
-
+    $statement = $this->pdo->prepare('INSERT INTO ' . $table . $labelsToUpdate .' VALUES ' . $valuesToUpdate);
     $statement->execute();
     return (int)$this->pdo->lastInsertId();
     }
@@ -116,7 +118,6 @@ abstract class AbstractManager
         $fieldsToUpdate = ' SET ';
         foreach($recordFields as $key => $value) {
             $fieldsToUpdate = $fieldsToUpdate . '`' . $key . '`=\'' . $value . '\',';
-
         }
         $fieldsToUpdate = substr($fieldsToUpdate, 0, -1);
         $statement = $this->pdo->prepare(
