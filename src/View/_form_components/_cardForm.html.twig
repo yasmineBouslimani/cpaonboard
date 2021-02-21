@@ -1,14 +1,20 @@
 <div class="card mr-4 mb-4">
     <div class="card-header uppercase">{{ titleCardToDisplay }}
+       {#COLLAPSE BUTTON#}
         <button class="btn btn-secondary btn-sm float-right" type="button" data-toggle="collapse" data-target="#{{ idCard }}" aria-expanded="true
             aria-controls="{{ idCard }}"> <span aria-hidden="true">&triangledown;</span>
         <span class="sr-only">Déplier-Replier</span>
         </button>
     </div>
+    {# Number of row need for displaying all datas #}
     {% set CountRow = LengthArrayCol1 > LengthArrayCol2 ? LengthArrayCol1 : LengthArrayCol2 %}
+    {# Current field handle in column 1 #}
     {% set currentIndiceArrayCol1 = 0 %}
+    {# Current field handle in column 2 #}
     {% set currentIndiceArrayCol2 = 0 %}
+    {# Last tabIndex before process #}
     {% set tabIndexBeforeCard = tabIndex %}
+    {# Determine if fields must be in read only #}
     {% if operation == 'edit' or operation == 'add'  %}
         {% set disabled = '' %}
     {% else %}
@@ -26,6 +32,7 @@
                         {% set currentIdInputCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['idInput'] %}
                         {% set currentLabelValueCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['labelValue'] %}
                         {% set currentSelectRequestValueCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['selectRequest'] %}
+                        {# DISPLAY LABEL #}
                         <div class="col-2 ">
                             <label for="{{ currentIdInputCol1 }}" class="mr-1" >
                                 {{ currentLabelValueCol1 }}
@@ -34,7 +41,6 @@
                     <div class="col-2 ">
                         {# IF SELECT FIELD #}
                         {% if currentInputCol1 == 'select' %}
-{#                            TODO : pb index#}
                             <select name="{{ currentNameInputCol1 }}"
                                     tabindex="{{ tabIndexBeforeCard+1 }}" class="form-control" {{ disabled }}">
                                 {% for item in currentSelectRequestValueCol1 %}

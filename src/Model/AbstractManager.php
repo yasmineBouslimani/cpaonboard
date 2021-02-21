@@ -125,4 +125,32 @@ abstract class AbstractManager
         $statement->execute();
         return $id;
     }
+
+    public function delete(string $table, int $idRecord)
+    {
+        /**
+         * Insert a record in table.
+         *
+         * @return array
+         */
+        // prepared request
+        $idFieldName = 'id_' . $table;
+        $statement = $this->pdo->prepare('DELETE FROM '. $table. ' WHERE `' . $idFieldName . '`='. $idRecord);
+        $statement->execute();
+    }
+
+    public function GetIdRecordsByForeignKeys(string $table, string $foreignKeyField, int $foreignKeyValue): array
+{
+    /**
+     * Return the id of the records associated to foreign key.
+     *
+     * @return array
+     */
+    // prepared request
+    $idFieldName = 'id_' . $table;
+    $statement = $this->pdo->prepare(
+        'Select ' . $idFieldName . ' FROM '. $table. ' WHERE `' . $foreignKeyField . '`='. $foreignKeyValue);
+    $statement->execute();
+    return $statement->fetchAll();
+}
 }

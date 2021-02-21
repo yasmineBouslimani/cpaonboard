@@ -204,6 +204,27 @@ class EmployeeController extends AbstractController
             'contractTypeEnum' => $data['contractTypeEnum'], 'operation' => 'add']);
     }
 
+    public function delete(int $id)
+    {
+        /**
+         * Handle employee deletion
+         *
+         * @param int $id
+         */
+        $employeeManager = new EmployeeManager();
+
+        $contactId = $employeeManager->GetIdRecordsByForeignKeys('contact','fk_id_employee2', $id);
+        $contractsId = $employeeManager->GetIdRecordsByForeignKeys('contract','fk_employee', $id);
+
+        $employeeManager->delete('contact', $contactId[0]['id_contact']);
+        foreach($contractsId as $contract) {
+            $employeeManager->delete('contract', $contract['id_contract']);
+        }
+        $employeeManager->delete('employee', $id);
+
+        header('Location:/employee/index');
+    }
+
     function camelToSnakeCase($string, $us = "_") {
         return strtolower(preg_replace(
             '/(?<=\d)(?=[A-Za-z])|(?<=[A-Za-z])(?=\d)|(?<=[a-z])(?=[A-Z])/', $us, $string));

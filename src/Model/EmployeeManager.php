@@ -53,16 +53,5 @@ class EmployeeManager extends AbstractManager
 
 
 
-    public function delete(int $id)
-    {
-        /**
-         * @param int $id
-         */
-        // prepared request
-        $statement = $this->pdo->prepare("DELETE FROM " . self::TABLE . " WHERE id=:id");
-        $statement->bindValue('id', $id, \PDO::PARAM_INT);
-        $statement->execute();
-    }
-
 
 }
