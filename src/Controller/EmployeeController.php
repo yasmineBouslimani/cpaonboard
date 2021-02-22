@@ -9,7 +9,6 @@ use App\Service\Mailer;
 class EmployeeController extends AbstractController
 {
 
-
     public function index(int $currentPage = 1)
     {
         /**
@@ -149,6 +148,4 @@ class EmployeeController extends AbstractController
             ]);
         }
     }
-
-
 }

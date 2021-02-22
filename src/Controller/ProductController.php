@@ -107,13 +107,13 @@ class ProductController extends AbstractController
     {
         $productManager = new ProductManager();
         $products = $productManager->selectAll();
-        $filename = 'members_' . date('Y-m-d') . '.csv';
+        $filename = 'products_' . date('Y-m-d') . '.csv';
         $fopenAction = fopen('php://output', 'w');
-        $delimiter = ',';
+        $delimiter = ';';
         $fields = [
             'Identifiant',
             'Nom',
-            'Sotck',
+            'Stock',
         ];
         fputcsv($fopenAction, $fields, $delimiter);
 
@@ -121,6 +121,7 @@ class ProductController extends AbstractController
             $lineData = [
                 $product['id_product'],
                 $product['label'],
+                $product['stock'],
             ];
             fputcsv($fopenAction, $lineData, $delimiter);
         }

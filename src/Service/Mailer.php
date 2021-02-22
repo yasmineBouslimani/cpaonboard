@@ -8,7 +8,7 @@ use PHPMailer\PHPMailer\Exception;
 
 class Mailer
 {
-    const EMAIL_TO = "yasmine.bouslimani@gmail.com";
+    const EMAIL_FROM = "yasmine.bouslimani@gmail.com";
 
     public function notifyEmployee($subject, $identifier, $message) {
 
@@ -19,13 +19,11 @@ class Mailer
         $mail->isSMTP();                                            //Send using SMTP
         $mail->Host       = 'smtp.gmail.com';                       //Set the SMTP server to send through
         $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
-        $mail->Username   = self::EMAIL_TO;         //SMTP username
+        $mail->Username   = self::EMAIL_FROM;                       //SMTP username
         $mail->Password   = '1o2tnhxM';                             //SMTP password
-        $mail->SMTPSecure = 'tls';         //Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
+        $mail->SMTPSecure = 'tls';                                  //Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
         $mail->Port       = 587;                                    //TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
 
-        //Recipients
-        $mail->setFrom('yasmine-81@hotmail.fr', 'Mailer');
         $mail->addAddress('ybouslimani@self-and-innov.fr', 'Joe User');     //Add a recipient
 
         //Content
