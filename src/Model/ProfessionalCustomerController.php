@@ -19,7 +19,7 @@ class IndividualCustomerController extends AbstractController
 
         $individualCustomerManager = new IndividualCustomerManager();
 
-        $individualCustomersCountRequest=$individualCustomerManager->countRecordsIndividualCustomers();
+        $individualCustomersCountRequest=$individualCustomerManager->countRecords();
         $individualCustomersCount=$individualCustomersCountRequest[0]['countRecords'];
         $resultsPerPage = 5;
         $pagesCount = ceil($individualCustomersCount / $resultsPerPage);

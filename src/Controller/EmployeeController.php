@@ -18,8 +18,8 @@ class EmployeeController extends AbstractController
 
         $employeeManager = new EmployeeManager();
 
-        $employeesCountRequest=$employeeManager->countRecords();
-        $employeesCount=$employeesCountRequest[0]['countRecords'];
+        $individuCountRequest=$employeeManager->countRecords();
+        $employeesCount=$individuCountRequest[0]['countRecords'];
         $resultsPerPage = 5;
         $pagesCount = ceil($employeesCount / $resultsPerPage);
         $firstResult = ($currentPage * $resultsPerPage) - $resultsPerPage;
