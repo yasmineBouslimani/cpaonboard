@@ -1,0 +1,15 @@
+{% extends 'layout.html.twig' %}
+
+{% block bannerTitle %}INVENTAIRE DES CLIENTS PARTICULIERS{% endblock %}
+
+{% block content %}
+    <h1>Liste des clients</h1>
+    <ul>
+        {% for product in products %}
+            <li><a href="/product/show/{{ product.id_product }}">{{ product.id_product }}. {{ product.label }}</a></li>
+        {% else %}
+            <li>Nothing to display</li>
+        {% endfor %}
+    </ul>
+    <a href="/product/add">Ajouter</a>
+{% endblock %}

@@ -8,8 +8,49 @@
 
 {% block content %}
     <div>
-        <form method="post" action="EmployeeController.php" class="form-group">
-            {% set tabIndex = 0 %}
+        {% if operation == 'edit' %}
+            {% set formAction = ['/employee/edit/', entityRequest[0]['id_employee']]|join('') %}
+        {% elseif operation == 'add'  %}
+            {% set formAction = '/employee/add' %}
+        {% endif %}
+        <form method="post" action="{{ formAction }}" class="form-group">
+            {% if entityRequest[0]['active'] == 0 %}
+                {% set selectedActive = '' %}
+            {% else %}
+                {% set selectedActive = 'selected' %}
+            {% endif %}
+            <input type="hidden"
+                   name="idEmployee"
+                   id="idEmployee"
+                   class="form-control"
+                   tabindex="1"
+                   value="{{ entityRequest[0]['id_employee'] }}"
+                    {{ disabled }}/>
+            <input type="hidden"
+                   name="idContact"
+                   id="idContact"
+                   class="form-control"
+                   tabindex="2"
+                   value="{{ entityRequest[0]['id_contact'] }}"
+                    {{ disabled }}/>
+            <input type="hidden"
+                   name="idContract"
+                   id="idContract"
+                   class="form-control"
+                   tabindex="2"
+                   value="{{ entityRequest[0]['id_contract'] }}"
+                    {{ disabled }}/></br>
+            <div>
+                <label for="active" class="mr-1" >Actif</label>
+                <input type="checkbox"
+                       name="active"
+                       id="employeeActive"
+                       class="form-control"
+                       tabindex="4"
+                       checked="{{ selectedActive }}"
+                        {{ disabled }}/></br>
+            </div>
+            {% set tabIndex = 5 %}
             <div class="accordion" id="accordion">
                 <div>
                     {% set titleCardToDisplay = 'informations personnelles' %}
@@ -21,6 +62,13 @@
                             'nameInput': 'employeeHrId',
                             'idInput': 'employeeHrId',
                             'labelValue': 'Matricule'},
+                        {
+                            'record': 'gender',
+                            'inputType': 'select',
+                            'selectRequest': genderEnum,
+                            'nameInput': 'gender',
+                            'idInput': 'gender',
+                            'labelValue': 'Sexe'},
                         {
                             'record': 'civility',
                             'inputType': 'select',
@@ -77,6 +125,12 @@
                             'idInput': 'addressStreetNumber',
                             'labelValue': 'Numéro de rue'},
                         {
+                            'record': 'address_addition',
+                            'inputType': 'text',
+                            'nameInput': 'addressAddition',
+                            'idInput': 'addressAddition',
+                            'labelValue': "Complément d'adresse"},
+                        {
                             'record': 'address_street',
                             'inputType': 'text',
                             'nameInput': 'addressStreet',
@@ -129,7 +183,7 @@
                         {
                             'record': 'type_contract',
                             'inputType': 'select',
-                            'selectRequest': 'civilityEnum',
+                            'selectRequest': contractTypeEnum,
                             'nameInput': 'typeContract',
                             'idInput': 'typeContract',
                             'labelValue': 'Type de contrat'},
@@ -154,19 +208,19 @@
                     ] %}
                     {% set fieldToDisplayCol2 = [
                         {
-                            'record': '	wage_first_year',
+                            'record': 'wage_first_year',
                             'inputType': 'text',
                             'nameInput': 'wageFirstYear',
                             'idInput': 'wageFirstYear',
                             'labelValue': 'Salaire 1e année'},
                         {
-                            'record': '	wage_second_year',
+                            'record': 'wage_second_year',
                             'inputType': 'text',
                             'nameInput': 'wageSecondYear',
                             'idInput': 'wageSecondYear',
                             'labelValue': 'Salaire 2e année'},
                         {
-                            'record': '	wage_third_year',
+                            'record': 'wage_third_year',
                             'inputType': 'text',
                             'nameInput': 'wageThirdYear',
                             'idInput': 'wageThirdYear',
@@ -208,6 +262,37 @@
                             'nameInput': 'bankBic',
                             'idInput': 'bankBic',
                             'labelValue': 'BIC'}
+                    ] %}
+                    {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
+                    {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
+                    {% set tabIndexBeforeCard = tabIndex %}
+                    {% include '_form_components/_cardForm.html.twig'%}
+                    {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
+                </div>
+                <div>
+                    {% set titleCardToDisplay = "position dans l'entreprise" %}
+                    {% set  idCard =  'bank_data'%}
+                    {% set fieldToDisplayCol1 = [
+                        {
+                            'record': 'wage_ratio',
+                            'inputType': 'text',
+                            'nameInput': 'wageRatio',
+                            'idInput': 'wageRatio',
+                            'labelValue': 'Coefficient'},
+                        {
+                            'record': 'wage_hiring',
+                            'inputType': 'text',
+                            'nameInput': 'wage_hiring',
+                            'idInput': 'wage_hiring',
+                            'labelValue': "Salarie à l'embauche"},
+                    ] %}
+                    {% set fieldToDisplayCol2 = [
+                        {
+                            'record': 'department',
+                            'inputType': 'text',
+                            'nameInput': 'department',
+                            'idInput': 'department',
+                            'labelValue': 'Service'}
                     ] %}
                     {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
                     {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
