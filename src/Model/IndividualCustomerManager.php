@@ -38,12 +38,27 @@ class IndividualCustomerManager extends AbstractManager
          * @return array
          */
         return $this->pdo->query(
-            'SELECT customer.id_customer, contact.last_name, contact.first_name, 
-            contact.phone_number, contact.cellphone_number, personal_email_address FROM customer
+            'SELECT customer.id_customer, contact.last_name, contact.first_name, contact.phone_number,
+                contact.cellphone_number, personal_email_address FROM customer
             LEFT JOIN contact ON customer.id_customer = contact.fk_id_customer2
             WHERE customer.FK_customerType = 1
             ORDER BY contact.last_name ASC, contact.first_name ASC
             LIMIT '.$limit.' OFFSET '.$offset.';')->fetchAll();
+    }
+
+    public function selectIndividualCustomerById(int $id): array
+    {
+        /**
+         * Get an employee record in database.
+         *
+         * @return array
+         */
+        return $this->pdo->query(
+            'SELECT customer.id_customer, contact.id_contact, contact.last_name, contact.first_name,
+                contact.address_street_number, contact.address_addition, contact.address_street , contact.address_zip_code,
+                contact.address_city, contact.phone_number, contact.cellphone_number, personal_email_address FROM customer
+            LEFT JOIN contact ON customer.id_customer = contact.fk_id_customer2
+            WHERE customer.id_customer =' . $id)->fetchAll();
     }
 
 }

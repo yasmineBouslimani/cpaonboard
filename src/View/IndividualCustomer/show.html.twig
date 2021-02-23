@@ -1,53 +1,53 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}CPA : Fiche produit{% endblock %}
+{% block title %}CPA : Fiche client particulier{% endblock %}
 
-{% block bannerTitle %}FICHE PRODUIT{% endblock %}
+{% block bannerTitle %}FICHE CLIENT PARTICULIER{% endblock %}
 
 
 
 {% block content %}
     <div>
-        <form method="post" action="EmployeeController.php" class="form-group">
-            {% set tabIndex = 0 %}
+        {% if operation == 'edit' %}
+            {% set formAction = ['/individualCustomer/edit/', entityRequest[0]['id_customer']]|join('') %}
+        {% elseif operation == 'add'  %}
+            {% set formAction = '/individualCustomer/add' %}
+        {% endif %}
+        <form method="post" action="{{ formAction }}" class="form-group">
+            <input type="hidden"
+                   name="idCustomer"
+                   id="idCustomer"
+                   class="form-control"
+                   tabindex="1"
+                   value="{{ entityRequest[0]['id_customer'] }}"
+                    {{ disabled }}/>
+            <input type="hidden"
+                   name="idContact"
+                   id="idContact"
+                   class="form-control"
+                   tabindex="2"
+                   value="{{ entityRequest[0]['id_contact'] }}"
+                    {{ disabled }}/>
+            {% set tabIndex = 3 %}
             <div class="accordion" id="accordion">
                 <div>
-                    {% set titleCardToDisplay = 'identification' %}
-                    {% set  idCard =  'identification' %}
+                    {% set titleCardToDisplay = 'informations personnelles' %}
+                    {% set  idCard =  'personal_informations'%}
                     {% set fieldToDisplayCol1 = [
                         {
-                            'record': 'product_label',
+                            'record': 'last_name',
                             'inputType': 'text',
-                            'nameInput': 'productLabel',
-                            'idInput': 'productLabel',
-                            'labelValue': 'Référence'},
-
-                        {
-                            'record': 'price',
-                            'inputType': 'text',
-                            'nameInput': 'price',
-                            'idInput': 'price',
-                            'labelValue': 'Prix'},
-                        {
-                            'record': 'ratio',
-                            'inputType': 'text',
-                            'nameInput': 'ratio',
-                            'idInput': 'ratio',
-                            'labelValue': 'TVA (%)'}
+                            'nameInput': 'lastName',
+                            'idInput': 'lastName',
+                            'labelValue': 'Nom'},
                     ] %}
                     {% set fieldToDisplayCol2 = [
                         {
-                            'record': 'product_type_label',
-                            'inputType': 'textarea',
-                            'nameInput': 'productTypeLabel',
-                            'idInput': 'productTypeLabel',
-                            'labelValue': 'Désignation produit'},
-                        {
-                            'record': 'model',
-                            'inputType': 'model',
-                            'nameInput': 'model',
-                            'idInput': 'model',
-                            'labelValue': 'Marque'}
+                            'record': 'first_name',
+                            'inputType': 'text',
+                            'nameInput': 'firstName',
+                            'idInput': 'firstName',
+                            'labelValue': 'Prénom'}
                     ] %}
                     {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
                     {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
@@ -56,24 +56,59 @@
                     {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
                 </div>
                 <div>
-                    {% set titleCardToDisplay = 'approvisionnement' %}
-                    {% set  idCard =  'supply'%}
+                    {% set titleCardToDisplay = 'coordonnées' %}
+                    {% set  idCard =  'contacts'%}
                     {% set fieldToDisplayCol1 = [
                         {
-                            'record': 'stock',
+                            'record': 'address_street_number',
                             'inputType': 'text',
-                            'nameInput': 'stock',
-                            'idInput': 'stock',
-                            'labelValue': 'Stock'},
-
+                            'nameInput': 'addressStreetNumber',
+                            'idInput': 'addressStreetNumber',
+                            'labelValue': 'Numéro de rue'},
+                        {
+                            'record': 'address_addition',
+                            'inputType': 'text',
+                            'nameInput': 'addressAddition',
+                            'idInput': 'addressAddition',
+                            'labelValue': "Complément d'adresse"},
+                        {
+                            'record': 'address_street',
+                            'inputType': 'text',
+                            'nameInput': 'addressStreet',
+                            'idInput': 'addressStreet',
+                            'labelValue': 'Voie'},
+                        {
+                            'record': 'address_zip_code',
+                            'inputType': 'text',
+                            'nameInput': 'addressZipCode',
+                            'idInput': 'addressZipCode',
+                            'labelValue': 'Code postal'},
+                        {
+                            'record': 'address_city',
+                            'inputType': 'text',
+                            'nameInput': 'addressCity',
+                            'idInput': 'addressCity',
+                            'labelValue': 'Ville'}
                     ] %}
                     {% set fieldToDisplayCol2 = [
                         {
-                            'record': 'corporate_name',
+                            'record': 'phone_number',
                             'inputType': 'text',
-                            'nameInput': 'corporateName',
-                            'idInput': 'corporateName',
-                            'labelValue': 'Fournisseur'},
+                            'nameInput': 'phoneNumber',
+                            'idInput': 'phoneNumber',
+                            'labelValue': 'Numéro de tél. fixe perso.'},
+                        {
+                            'record': 'cellphone_number',
+                            'inputType': 'text',
+                            'nameInput': 'cellphoneNumber',
+                            'idInput': 'cellphoneNumber',
+                            'labelValue': 'Numéro de tél. portable perso'},
+                        {
+                            'record': 'personal_email_address',
+                            'inputType': 'text',
+                            'nameInput': 'personalEmailAddress',
+                            'idInput': 'personalEmailAddress',
+                            'labelValue': 'Adresse mail perso'}
                     ] %}
                     {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
                     {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
@@ -82,17 +117,18 @@
                     {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
                 </div>
                 <div>
-                    {% set titleCardToDisplay = 'marques de voitures compatibles' %}
-                    {% set  idCard =  'supply'%}
+                    {% set titleCardToDisplay = 'vehicules' %}
+                    {% set  idCard =  'vehicules'%}
                     {% set fieldToDisplayCol1 = [
                         {
-                            'record': 'stock',
+                            'record': 'personal_email_address',
                             'inputType': 'text',
-                            'nameInput': 'stock',
-                            'idInput': 'stock',
-                            'labelValue': 'Stock'},
+                            'nameInput': 'personalEmailAddress',
+                            'idInput': 'personalEmailAddress',
+                            'labelValue': 'Adresse mail perso'}
                     ] %}
-                    {% set fieldToDisplayCol2 = [] %}
+                    {% set fieldToDisplayCol2 = [
+                    ] %}
                     {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
                     {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
                     {% set tabIndexBeforeCard = tabIndex %}
@@ -100,46 +136,9 @@
                     {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
                 </div>
             </div>
-            <div>
-                {% set titleCardToDisplay = 'dependances' %}
-                {% set  idCard =  'supply'%}
-                {% set fieldToDisplayCol1 = [
-                    {
-                        'record': 'stock',
-                        'inputType': 'text',
-                        'nameInput': 'stock',
-                        'idInput': 'stock',
-                        'labelValue': 'Stock'},
-                ] %}
-                {% set fieldToDisplayCol2 = [] %}
-                {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
-                {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
-                {% set tabIndexBeforeCard = tabIndex %}
-                {% include '_form_components/_cardForm.html.twig'%}
-                {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
-            </div>
-            <div>
-                {% set titleCardToDisplay = 'Fiche produit' %}
-                {% set  idCard =  'supply'%}
-                {% set fieldToDisplayCol1 = [
-                    {
-                        'record': 'stock',
-                        'inputType': 'text',
-                        'nameInput': 'stock',
-                        'idInput': 'stock',
-                        'labelValue': 'Stock'},
-                ] %}
-                {% set fieldToDisplayCol2 = [] %}
-                {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
-                {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
-                {% set tabIndexBeforeCard = tabIndex %}
-                {% include '_form_components/_cardForm.html.twig'%}
-                {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
-            </div>
-    </div>
-    {% if operation == 'edit' or operation == 'add'  %}
-        <input type="submit" value="Enregistrer" class="btn btn-primary"/>
-    {% endif %}
-    </form>
+            {% if operation == 'edit' or operation == 'add'  %}
+                <input type="submit" value="Enregistrer" class="btn btn-primary"/>
+            {% endif %}
+        </form>
     </div>
 {% endblock %}

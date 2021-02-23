@@ -8,7 +8,7 @@
     <div>
         <div class="row">
             <div class="col" >
-                <a href="/employee/add" class="btn btn-primary btn-sm float-right mb-3 mr-3">Ajout</a>
+                <a href="/individualcustomer/add" class="btn btn-primary btn-sm float-right mb-3 mr-3">Ajout</a>
             </div>
         </div>
         <table id="datatable_users" class="table table-striped table-hover">
@@ -28,9 +28,9 @@
                     <th>{{customer['cellphone_number']}}</th>
                     <th>{{customer['personal_email_address']}}</th>
                     <th>
-                        <a href="/employee/show/{{employee['id_employee']}}/read" class="btn btn-primary btn-sm">Lecture</a>
-                        <a href="/employee/edit/{{employee['id_employee']}}" class="btn btn-primary btn-sm">Modifier</a>
-                        <a href="/employee/delete/{{employee['id_employee']}}/read" class="btn btn-primary btn-sm">Delete</a>
+                        <a href="/individualcustomer/show/{{customer['id_customer']}}" class="btn btn-primary btn-sm">Lecture</a>
+                        <a href="/individualcustomer/edit/{{customer['id_customer']}}" class="btn btn-primary btn-sm">Modifier</a>
+                        <a href="/individualcustomer/delete/{{customer['id_customer']}}/read" class="btn btn-primary btn-sm">Delete</a>
                     </th>
                 </tr>
             {%  endfor %}
