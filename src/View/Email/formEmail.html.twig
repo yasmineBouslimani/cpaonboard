@@ -1,0 +1,26 @@
+{% extends 'layout.html.twig' %}
+{% block content %}
+    <form action='/employee/notify' method="post">
+    <div class="form-group">
+        <label class="text-white" for="employee_hr_id">Votre identifiant :</label>
+        <input type="text" name="employee_hr_id" class="form-control" id="employee_hr_id"
+               placeholder="Entrez votre identifiant" value="">
+        <div class="text-danger mt-1">{{ identifierError }}</div>
+    </div>
+        <div class="form-group">
+            <label class="text-white" for="subject">L'objet de votre demande de contact :</label>
+            <input type="text" name="subject" class="form-control" id="subject"
+                   placeholder="Entrez votre objet" value="">
+
+        </div>
+    <div class="form-group">
+        <label class="text-white" for="login">Votre message :</label>
+        <input type="text" name="message" class="form-control" id="message"
+               placeholder="Entrez votre message" value="">
+        <div class="text-danger mt-1">{{ messageError }}</div>
+
+    </div>
+
+    <input type="submit" value="Envoyer">
+</form>
+{% endblock %}
