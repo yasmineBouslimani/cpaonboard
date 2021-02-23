@@ -100,10 +100,10 @@ abstract class AbstractManager
         $valuesToUpdate = substr($valuesToUpdate, 0, -1);
         $valuesToUpdate = $valuesToUpdate . ')';
 
-    // prepared request
-    $statement = $this->pdo->prepare('INSERT INTO ' . $table . $labelsToUpdate .' VALUES ' . $valuesToUpdate);
-    $statement->execute();
-    return (int)$this->pdo->lastInsertId();
+        // prepared request
+        $statement = $this->pdo->prepare('INSERT INTO ' . $table . $labelsToUpdate .' VALUES ' . $valuesToUpdate);
+        $statement->execute();
+        return (int)$this->pdo->lastInsertId();
     }
 
     public function update(string $table, array $recordFields): bool
@@ -140,17 +140,17 @@ abstract class AbstractManager
     }
 
     public function GetIdRecordsByForeignKeys(string $table, string $foreignKeyField, int $foreignKeyValue): array
-{
-    /**
-     * Return the id of the records associated to foreign key.
-     *
-     * @return array
-     */
-    // prepared request
-    $idFieldName = 'id_' . $table;
-    $statement = $this->pdo->prepare(
-        'Select ' . $idFieldName . ' FROM '. $table. ' WHERE `' . $foreignKeyField . '`='. $foreignKeyValue);
-    $statement->execute();
-    return $statement->fetchAll();
-}
+    {
+        /**
+         * Return the id of the records associated to foreign key.
+         *
+         * @return array
+         */
+        // prepared request
+        $idFieldName = 'id_' . $table;
+        $statement = $this->pdo->prepare(
+            'Select ' . $idFieldName . ' FROM '. $table. ' WHERE `' . $foreignKeyField . '`='. $foreignKeyValue);
+        $statement->execute();
+        return $statement->fetchAll();
+    }
 }

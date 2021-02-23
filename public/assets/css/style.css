@@ -72,10 +72,18 @@ h1, h2, nav, p {
         display: flex;
         justify-content: center;
     }
+    .nav-link {
+        font-size: 9px;
+    }
+
 }
 @media screen and (max-width: 571px) {
     .title-pl h2 {
         text-align: center;
+    }
+    .nav-link {
+        font-size: 9px;
+        color:red;
     }
 }
 
@@ -89,5 +97,18 @@ h1, h2, nav, p {
 }
 
 .card-header.uppercase {
+    text-transform: uppercase;
+}
+
+.nav-link {
+    font-size: 1rem;
+    color: var(--lightBlackCPA);
+}
+
+.navbar-list-products {
+    background-color: #EEEEEE;
+    color: white;
+    font-size: 15px;
+    font-weight: bolder;
     text-transform: uppercase;
 }

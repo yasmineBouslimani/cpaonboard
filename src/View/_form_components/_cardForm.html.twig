@@ -1,6 +1,6 @@
 <div class="card mr-4 mb-4">
     <div class="card-header uppercase">{{ titleCardToDisplay }}
-       {#COLLAPSE BUTTON#}
+        {#COLLAPSE BUTTON#}
         <button class="btn btn-secondary btn-sm float-right" type="button" data-toggle="collapse" data-target="#{{ idCard }}" aria-expanded="true
             aria-controls="{{ idCard }}"> <span aria-hidden="true">&triangledown;</span>
         <span class="sr-only">Déplier-Replier</span>
@@ -46,10 +46,10 @@
                             </label>
                         </div>
                         <div class="col-2 ">
-                        {# IF SELECT FIELD #}
-                        {% if currentInputCol1 == 'select' %}
-                            <select name="{{ currentNameInputCol1 }}"
-                                    tabindex="{{ tabIndexBeforeCard+1 }}" class="form-control" {{ disabled }}">
+                            {# IF SELECT FIELD #}
+                            {% if currentInputCol1 == 'select' %}
+                                <select name="{{ currentNameInputCol1 }}"
+                                        tabindex="{{ tabIndexBeforeCard+1 }}" class="form-control" {{ disabled }}">
                                 {# Add an option for every value in enum field and display value selected in database#}
                                 {% for item in currentSelectRequestValueCol1 %}
                                     {% if item == currentRecordCol1 %}
@@ -58,33 +58,33 @@
                                         <option value="{{ item }}">{{ item }}</option>
                                     {% endif %}
                                 {%  endfor %}
-                            </select>
-                            {# IF CHECKBOX FIELD #}
-                        {% elseif  currentInputCol1 == 'checkbox_one'%}
-                            {# Check or uncheck checkbox #}
-                            {% if  currentRecordCol1 == 0%}
-                                {% set checkboxSelectedCol1 = '' %}
-                            {% else %}
+                                </select>
+                                {# IF CHECKBOX FIELD #}
+                            {% elseif  currentInputCol1 == 'checkbox_one'%}
+                                {# Check or uncheck checkbox #}
+                                {% if  currentRecordCol1 == 0%}
+                                    {% set checkboxSelectedCol1 = '' %}
+                                {% else %}
                                     {% set checkboxSelectedCol1 = 'selected'%}
+                                {% endif %}
+                                <input type="checkbox"
+                                       name="{{ currentNameInputCol1 }}"
+                                       id="{{ currentIdInputCol1 }}"
+                                       class="form-control"
+                                       tabindex="{{ tabIndexBeforeCard+1 }}"
+                                       checked="{{ checkboxSelectedCol1 }}"
+                                        {{ disabled }}/></br>
+                                {# OTHERS FIELD TYPES#}
+                            {% else %}
+                                <input type="{{ currentInputCol1 }}"
+                                       name="{{ currentNameInputCol1 }}"
+                                       id="{{ currentIdInputCol1 }}"
+                                       class="form-control"
+                                       tabindex="{{ tabIndexBeforeCard+1 }}"
+                                       value="{{ currentRecordCol1 }}"
+                                        {{ disabled }} /></br>
                             {% endif %}
-                            <input type="checkbox"
-                                   name="{{ currentNameInputCol1 }}"
-                                   id="{{ currentIdInputCol1 }}"
-                                   class="form-control"
-                                   tabindex="{{ tabIndexBeforeCard+1 }}"
-                                   checked="{{ checkboxSelectedCol1 }}"
-                                   {{ disabled }}/></br>
-                            {# OTHERS FIELD TYPES#}
-                        {% else %}
-                            <input type="{{ currentInputCol1 }}"
-                                   name="{{ currentNameInputCol1 }}"
-                                   id="{{ currentIdInputCol1 }}"
-                                   class="form-control"
-                                   tabindex="{{ tabIndexBeforeCard+1 }}"
-                                   value="{{ currentRecordCol1 }}"
-                                   {{ disabled }} /></br>
-                        {% endif %}
-                    </div>
+                        </div>
                         {# UPDATE VALUE FOR TAB INDEX AND ARRAY COL 1#}
                         {% set currentIndiceArrayCol1 = currentIndiceArrayCol1 + 1 %}
                         {% set tabIndex = tabIndex + 1 %}
@@ -110,54 +110,54 @@
                         {% else %}
                             {% set tabIndexForCol2 = tabIndexBeforeCard+currentRow+CountRow %}
                         {% endif %}
-                            <div class="col-2">
-                                {# DISPLAY LABEL #}
-                                <label for="{{ currentIdInputCol2 }}" class="mr-1">
-                                    {{ currentLabelValueCol2}}
-                                </label>
-                            </div>
-                            <div class="col-2 ">
-                                {# IF SELECT FIELD #}
-                                {% if currentIdInputCol2 == 'select' %}
-                                    <select name="{{ currentNameInputCol2 }}"
-                                            tabindex="{{ tabIndexForCol2 }}"
-                                            class="form-control"
-                                            {{ disabled }} >
-                                        {# Add an option for every value in enum field and display value selected in database #}
-                                        {% for item in currentSelectRequestValueCol2 %}
-                                            {% if item == currentRecordCol2 %}
-                                                <option selected value="{{ item }}">{{ item }}</option>
-                                            {% else %}
-                                                <option value="{{ item }}">{{ item }}</option>
-                                            {% endif %}
-                                        {%  endfor %}
-                                    </select>
-                                    {# IF CHECKBOX FIELD #}
-                                    {% elseif currentInputCol2 == 'checkbox_one'%}
-                                        {# Check or uncheck checkbox #}
-                                        {% if  currentRecordCol2 == 0%}
-                                            {% set checkboxSelectedCol2 = '' %}
+                        <div class="col-2">
+                            {# DISPLAY LABEL #}
+                            <label for="{{ currentIdInputCol2 }}" class="mr-1">
+                                {{ currentLabelValueCol2}}
+                            </label>
+                        </div>
+                        <div class="col-2 ">
+                            {# IF SELECT FIELD #}
+                            {% if currentIdInputCol2 == 'select' %}
+                                <select name="{{ currentNameInputCol2 }}"
+                                        tabindex="{{ tabIndexForCol2 }}"
+                                        class="form-control"
+                                        {{ disabled }} >
+                                    {# Add an option for every value in enum field and display value selected in database #}
+                                    {% for item in currentSelectRequestValueCol2 %}
+                                        {% if item == currentRecordCol2 %}
+                                            <option selected value="{{ item }}">{{ item }}</option>
                                         {% else %}
-                                            {% set checkboxSelectedCol2 = 'selected'%}
+                                            <option value="{{ item }}">{{ item }}</option>
                                         {% endif %}
-                                        <input type="checkbox"
-                                               name="{{ currentNameInputCol2 }}"
-                                               id="{{ currentIdInputCol2 }}"
-                                               class="form-control"
-                                               tabindex="{{ tabIndexForCol2 }}"
-                                               checked="{{ checkboxSelectedCol2 }}"
-                                                {{ disabled }}/></br>
-                                        {# OTHERS FIELD TYPES#}
-                                    {% else %}
-                                    <input type="{{ currentInputCol2 }}"
-                                           name="{{ currentNameInputCol2 }}"
-                                           id="{{ currentIdInputCol2 }}"
-                                           class="form-control"
-                                           tabindex="{{ tabIndexForCol2 }}"
-                                           value="{{ currentRecordCol2 }}"
-                                           {{ disabled }}/></br>
+                                    {%  endfor %}
+                                </select>
+                                {# IF CHECKBOX FIELD #}
+                            {% elseif currentInputCol2 == 'checkbox_one'%}
+                                {# Check or uncheck checkbox #}
+                                {% if  currentRecordCol2 == 0%}
+                                    {% set checkboxSelectedCol2 = '' %}
+                                {% else %}
+                                    {% set checkboxSelectedCol2 = 'selected'%}
                                 {% endif %}
-                            </div>
+                                <input type="checkbox"
+                                       name="{{ currentNameInputCol2 }}"
+                                       id="{{ currentIdInputCol2 }}"
+                                       class="form-control"
+                                       tabindex="{{ tabIndexForCol2 }}"
+                                       checked="{{ checkboxSelectedCol2 }}"
+                                        {{ disabled }}/></br>
+                                {# OTHERS FIELD TYPES#}
+                            {% else %}
+                                <input type="{{ currentInputCol2 }}"
+                                       name="{{ currentNameInputCol2 }}"
+                                       id="{{ currentIdInputCol2 }}"
+                                       class="form-control"
+                                       tabindex="{{ tabIndexForCol2 }}"
+                                       value="{{ currentRecordCol2 }}"
+                                        {{ disabled }}/></br>
+                            {% endif %}
+                        </div>
                         {# UPDATE VALUE FOR TAB INDEX AND ARRAY COL 2 #}
                         {% set currentIndiceArrayCol2 = currentIndiceArrayCol2 + 1 %}
                         {% set tabIndex = tabIndex + 1 %}
