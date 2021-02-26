@@ -137,7 +137,7 @@ class EmployeeController extends AbstractController
         $employeeController = new EmployeeController();
         $data = $employeeController->getDataforEmployee($id);
 
-        return $this->twig->render('Employee/showEmployee.html.twig', ['entityRequest' => $data['employee'],
+        return $this->twig->render('Employee/showEmployee.html.twig', ['employee' => $data['employee'],
             'civilityEnum' => $data['civilityEnum'], 'genderEnum' => $data['genderEnum'], 'contractTypeEnum' => $data['contractTypeEnum'],
             'operation' => 'read']);
     }
@@ -164,7 +164,7 @@ class EmployeeController extends AbstractController
 
         $data = $employeeController->getDataforEmployee($id);
 
-        return $this->twig->render('Employee/showEmployee.html.twig', ['entityRequest' => $data['employee'],
+        return $this->twig->render('Employee/showEmployee.html.twig', ['employee' => $data['employee'],
             'civilityEnum' => $data['civilityEnum'], 'genderEnum' => $data['genderEnum'],
             'contractTypeEnum' => $data['contractTypeEnum'], 'operation' => 'edit']);
 

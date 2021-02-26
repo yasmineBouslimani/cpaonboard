@@ -9,7 +9,7 @@
 {% block content %}
     <div>
         {% if operation == 'edit' %}
-            {% set formAction = ['/individualCustomer/edit/', entityRequest[0]['id_customer']]|join('') %}
+            {% set formAction = ['/individualCustomer/edit/', individualCustomer[0]['id_customer']]|join('') %}
         {% elseif operation == 'add'  %}
             {% set formAction = '/individualCustomer/add' %}
         {% endif %}
