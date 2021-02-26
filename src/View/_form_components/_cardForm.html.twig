@@ -3,8 +3,11 @@
         {#COLLAPSE BUTTON#}
         <button class="btn btn-secondary btn-sm float-right" type="button" data-toggle="collapse" data-target="#{{ idCard }}" aria-expanded="true
             aria-controls="{{ idCard }}"> <span aria-hidden="true">&triangledown;</span>
-        <span class="sr-only">Déplier-Replier</span>
-        </button>
+        <span class="sr-only">Déplier-Replier</span></button>
+        {% if deletable  %}
+            <button><a href="/individualcustomer/show/{{customer['id_customer']}}" class="btn btn-danger btn-sm" aria-label="Delete">X</a></button>
+
+        {% endif %}
     </div>
     {# Number of row need for displaying all datas #}
     {% set CountRow = LengthArrayCol1 > LengthArrayCol2 ? LengthArrayCol1 : LengthArrayCol2 %}
