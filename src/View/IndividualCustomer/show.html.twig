@@ -35,6 +35,7 @@
                     {% set  idCard =  'personal_informations'%}
                     {% set fieldToDisplayCol1 = [
                         {
+                            'entityRequest': individualCustomer,
                             'record': 'last_name',
                             'inputType': 'text',
                             'nameInput': 'lastName',
@@ -43,6 +44,7 @@
                     ] %}
                     {% set fieldToDisplayCol2 = [
                         {
+                            'entityRequest': individualCustomer,
                             'record': 'first_name',
                             'inputType': 'text',
                             'nameInput': 'firstName',
@@ -60,30 +62,35 @@
                     {% set  idCard =  'contacts'%}
                     {% set fieldToDisplayCol1 = [
                         {
+                            'entityRequest': individualCustomer,
                             'record': 'address_street_number',
                             'inputType': 'text',
                             'nameInput': 'addressStreetNumber',
                             'idInput': 'addressStreetNumber',
                             'labelValue': 'Numéro de rue'},
                         {
+                            'entityRequest': individualCustomer,
                             'record': 'address_addition',
                             'inputType': 'text',
                             'nameInput': 'addressAddition',
                             'idInput': 'addressAddition',
                             'labelValue': "Complément d'adresse"},
                         {
+                            'entityRequest': individualCustomer,
                             'record': 'address_street',
                             'inputType': 'text',
                             'nameInput': 'addressStreet',
                             'idInput': 'addressStreet',
                             'labelValue': 'Voie'},
                         {
+                            'entityRequest': individualCustomer,
                             'record': 'address_zip_code',
                             'inputType': 'text',
                             'nameInput': 'addressZipCode',
                             'idInput': 'addressZipCode',
                             'labelValue': 'Code postal'},
                         {
+                            'entityRequest': individualCustomer,
                             'record': 'address_city',
                             'inputType': 'text',
                             'nameInput': 'addressCity',
@@ -92,18 +99,21 @@
                     ] %}
                     {% set fieldToDisplayCol2 = [
                         {
+                            'entityRequest': individualCustomer,
                             'record': 'phone_number',
                             'inputType': 'text',
                             'nameInput': 'phoneNumber',
                             'idInput': 'phoneNumber',
                             'labelValue': 'Numéro de tél. fixe perso.'},
                         {
+                            'entityRequest': individualCustomer,
                             'record': 'cellphone_number',
                             'inputType': 'text',
                             'nameInput': 'cellphoneNumber',
                             'idInput': 'cellphoneNumber',
                             'labelValue': 'Numéro de tél. portable perso'},
                         {
+                            'entityRequest': individualCustomer,
                             'record': 'personal_email_address',
                             'inputType': 'text',
                             'nameInput': 'personalEmailAddress',
@@ -122,6 +132,7 @@
                     {% set deletable = true %}
                     {% set fieldToDisplayCol1 = [
                         {
+                            'entityRequest': individualCustomer,
                             'record': 'personal_email_address',
                             'inputType': 'text',
                             'nameInput': 'personalEmailAddress',

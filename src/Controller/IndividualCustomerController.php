@@ -40,8 +40,9 @@ class IndividualCustomerController extends AbstractController
          */
         $individualCustomerManager = new IndividualCustomerManager();
         $individualCustomer=$individualCustomerManager->selectIndividualCustomerById($id);
+        $vehicules=$individualCustomerManager->selectVehiculesByCustomerId($id);
 
-        return ['individualCustomer' => $individualCustomer];
+        return ['individualCustomer' => $individualCustomer, 'vehicules' => $vehicules];
     }
 
     /*public function getDataEnumforEmployee(): array
@@ -112,7 +113,7 @@ class IndividualCustomerController extends AbstractController
         $data = $individualCustomerController->getDataforIndividualCustomer($id);
         var_dump($data['individualCustomer']);
 
-        return $this->twig->render('individualCustomer/show.html.twig', ['entityRequest' => $data['individualCustomerData'],
+        return $this->twig->render('individualCustomer/show.html.twig', ['individualCustomer' => $data['individualCustomer'],
             'operation' => 'read']);
     }
 
