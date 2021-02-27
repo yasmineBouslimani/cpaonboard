@@ -19,14 +19,14 @@
                    id="idCustomer"
                    class="form-control"
                    tabindex="1"
-                   value="{{ entityRequest[0]['id_customer'] }}"
+                   value="{{ individualCustomer[0]['id_customer'] }}"
                     {{ disabled }}/>
             <input type="hidden"
                    name="idContact"
                    id="idContact"
                    class="form-control"
                    tabindex="2"
-                   value="{{ entityRequest[0]['id_contact'] }}"
+                   value="{{ individualCustomer[0]['id_contact'] }}"
                     {{ disabled }}/>
             {% set tabIndex = 3 %}
             <div class="accordion" id="accordion">
@@ -35,7 +35,7 @@
                     {% set  idCard =  'personal_informations'%}
                     {% set fieldToDisplayCol1 = [
                         {
-                            'entityRequest': individualCustomer,
+                            'entityRequest': individualCustomer[0],
                             'record': 'last_name',
                             'inputType': 'text',
                             'nameInput': 'lastName',
@@ -44,7 +44,7 @@
                     ] %}
                     {% set fieldToDisplayCol2 = [
                         {
-                            'entityRequest': individualCustomer,
+                            'entityRequest': individualCustomer[0],
                             'record': 'first_name',
                             'inputType': 'text',
                             'nameInput': 'firstName',
@@ -62,35 +62,35 @@
                     {% set  idCard =  'contacts'%}
                     {% set fieldToDisplayCol1 = [
                         {
-                            'entityRequest': individualCustomer,
+                            'entityRequest': individualCustomer[0],
                             'record': 'address_street_number',
                             'inputType': 'text',
                             'nameInput': 'addressStreetNumber',
                             'idInput': 'addressStreetNumber',
                             'labelValue': 'Numéro de rue'},
                         {
-                            'entityRequest': individualCustomer,
+                            'entityRequest': individualCustomer[0],
                             'record': 'address_addition',
                             'inputType': 'text',
                             'nameInput': 'addressAddition',
                             'idInput': 'addressAddition',
                             'labelValue': "Complément d'adresse"},
                         {
-                            'entityRequest': individualCustomer,
+                            'entityRequest': individualCustomer[0],
                             'record': 'address_street',
                             'inputType': 'text',
                             'nameInput': 'addressStreet',
                             'idInput': 'addressStreet',
                             'labelValue': 'Voie'},
                         {
-                            'entityRequest': individualCustomer,
+                            'entityRequest': individualCustomer[0],
                             'record': 'address_zip_code',
                             'inputType': 'text',
                             'nameInput': 'addressZipCode',
                             'idInput': 'addressZipCode',
                             'labelValue': 'Code postal'},
                         {
-                            'entityRequest': individualCustomer,
+                            'entityRequest': individualCustomer[0],
                             'record': 'address_city',
                             'inputType': 'text',
                             'nameInput': 'addressCity',
@@ -99,21 +99,21 @@
                     ] %}
                     {% set fieldToDisplayCol2 = [
                         {
-                            'entityRequest': individualCustomer,
+                            'entityRequest': individualCustomer[0],
                             'record': 'phone_number',
                             'inputType': 'text',
                             'nameInput': 'phoneNumber',
                             'idInput': 'phoneNumber',
                             'labelValue': 'Numéro de tél. fixe perso.'},
                         {
-                            'entityRequest': individualCustomer,
+                            'entityRequest': individualCustomer[0],
                             'record': 'cellphone_number',
                             'inputType': 'text',
                             'nameInput': 'cellphoneNumber',
                             'idInput': 'cellphoneNumber',
                             'labelValue': 'Numéro de tél. portable perso'},
                         {
-                            'entityRequest': individualCustomer,
+                            'entityRequest': individualCustomer[0],
                             'record': 'personal_email_address',
                             'inputType': 'text',
                             'nameInput': 'personalEmailAddress',
@@ -126,31 +126,89 @@
                     {% include '_form_components/_cardForm.html.twig'%}
                     {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
                 </div>
-                <div>
-                    {% set titleCardToDisplay = 'vehicules' %}
-                    {% set  idCard =  'vehicules'%}
-                    {% set deletable = true %}
-                    {% set fieldToDisplayCol1 = [
-                        {
-                            'entityRequest': individualCustomer,
-                            'record': 'personal_email_address',
-                            'inputType': 'text',
-                            'nameInput': 'personalEmailAddress',
-                            'idInput': 'personalEmailAddress',
-                            'labelValue': 'Adresse mail perso'}
-                    ] %}
-                    {% set fieldToDisplayCol2 = [
-                    ] %}
-                    {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
-                    {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
-                    {% set tabIndexBeforeCard = tabIndex %}
-                    {% include '_form_components/_cardForm.html.twig'%}
-                    {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
-                </div>
+                {# Counter for vehicule cards #}
+                {% set counterVehicules = 0 %}
+                {# DISPLAY VEHICULES #}
+                {% for vehicule in vehicules %}
+                    {% set counterVehicules = counterVehicules + 1 %}
+                    <div>
+                        {% set titleCardToDisplay = ['vehicule ', counterVehicules]|join('') %}
+                        {% set  idCard =  'vehicules'%}
+                        {% set deletable = true %}
+                        {% set fieldToDisplayCol1 = [
+                            {
+                                'entityRequest': vehicules[counterVehicules-1],
+                                'record': 'license_plate',
+                                'inputType': 'text',
+                                'nameInput': 'licensePlate',
+                                'idInput': 'licensePlate',
+                                'labelValue': 'Plaque immatriculation'},
+                            {
+                                'entityRequest': vehicules[counterVehicules-1],
+                                'record': 'fiscal_horse_power',
+                                'inputType': 'text',
+                                'nameInput': 'fiscalHorsePower',
+                                'idInput': 'fiscalHorsePower',
+                                'labelValue': 'Chevaux fiscaux'},
+                            {
+                                'entityRequest': vehicules[counterVehicules-1],
+                                'record': 'manufacture_year',
+                                'inputType': 'text',
+                                'nameInput': 'manufactureYear',
+                                'idInput': 'manufactureYear',
+                                'labelValue': 'Année de fabrication'},
+                            {
+                                'entityRequest': vehicules[counterVehicules-1],
+                                'record': 'door_number',
+                                'inputType': 'text',
+                                'nameInput': 'doorNumber',
+                                'idInput': 'doorNumber',
+                                'labelValue': 'Nombre de portes'},
+                        ] %}
+                        {% set fieldToDisplayCol2 = [
+                            {
+                                'entityRequest': vehicules[counterVehicules-1],
+                                'record': '',
+                                'inputType': 'text',
+                                'nameInput': 'doorNumber',
+                                'idInput': 'doorNumber',
+                                'labelValue': 'A FAIRE'},
+                            {
+                                'entityRequest': vehicules[counterVehicules-1],
+                                'record': '',
+                                'inputType': 'text',
+                                'nameInput': 'doorNumber',
+                                'idInput': 'doorNumber',
+                                'labelValue': 'A FAIRE'},
+                            {
+                                'entityRequest': vehicules[counterVehicules-1],
+                                'record': '',
+                                'inputType': 'text',
+                                'nameInput': 'doorNumber',
+                                'idInput': 'doorNumber',
+                                'labelValue': 'A FAIRE'}
+                        ] %}
+                        {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
+                        {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
+                        {% set tabIndexBeforeCard = tabIndex %}
+                        {% include '_form_components/_cardForm.html.twig'%}
+                        {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
+                    </div>
+                {% endfor %}
             </div>
-            {% if operation == 'edit' or operation == 'add'  %}
-                <input type="submit" value="Enregistrer" class="btn btn-primary"/>
-            {% endif %}
+            <div>
+                {# ADD VEHICULE #}
+                {% if operation == 'edit' or operation == 'add' %}
+                    {# TODO : add method for vehicle#}
+                    <button><a href="" class="btn btn-primary btn-sm" aria-label="Add">Nouveau véhicule</a></button>
+                {% endif %}
+            </div>
+            <div>
+                {# SUBMIT FORM #}
+                {% if operation == 'edit' or operation == 'add'  %}
+                    <input type="submit" value="Enregistrer" class="btn btn-primary"/>
+                {% endif %}
+            </div>
         </form>
     </div>
 {% endblock %}

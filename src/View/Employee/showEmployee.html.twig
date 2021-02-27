@@ -57,14 +57,14 @@
                     {% set  idCard =  'personal_informations'%}
                     {% set fieldToDisplayCol1 = [
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'employee_hr_id',
                             'inputType': 'text',
                             'nameInput': 'employeeHrId',
                             'idInput': 'employeeHrId',
                             'labelValue': 'Matricule'},
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'gender',
                             'inputType': 'select',
                             'selectRequest': genderEnum,
@@ -72,7 +72,7 @@
                             'idInput': 'gender',
                             'labelValue': 'Sexe'},
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'civility',
                             'inputType': 'select',
                             'selectRequest': civilityEnum,
@@ -80,14 +80,14 @@
                             'idInput': 'civility',
                             'labelValue': 'Civilité'},
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'last_name',
                             'inputType': 'text',
                             'nameInput': 'lastName',
                             'idInput': 'lastName',
                             'labelValue': 'Nom'},
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'first_name',
                             'inputType': 'text',
                             'nameInput': 'firstName',
@@ -96,21 +96,21 @@
                     ] %}
                     {% set fieldToDisplayCol2 = [
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'birth_date',
                             'inputType': 'date',
                             'nameInput': 'birthDate',
                             'idInput': 'birthDate',
                             'labelValue': 'Date de naissance'},
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'birth_place',
                             'inputType': 'text',
                             'nameInput': 'birthPlace',
                             'idInput': 'birthPlace',
                             'labelValue': 'Lieu de naissance'},
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'social_security_number',
                             'nameInput': 'socialSecurityNumber',
                             'idInput': 'socialSecurityNumber',
@@ -127,35 +127,35 @@
                     {% set  idCard =  'contacts'%}
                     {% set fieldToDisplayCol1 = [
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'address_street_number',
                             'inputType': 'text',
                             'nameInput': 'addressStreetNumber',
                             'idInput': 'addressStreetNumber',
                             'labelValue': 'Numéro de rue'},
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'address_addition',
                             'inputType': 'text',
                             'nameInput': 'addressAddition',
                             'idInput': 'addressAddition',
                             'labelValue': "Complément d'adresse"},
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'address_street',
                             'inputType': 'text',
                             'nameInput': 'addressStreet',
                             'idInput': 'addressStreet',
                             'labelValue': 'Voie'},
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'address_zip_code',
                             'inputType': 'text',
                             'nameInput': 'addressZipCode',
                             'idInput': 'addressZipCode',
                             'labelValue': 'Code postal'},
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'address_city',
                             'inputType': 'text',
                             'nameInput': 'addressCity',
@@ -164,21 +164,21 @@
                     ] %}
                     {% set fieldToDisplayCol2 = [
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'phone_number',
                             'inputType': 'text',
                             'nameInput': 'phoneNumber',
                             'idInput': 'phoneNumber',
                             'labelValue': 'Numéro de tél. fixe perso.'},
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'cellphone_number',
                             'inputType': 'text',
                             'nameInput': 'cellphoneNumber',
                             'idInput': 'cellphoneNumber',
                             'labelValue': 'Numéro de tél. portable perso'},
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'personal_email_address',
                             'inputType': 'text',
                             'nameInput': 'personalEmailAddress',
@@ -196,7 +196,7 @@
                     {% set  idCard =  'contract'%}
                     {% set fieldToDisplayCol1 = [
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'type_contract',
                             'inputType': 'select',
                             'selectRequest': contractTypeEnum,
@@ -204,21 +204,21 @@
                             'idInput': 'typeContract',
                             'labelValue': 'Type de contrat'},
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'starting_date',
                             'inputType': 'date',
                             'nameInput': 'startingDate',
                             'idInput': 'startingDate',
                             'labelValue': 'Date de début'},
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'end_date',
                             'inputType': 'date',
                             'nameInput': 'endDate',
                             'idInput': 'endDate',
                             'labelValue': 'Date de fin'},
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'on_going',
                             'inputType': 'checkbox_one',
                             'nameInput': 'onGoing',
@@ -227,21 +227,21 @@
                     ] %}
                     {% set fieldToDisplayCol2 = [
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'wage_first_year',
                             'inputType': 'text',
                             'nameInput': 'wageFirstYear',
                             'idInput': 'wageFirstYear',
                             'labelValue': 'Salaire 1e année'},
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'wage_second_year',
                             'inputType': 'text',
                             'nameInput': 'wageSecondYear',
                             'idInput': 'wageSecondYear',
                             'labelValue': 'Salaire 2e année'},
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'wage_third_year',
                             'inputType': 'text',
                             'nameInput': 'wageThirdYear',
@@ -259,14 +259,14 @@
                     {% set  idCard =  'bank_data'%}
                     {% set fieldToDisplayCol1 = [
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'bank_name',
                             'inputType': 'text',
                             'nameInput': 'bankName',
                             'idInput': 'bankName',
                             'labelValue': 'Banque'},
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'bank_city',
                             'inputType': 'text',
                             'nameInput': 'bankCity',
@@ -275,14 +275,14 @@
                     ] %}
                     {% set fieldToDisplayCol2 = [
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'bank_iban',
                             'inputType': 'text',
                             'nameInput': 'bankIban',
                             'idInput': 'bankIban',
                             'labelValue': 'IBAN'},
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'bank_bic',
                             'inputType': 'text',
                             'nameInput': 'bankBic',
@@ -300,14 +300,14 @@
                     {% set  idCard =  'bank_data'%}
                     {% set fieldToDisplayCol1 = [
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'wage_ratio',
                             'inputType': 'text',
                             'nameInput': 'wageRatio',
                             'idInput': 'wageRatio',
                             'labelValue': 'Coefficient'},
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'wage_hiring',
                             'inputType': 'text',
                             'nameInput': 'wage_hiring',
@@ -316,7 +316,7 @@
                     ] %}
                     {% set fieldToDisplayCol2 = [
                         {
-                            'entityRequest': employee,
+                            'entityRequest': employee[0],
                             'record': 'department',
                             'inputType': 'text',
                             'nameInput': 'department',

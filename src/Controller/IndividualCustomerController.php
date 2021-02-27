@@ -111,10 +111,9 @@ class IndividualCustomerController extends AbstractController
 
         $individualCustomerController = new IndividualCustomerController();
         $data = $individualCustomerController->getDataforIndividualCustomer($id);
-        var_dump($data['individualCustomer']);
 
         return $this->twig->render('individualCustomer/show.html.twig', ['individualCustomer' => $data['individualCustomer'],
-            'operation' => 'read']);
+            'vehicules' => $data['vehicules'], 'operation' => 'read']);
     }
 
     public function edit(int $id)
@@ -138,8 +137,8 @@ class IndividualCustomerController extends AbstractController
 
         $data = $individualCustomerController->getDataforIndividualCustomer($id);
 
-        return $this->twig->render('individualCustomer/show.html.twig', ['entityRequest' => $data['individualCustomer'],
-            'operation' => 'edit']);
+        return $this->twig->render('individualCustomer/show.html.twig', ['individualCustomer' => $data['individualCustomer'],
+            'vehicules' => $data['vehicules'], 'operation' => 'edit']);
 
     }
 
