@@ -3,8 +3,10 @@
         {#COLLAPSE BUTTON#}
         <button class="btn btn-secondary btn-sm float-right" type="button" data-toggle="collapse" data-target="#{{ idCard }}" aria-expanded="true
             aria-controls="{{ idCard }}"> <span aria-hidden="true">&triangledown;</span>
-        <span class="sr-only">Déplier-Replier</span>
-        </button>
+        <span class="sr-only">Déplier-Replier</span></button>
+        {% if deletable and (operation == 'edit' or operation == 'add' ) %}
+            <button><a href="/individualcustomer/show/{{customer['id_customer']}}" class="btn btn-danger btn-sm" aria-label="Delete">X</a></button>
+        {% endif %}
     </div>
     {# Number of row need for displaying all datas #}
     {% set CountRow = LengthArrayCol1 > LengthArrayCol2 ? LengthArrayCol1 : LengthArrayCol2 %}
@@ -29,8 +31,10 @@
                     {% if currentIndiceArrayCol1 < LengthArrayCol1 %}
                         {# Input type for current field in column 1 #}
                         {% set currentInputCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['inputType'] %}
+                        {# Request name for current field value in column 1 #}
+                        {% set currentEntityRequestCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['entityRequest'] %}
                         {# Input value for current field in column 1 #}
-                        {% set currentRecordCol1 = entityRequest[0][fieldToDisplayCol1[currentIndiceArrayCol1]['record']] %}
+                        {% set currentRecordCol1 = currentEntityRequestCol1[fieldToDisplayCol1[currentIndiceArrayCol1]['record']] %}
                         {# Input name for current field in column 1 #}
                         {% set currentNameInputCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['nameInput'] %}
                         {# Input Id for current field in column 1 #}
@@ -38,7 +42,7 @@
                         {# Input Label to display for current field in column 1 #}
                         {% set currentLabelValueCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['labelValue'] %}
                         {# Request name (only select input) for current field in column 1 #}
-                        {% set currentSelectRequestValueCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['selectRequest'] %}
+                       {% set currentSelectRequestValueCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['selectRequest'] %}
                         {# DISPLAY LABEL #}
                         <div class="col-2 ">
                             <label for="{{ currentIdInputCol1 }}" class="mr-1" >
@@ -94,8 +98,10 @@
                     {% if currentIndiceArrayCol2 < LengthArrayCol2 %}
                         {# Input type for current field in column 2 #}
                         {% set currentInputCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['inputType'] %}
+                        {# Request name for current field value in column 2 #}
+                        {% set currentEntityRequestCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['entityRequest'] %}
                         {# Input value for current field in column 2 #}
-                        {% set currentRecordCol2 = entityRequest[0][fieldToDisplayCol2[currentIndiceArrayCol2]['record']] %}
+                        {% set currentRecordCol2 = currentEntityRequestCol2[fieldToDisplayCol2[currentIndiceArrayCol2]['record']] %}
                         {# Input name for current field in column 2 #}
                         {% set currentNameInputCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['nameInput'] %}
                         {# Input Id for current field in column 2 #}

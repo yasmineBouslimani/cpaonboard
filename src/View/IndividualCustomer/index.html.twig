@@ -1,15 +1,89 @@
 {% extends 'layout.html.twig' %}
 
+{% block title %}Clients particuliers{% endblock %}
+
 {% block bannerTitle %}INVENTAIRE DES CLIENTS PARTICULIERS{% endblock %}
 
 {% block content %}
-    <h1>Liste des clients</h1>
-    <ul>
-        {% for product in products %}
-            <li><a href="/product/show/{{ product.id_product }}">{{ product.id_product }}. {{ product.label }}</a></li>
-        {% else %}
-            <li>Nothing to display</li>
-        {% endfor %}
-    </ul>
-    <a href="/product/add">Ajouter</a>
+    <div>
+        <div class="row">
+            <div class="col" >
+                <a href="/individualcustomer/add" class="btn btn-primary btn-sm float-right mb-3 mr-3">Ajout</a>
+            </div>
+        </div>
+        <table id="datatable_users" class="table table-striped table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th class="text-left">Client</th>
+                <th class="text-left">Tél. fixe</th>
+                <th class="text-left">Tél. portable</th>
+                <th class="text-left">Adresse mail personnelle</th>
+                <th class="text-left">Actions</th>
+            </tr>
+            </thead>
+            {% for customer in individualCustomers %}
+                <tr>
+                    <th>{{customer['first_name']}} {{customer['last_name']}}</th>
+                    <th>{{customer['phone_number']}}</th>
+                    <th>{{customer['cellphone_number']}}</th>
+                    <th>{{customer['personal_email_address']}}</th>
+                    <th>
+                        <a href="/individualcustomer/show/{{customer['id_customer']}}" class="btn btn-primary btn-sm">Lecture</a>
+                        <a href="/individualcustomer/edit/{{customer['id_customer']}}" class="btn btn-primary btn-sm">Modifier</a>
+                        <a href="/individualcustomer/delete/{{customer['id_customer']}}/read" class="btn btn-primary btn-sm">Delete</a>
+                    </th>
+                </tr>
+            {%  endfor %}
+        </table>
+        {% set minimumPageQuantityAround = min(currentPage - 1, pagesCount - currentPage) %}
+        {% set conditionBefore = currentPage != 1 and minimumPageQuantityAround <= currentPage - 1 %}
+        {% set conditionAfter = currentPage != pagesCount and minimumPageQuantityAround <= pagesCount - currentPage %}
+        {% set PageQuantityAroundBefore = conditionBefore ? paginationDefaultPagesGap : minimumPageQuantityAround %}
+        {% set PageQuantityAroundAfter = conditionAfter ? paginationDefaultPagesGap : minimumPageQuantityAround %}
+        <div class="row">
+            <div class="col-6">
+                <nav class="float-right">
+                    <ul class="pagination">
+                        {# Previous link #}
+                        {% if currentPage - 1 != 0 %}
+                            <li><a class="page-link" href="/employee/index/{{ currentPage-1 }}" aria-label="Previous">
+                                    <span aria-hidden="true">&Lang;</span>
+                                    <span class="sr-only">Précédente</span>
+                                </a></li>
+                        {% endif %}
+                        {% for i in 1..pagesCount %}
+                            {# Current page to show #}
+                            {% if currentPage == i %}
+                                <li class="page-link selected">{{ i }}</li>
+                                {# Show "..." before current page depending on page numbers to show before #}
+                            {% elseif (i < currentPage and 1 != i) and (i == currentPage - PageQuantityAroundBefore - 1) %}
+                                <li class="m-2">...</li>
+                                {# Show "..." after current page depending on page numbers to show after #}
+                            {% elseif (i > currentPage and pagesCount != i) and (i == currentPage + PageQuantityAroundAfter + 1) %}
+                                <li class="m-2">...</li>
+                            {% elseif i == 1 or i == pagesCount %}
+                                <li><a class="page-link" href="/employee/index/{{ i }}">{{ i }}</a></li>
+                            {% elseif (i != 1) and (i > currentPage - PageQuantityAroundBefore - 1) %}
+                                <li><a class="page-link" href="/employee/index/{{ i }}">{{ i }}</a></li>
+                            {% elseif (pagesCount != i) and (i < currentPage + PageQuantityAroundAfter + 1) %}
+                                <li><a class="page-link" href="/employee/index/{{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                        {# Next link #}
+                        {% if currentPage + 1 <= pagesCount %}
+                            <li class="page-item">
+                                <a class="page-link" href="/employee/index/{{ currentPage+1 }}" aria-label="Next">
+                                    <span aria-hidden="true">&Rang;</span>
+                                    <span class="sr-only">Suivante</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+            <div class="col" >
+                <p class="float-right mr-3"> Nb résultats : {{individualCustomersCount}}</p>
+            </div>
+        </div>
+    </div>
 {% endblock %}

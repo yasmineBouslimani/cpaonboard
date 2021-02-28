@@ -7,6 +7,6 @@
  */
 
 define('APP_DB_USER', 'root');
-define('APP_DB_PWD', 'yasmine3010');
+define('APP_DB_PWD', '');
 define('APP_DB_HOST', 'localhost');
-define('APP_DB_NAME', 'cpaonboard');
+define('APP_DB_NAME', 'testcpaonboard');

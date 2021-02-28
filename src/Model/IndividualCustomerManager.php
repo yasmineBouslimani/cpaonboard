@@ -19,55 +19,63 @@ class IndividualCustomerManager extends AbstractManager
      * @return int
      */
 
-    public function selectProductById(int $id): array
+    public function countRecordsIndividualCustomers(): array
     {
         /**
-         * Get a product record in database.
+         * Get the number of individual customers records in database.
          *
          * @return array
          */
-        return $this->pdo->query('SELECT product.label as product_label, product.price, product.stock,
-            producttype.label as product_type_label, tva.ratio
-            FROM product
-            LEFT JOIN tva ON product.fk_tva = tva.id_tva
-            LEFT JOIN producttype  ON product.fk_productType = producttype.id_productType
-            WHERE id_product = '.$id.';')->fetchAll();
+        return $this->pdo->query(
+            'SELECT COUNT(*) AS countRecords FROM customer WHERE customer.FK_customerType = 1')->fetchAll();
     }
 
-    public function insert(array $product): int
+    public function selectIndividualCustomersData(int $limit, int $offset): array
     {
-        // prepared request
-        $statement = $this->pdo->prepare("INSERT INTO " . self::TABLE . " (`title`) VALUES (:title)");
-        $statement->bindValue('title', $product['title'], \PDO::PARAM_STR);
-
-        $statement->execute();
-        return (int)$this->pdo->lastInsertId();
+        /**
+         * Get all rows from customer and contact tables when criterion are meet.
+         *
+         * @return array
+         */
+        return $this->pdo->query(
+            'SELECT customer.id_customer, contact.last_name, contact.first_name, contact.phone_number,
+                contact.cellphone_number, personal_email_address FROM customer
+            LEFT JOIN contact ON customer.id_customer = contact.fk_id_customer2
+            WHERE customer.FK_customerType = 1
+            ORDER BY contact.last_name ASC, contact.first_name ASC
+            LIMIT '.$limit.' OFFSET '.$offset.';')->fetchAll();
     }
 
-
-    /**
-     * @param int $id
-     */
-    public function delete(int $id): void
+    public function selectIndividualCustomerById(int $id): array
     {
-        // prepared request
-        $statement = $this->pdo->prepare("DELETE FROM " . self::TABLE . " WHERE id=:id");
-        $statement->bindValue('id', $id, \PDO::PARAM_INT);
-        $statement->execute();
+        /**
+         * Get an employee record in database.
+         *
+         * @return array
+         */
+        return $this->pdo->query(
+            'SELECT customer.id_customer, contact.id_contact, contact.last_name, contact.first_name,
+                contact.address_street_number, contact.address_addition, contact.address_street , contact.address_zip_code,
+                contact.address_city, contact.phone_number, contact.cellphone_number, personal_email_address FROM customer
+            LEFT JOIN contact ON customer.id_customer = contact.fk_id_customer2
+            WHERE customer.id_customer =' . $id)->fetchAll();
     }
 
-
-    /**
-     * @param array $product
-     * @return bool
-     */
-    public function update(array $product): bool
+    public function selectVehiculesByCustomerId(int $id): array
     {
-        // prepared request
-        $statement = $this->pdo->prepare("UPDATE " . self::TABLE . " SET `title` = :title WHERE id=:id");
-        $statement->bindValue('id', $product['id'], \PDO::PARAM_INT);
-        $statement->bindValue('title', $product['title'], \PDO::PARAM_STR);
-
-        return $statement->execute();
+        /**
+         * Get an employee record in database.
+         *
+         * @return array
+         */
+        return $this->pdo->query(
+            'SELECT vehicle.id_vehicle , vehicle.manufacture_year, vehicle.license_plate, vehicle.fiscal_horse_power,
+                vehicle.door_number, vehicle.fk_energyType, vehicle.fk_gearBoxType, vehicle.fk_vehicleModel,
+                customer_vehicle.fk_id_vehicle, customer_vehicle.fk_id_customer, vehiclemodel.model, vehiclemodel.make
+            FROM customer_vehicle
+            INNER JOIN vehicle ON vehicle.id_vehicle = customer_vehicle.fk_id_vehicle
+            INNER JOIN vehiclemodel ON vehiclemodel.id_vehicleModel = vehicle.fk_vehicleModel 
+            WHERE customer_vehicle.fk_id_customer =' . $id)->fetchAll();
     }
+
 }

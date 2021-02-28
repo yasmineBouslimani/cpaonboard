@@ -51,7 +51,4 @@ class EmployeeManager extends AbstractManager
             WHERE id_employee = '.$id.';')->fetchAll();
     }
 
-
-
-
 }
