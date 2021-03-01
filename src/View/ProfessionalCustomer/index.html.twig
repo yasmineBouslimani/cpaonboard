@@ -1,36 +1,41 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Clients particuliers{% endblock %}
+{% block title %}Clients pro{% endblock %}
 
-{% block bannerTitle %}INVENTAIRE DES CLIENTS PARTICULIERS{% endblock %}
+
+{% block bannerTitle %}LISTE DES CLIENTS PROFESSIONNELS{% endblock %}
+
+
 
 {% block content %}
     <div>
         <div class="row">
             <div class="col" >
-                <a href="/individualcustomer/add" class="btn btn-primary btn-sm float-right mb-3 mr-3">Ajout</a>
+                <a href="/professionalcustomer/add" class="btn btn-primary btn-sm float-right mb-3 mr-3">Ajout</a>
             </div>
         </div>
         <table id="datatable_users" class="table table-striped table-hover">
             <thead class="thead-dark">
             <tr>
+                <th class="text-left">Entreprise</th>
                 <th class="text-left">Client</th>
                 <th class="text-left">Tél. fixe</th>
                 <th class="text-left">Tél. portable</th>
-                <th class="text-left">Adresse mail personnelle</th>
+                <th class="text-left">Adresse mail professionelle</th>
                 <th class="text-left">Actions</th>
             </tr>
             </thead>
-            {% for customer in individualCustomers %}
+            {% for customer in professionalCustomers %}
                 <tr>
+                    <th>{{customer['corporate_name']}}</th>
                     <th>{{customer['first_name']}} {{customer['last_name']}}</th>
                     <th>{{customer['phone_number']}}</th>
                     <th>{{customer['cellphone_number']}}</th>
-                    <th>{{customer['personal_email_address']}}</th>
+                    <th>{{customer['professional_email_address']}}</th>
                     <th>
-                        <a href="/individualcustomer/show/{{customer['id_customer']}}" class="btn btn-primary btn-sm">Lecture</a>
-                        <a href="/individualcustomer/edit/{{customer['id_customer']}}" class="btn btn-primary btn-sm">Modifier</a>
-                        <a href="/individualcustomer/delete/{{customer['id_customer']}}/read" class="btn btn-danger btn-sm">Supprimer</a>
+                        <a href="/professionalcustomer/show/{{customer['id_customer']}}/read" class="btn btn-primary btn-sm">Lecture</a>
+                        <a href="/professionalcustomer/edit/{{customer['id_customer']}}" class="btn btn-primary btn-sm">Modifier</a>
+                        <a href="/professionalcustomer/delete/{{customer['id_customer']}}/read" class="btn btn-danger btn-sm">Delete</a>
                     </th>
                 </tr>
             {%  endfor %}
@@ -46,7 +51,7 @@
                     <ul class="pagination">
                         {# Previous link #}
                         {% if currentPage - 1 != 0 %}
-                            <li><a class="page-link" href="/individualcustomer/index/{{ currentPage-1 }}" aria-label="Previous">
+                            <li><a class="page-link" href="/professionalcustomer/index/{{ currentPage-1 }}" aria-label="Previous">
                                     <span aria-hidden="true">&Lang;</span>
                                     <span class="sr-only">Précédente</span>
                                 </a></li>
@@ -62,17 +67,17 @@
                             {% elseif (i > currentPage and pagesCount != i) and (i == currentPage + PageQuantityAroundAfter + 1) %}
                                 <li class="m-2">...</li>
                             {% elseif i == 1 or i == pagesCount %}
-                                <li><a class="page-link" href="/individualcustomer/index/{{ i }}">{{ i }}</a></li>
+                                <li><a class="page-link" href="/professionalcustomer/index/{{ i }}">{{ i }}</a></li>
                             {% elseif (i != 1) and (i > currentPage - PageQuantityAroundBefore - 1) %}
-                                <li><a class="page-link" href="/individualcustomer/index/{{ i }}">{{ i }}</a></li>
+                                <li><a class="page-link" href="/professionalcustomer/index/{{ i }}">{{ i }}</a></li>
                             {% elseif (pagesCount != i) and (i < currentPage + PageQuantityAroundAfter + 1) %}
-                                <li><a class="page-link" href="/individualcustomer/index/{{ i }}">{{ i }}</a></li>
+                                <li><a class="page-link" href="/professionalcustomer/index/{{ i }}">{{ i }}</a></li>
                             {% endif %}
                         {% endfor %}
                         {# Next link #}
                         {% if currentPage + 1 <= pagesCount %}
                             <li class="page-item">
-                                <a class="page-link" href="/individualcustomer/index/{{ currentPage+1 }}" aria-label="Next">
+                                <a class="page-link" href="/professionalcustomer/index/{{ currentPage+1 }}" aria-label="Next">
                                     <span aria-hidden="true">&Rang;</span>
                                     <span class="sr-only">Suivante</span>
                                 </a>
@@ -82,7 +87,7 @@
                 </nav>
             </div>
             <div class="col" >
-                <p class="float-right mr-3"> Nb résultats : {{individualCustomersCount}}</p>
+                <p class="float-right mr-3"> Nb résultats : {{professionalCustomersCount}}</p>
             </div>
         </div>
     </div>

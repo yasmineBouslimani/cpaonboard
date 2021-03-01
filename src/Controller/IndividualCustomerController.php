@@ -2,9 +2,7 @@
 
 namespace App\Controller;
 
-use App\Model\EmployeeManager;
 use App\Model\IndividualCustomerManager;
-use Symfony\Component\Console\Logger\ConsoleLogger;
 
 class IndividualCustomerController extends AbstractController
 {
@@ -81,7 +79,6 @@ class IndividualCustomerController extends AbstractController
         $vehiclesData = [];
         foreach($dataFromForm as $key => $value) {
             //FORMATTING KEY FOR REQUESTS
-            //echo "POST parameter '$key' has '$value'";
             $snakeKey = $individualCustomerController->camelToSnakeCase($key);
             $allData[$snakeKey] = $_POST[$key];
 
@@ -193,6 +190,7 @@ class IndividualCustomerController extends AbstractController
             $individualCustomerManager = new IndividualCustomerManager();
 
             $datafromForm = $individualCustomerController->getFormDataForUpdateOrAdd($_POST);
+
             $idIndividualCustomer = $individualCustomerManager->insert('customer', $datafromForm['individualCustomerData']);
             $contactFk = ['fk_id_customer2' => $idIndividualCustomer];
             $individualCustomerManager->insert('contact', $datafromForm['contactData'], $contactFk);

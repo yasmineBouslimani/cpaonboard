@@ -187,6 +187,7 @@ class EmployeeController extends AbstractController
             $employeeManager = new EmployeeManager();
 
             $datafromForm = $employeeController->getFormDataForUpdateOrAdd($_POST);
+
             $idEmployee = $employeeManager->insert('employee', $datafromForm['employeeData']);
             $contactFk = ['fk_id_employee2' => $idEmployee];
             $employeeManager->insert('contact', $datafromForm['contactData'], $contactFk);
