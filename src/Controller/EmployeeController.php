@@ -225,6 +225,10 @@ class EmployeeController extends AbstractController
         header('Location:/employee/index');
     }
 
+    function cancel() {
+        return header('Location:/employee/index');
+    }
+
     function camelToSnakeCase($string, $us = "_") {
         return strtolower(preg_replace(
             '/(?<=\d)(?=[A-Za-z])|(?<=[A-Za-z])(?=\d)|(?<=[a-z])(?=[A-Z])/', $us, $string));

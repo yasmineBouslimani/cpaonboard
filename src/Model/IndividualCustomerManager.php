@@ -61,7 +61,7 @@ class IndividualCustomerManager extends AbstractManager
             WHERE customer.id_customer =' . $id)->fetchAll();
     }
 
-    public function selectVehiculesByCustomerId(int $id): array
+    public function selectVehiclesByCustomerId(int $id): array
     {
         /**
          * Get an employee record in database.
@@ -70,11 +70,11 @@ class IndividualCustomerManager extends AbstractManager
          */
         return $this->pdo->query(
             'SELECT vehicle.id_vehicle , vehicle.manufacture_year, vehicle.license_plate, vehicle.fiscal_horse_power,
-                vehicle.door_number, vehicle.fk_energyType, vehicle.fk_gearBoxType, vehicle.fk_vehicleModel,
+                vehicle.door_number, vehicle.energy_type, vehicle.gear_box_type, vehicle.fk_vehicleModel,
                 customer_vehicle.fk_id_vehicle, customer_vehicle.fk_id_customer, vehiclemodel.model, vehiclemodel.make
             FROM customer_vehicle
             INNER JOIN vehicle ON vehicle.id_vehicle = customer_vehicle.fk_id_vehicle
-            INNER JOIN vehiclemodel ON vehiclemodel.id_vehicleModel = vehicle.fk_vehicleModel 
+            LEFT JOIN vehiclemodel ON vehiclemodel.id_vehicleModel = vehicle.fk_vehicleModel 
             WHERE customer_vehicle.fk_id_customer =' . $id)->fetchAll();
     }
 
