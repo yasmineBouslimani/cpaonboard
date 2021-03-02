@@ -85,6 +85,11 @@ class ProductController extends AbstractController
 
     public function extractPdf(int $id)
     {
+        //A ajuster en fonction de l'entrée en bdd : le fk_id_userType du magazinier est-il le 2 ?
+        if ($_SESSION['fk_id_userType'] != '2') {
+            header('location:/admin/index');
+        }
+
         $dompdf = new Dompdf();
         $productManager = new ProductManager();
 
@@ -106,6 +111,10 @@ class ProductController extends AbstractController
 
     public function extractCsv()
     {
+        //A ajuster en fonction de l'entrée en bdd : le fk_id_userType du magazinier est-il le 2 ?
+        if ($_SESSION['fk_id_userType'] != '2') {
+            header('location:/admin/index');
+        }
         $productManager = new ProductManager();
         $products = $productManager->selectAll();
         $filename = 'products_' . date('Y-m-d') . '.csv';
