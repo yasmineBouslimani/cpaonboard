@@ -115,7 +115,7 @@ h1, h2, nav, p {
 .nav-link {
     color: var(--lightBlackCPA);
     margin-bottom: 30px;
-    font-size: 13px
+    font-size:13px
 }
 
 th .fas, .far {
@@ -144,6 +144,7 @@ th .fas, .far {
     border-left: 4px solid var(--blueCPA);
 }
 
+
 #sign-out {
     font-size: 20px;
     color: #FFF;
@@ -164,4 +165,26 @@ th .fas, .far {
 
 .h1 {
     color: red;
+}
+
+th .fas, .far {
+    color: var(--lightBlackCPA);
+    font-size: 20px;
+}
+
+.fas, .far {
+    color: var(--lightBlackCPA);
+    font-size: 20px;
+}
+.edit-btn-customer {
+    background-color: var(--blueCPA);
+    width: 208px;
+    margin-left: 1000px;
+    margin-bottom: 30px;
+}
+
+#sidebarMenu .nav-item.active > .nav-link, #sidebarMenu .nav-link:hover, #sidebarMenu .nav-second-level li.active > .nav-link:hover {
+    color: #000;
+    background-color: #dee2e6;
+    border-left: 4px solid var(--blueCPA);
 }
