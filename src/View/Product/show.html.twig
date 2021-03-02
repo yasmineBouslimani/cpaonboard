@@ -7,7 +7,12 @@
 
 
 {% block content %}
+
     <div>
+        <a class="nav-link mr-3 text-white btn edit-btn-customer" href="{{ root }}/product/extractpdf/{{ entityRequest.0.id }}">
+            <i class="fas fa-file-pdf" style="color: white"></i>Extraire en PDF
+        </a>
+
         <form method="post" action="EmployeeController.php" class="form-group">
             {% set tabIndex = 0 %}
             <div class="accordion" id="accordion">

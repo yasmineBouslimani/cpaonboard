@@ -83,22 +83,23 @@ class ProductController extends AbstractController
         }
     }
 
-    public function extractPdf()
+    public function extractPdf(int $id)
     {
-        $productManager = new ProductManager();
-        $products = $productManager->selectAll();
         $dompdf = new Dompdf();
+        $productManager = new ProductManager();
+
+        $product = $productManager->selectProductById($id);
+
         $html = $this->twig->render(
             'product/pdf.html.twig',
-            ['products' => $products]
+            ['product' => $product]
         );
         $dompdf->loadHtml($html);
         $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
         ob_end_clean();
-
         $dompdf->stream(
-            'products.pdf',
+            'cpa_produit.pdf',
             ['attachment' => true]
         );
     }

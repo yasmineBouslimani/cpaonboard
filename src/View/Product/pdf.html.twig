@@ -1,12 +1,34 @@
-{% extends 'layout.html.twig' %}
 
 {% block content %}
-<h1>Liste des produits</h1>
-<ul>
-    {% for product in products %}
-        <li><a href="/product/show/{{ product.id_product }}">{{ product.id_product }}. {{ product.label }}</a></li>
-    {% else %}
-        <li>Nothing to display</li>
-    {% endfor %}
-</ul>
+
+    <h2>
+        <button>
+            Fiche produit - CPA
+        </button>
+    </h2>
+
+    <p>Référence produit :
+        {{ product.0.id }}
+    </p>
+
+    <p>Nom du produit :
+        {{ product.0.label }}
+    </p>
+
+    <p>Type du produit :
+        {{ product.0.fk_productType }}
+    </p>
+
+    <p>Prix :
+        {{ product.0.price }} €.
+    </p>
+
+    <p>TVA appliquée :
+        {{ product.0.fk_tva }}
+    </p>
+
+    <p>Commentaire :
+        {{ product.0.comment_product }}
+    </p>
+
 {% endblock %}
