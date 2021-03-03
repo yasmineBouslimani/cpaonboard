@@ -2,12 +2,8 @@
 
 namespace App\Model;
 
-use App\Model\Connection;
 use PDO;
 
-/**
- * Abstract class handling default manager.
- */
 abstract class AbstractManager
 {
     protected PDO $pdo; //variable de connexion
@@ -16,10 +12,6 @@ abstract class AbstractManager
 
     protected string $className;
 
-    /**
-     * Initializes Manager Abstract class.
-     * @param string $table
-     */
     public function __construct(string $table)
     {
         $this->table = $table;
@@ -28,23 +20,11 @@ abstract class AbstractManager
         $this->pdo = $connection->getPdoConnection();
     }
 
-    /**
-     * Get all row from database.
-     *
-     * @return array
-     */
     public function selectAll(): array
     {
         return $this->pdo->query('SELECT * FROM ' . $this->table)->fetchAll();
     }
 
-    /**
-     * Get one row from database by ID.
-     *
-     * @param  int $id
-     *
-     * @return array
-     */
     public function selectOneById(int $id)
     {
         // prepared request
@@ -57,32 +37,16 @@ abstract class AbstractManager
 
     public function countRecords(): array
     {
-        /**
-         * Get the number of records in database for a particular table.
-         *
-         * @return array
-         */
-        return $this->pdo->query("SELECT COUNT(*) AS countRecords FROM . $this->table")->fetchAll();
+        return $this->pdo->query('SELECT COUNT(*) AS countRecords FROM ' . $this->table)->fetchAll();
     }
 
-    public function SelectEnumValues(string $table, string $enumField): array
+    public function selectEnumValues(string $table, string $enumField): array
     {
-        /**
-         * Get the number of records in database for a particular table.
-         *
-         * @return array
-         */
-
         return $this->pdo->query('SHOW COLUMNS FROM ' . $table . ' LIKE \'' . $enumField . '\';')->fetchAll();
     }
 
     public function insert(string $table, array $recordFields,array $recordFk=null): int
     {
-        /**
-         * Insert a record in table.
-         *
-         * @return array
-         */
         if (!is_null($recordFk)){
             foreach ($recordFk as $key => $value) {
                 $recordFields = array_merge($recordFields, $recordFk);
@@ -108,11 +72,6 @@ abstract class AbstractManager
 
     public function update(string $table, array $recordFields): bool
     {
-        /**
-         * Update a record in table.
-         *
-         * @return array
-         */
         $idFieldName = 'id_' . $table;
         $id = $recordFields[$idFieldName];
         $fieldsToUpdate = ' SET ';
@@ -128,12 +87,6 @@ abstract class AbstractManager
 
     public function delete(string $table, int $idRecord)
     {
-        /**
-         * Insert a record in table.
-         *
-         * @return array
-         */
-        // prepared request
         $idFieldName = 'id_' . $table;
         $statement = $this->pdo->prepare('DELETE FROM '. $table. ' WHERE `' . $idFieldName . '`='. $idRecord);
         $statement->execute();
@@ -141,12 +94,6 @@ abstract class AbstractManager
 
     public function GetIdRecordsByForeignKeys(string $table, string $foreignKeyField, int $foreignKeyValue): array
     {
-        /**
-         * Return the id of the records associated to foreign key.
-         *
-         * @return array
-         */
-        // prepared request
         $idFieldName = 'id_' . $table;
         $statement = $this->pdo->prepare(
             'Select ' . $idFieldName . ' FROM '. $table. ' WHERE `' . $foreignKeyField . '`='. $foreignKeyValue);

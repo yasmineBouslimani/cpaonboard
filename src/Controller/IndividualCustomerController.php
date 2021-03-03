@@ -214,7 +214,7 @@ class IndividualCustomerController extends AbstractController
          */
         $individualCustomerManager = new IndividualCustomerManager();
 
-        $contactId = $individualCustomerManager->GetIdRecordsByForeignKeys('contact','fk_id_customer2', $id);
+        $contactId = $individualCustomerManager->getIdRecordsByForeignKeys('contact','fk_id_customer2', $id);
 
         $individualCustomerManager->delete('contact', $contactId[0]['id_contact']);
         $individualCustomerManager->delete('customer', $id);

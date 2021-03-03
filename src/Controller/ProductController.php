@@ -17,7 +17,7 @@ class ProductController extends AbstractController
         $resultsPerPage = 5;
         $pagesCount = ceil($productsCount / $resultsPerPage);
         $firstResult = ($currentPage * $resultsPerPage) - $resultsPerPage;
-        $products = $productManager->selectProductsWithTypeAndDependancyAndTva($resultsPerPage, $firstResult);
+        $products = $productManager->selectProductsWithTypeAndDependancyAndTvaWithLimit($resultsPerPage, $firstResult);
         $paginationDefaultPagesGap = 2;
 
         return $this->twig->render('Product/index.html.twig', [
