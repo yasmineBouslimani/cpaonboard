@@ -4,8 +4,9 @@
         <button class="btn btn-secondary btn-sm float-right" type="button" data-toggle="collapse" data-target="#{{ idCard }}" aria-expanded="true
             aria-controls="{{ idCard }}"> <span aria-hidden="true">&triangledown;</span>
         <span class="sr-only">Déplier-Replier</span></button>
+        {#DELETE BUTTON#}
         {% if deletable and (operation == 'edit' or operation == 'add' ) %}
-            <button><a href="/individualcustomer/show/{{customer['id_customer']}}" class="btn btn-danger btn-sm" aria-label="Delete">X</a></button>
+            <a href="/individualcustomer/show/{{customer['id_customer']}}" class="btn btn-danger btn-sm float-right mr-3" aria-label="Delete">X</a>
         {% endif %}
     </div>
     {# Number of row need for displaying all datas #}
@@ -124,13 +125,14 @@
                         </div>
                         <div class="col-2 ">
                             {# IF SELECT FIELD #}
-                            {% if currentIdInputCol2 == 'select' %}
+                            {% if currentInputCol2 == 'select' %}
                                 <select name="{{ currentNameInputCol2 }}"
                                         tabindex="{{ tabIndexForCol2 }}"
                                         class="form-control"
                                         {{ disabled }} >
                                     {# Add an option for every value in enum field and display value selected in database #}
                                     {% for item in currentSelectRequestValueCol2 %}
+                                        <p>item</p>
                                         {% if item == currentRecordCol2 %}
                                             <option selected value="{{ item }}">{{ item }}</option>
                                         {% else %}

@@ -126,67 +126,84 @@
                     {% include '_form_components/_cardForm.html.twig'%}
                     {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
                 </div>
-                {# Counter for vehicule cards #}
-                {% set counterVehicules = 0 %}
-                {# DISPLAY VEHICULES #}
-                {% for vehicule in vehicules %}
-                    {% set counterVehicules = counterVehicules + 1 %}
+                {# Counter for vehicle cards #}
+                {% set counterVehicles = 0 %}
+                {# DISPLAY VEHICLES #}
+                {% for vehicle in vehicles %}
+                    {% set counterVehicles = counterVehicles + 1 %}
                     <div>
-                        {% set titleCardToDisplay = ['vehicule ', counterVehicules]|join('') %}
-                        {% set  idCard =  'vehicules'%}
+                        {% set titleCardToDisplay = ['vehicle ', counterVehicles]|join('') %}
+                        {% set  idCard =  'vehicles'%}
                         {% set deletable = true %}
+                        {% set  tableToDelete =  'vehicle'%}
                         {% set fieldToDisplayCol1 = [
                             {
-                                'entityRequest': vehicules[counterVehicules-1],
+                                'entityRequest': vehicles[counterVehicles-1],
+                                'record': 'id_vehicle',
+                                'inputType': 'hidden',
+                                'nameInput': ['idVehicle', counterVehicles]|join(''),
+                                'idInput': ['idVehicle', counterVehicles]|join(''),
+                                'labelValue': 'ID Véhicule'},
+                            {
+                                'entityRequest': vehicles[counterVehicles-1],
                                 'record': 'license_plate',
                                 'inputType': 'text',
-                                'nameInput': 'licensePlate',
-                                'idInput': 'licensePlate',
+                                'nameInput': ['licensePlate', counterVehicles]|join(''),
+                                'idInput': ['licensePlate', counterVehicles]|join(''),
                                 'labelValue': 'Plaque immatriculation'},
                             {
-                                'entityRequest': vehicules[counterVehicules-1],
+                                'entityRequest': vehicles[counterVehicles-1],
+                                'record': 'make',
+                                'inputType': 'text',
+                                'nameInput': ['make', counterVehicles]|join(''),
+                                'idInput': ['make', counterVehicles]|join(''),
+                                'labelValue': 'Marque'},
+                            {
+                                'entityRequest': vehicles[counterVehicles-1],
+                                'record': 'model',
+                                'inputType': 'text',
+                                'nameInput': ['model', counterVehicles]|join(''),
+                                'idInput': ['model', counterVehicles]|join(''),
+                                'labelValue': 'Modèle'},
+                            {
+                                'entityRequest': vehicles[counterVehicles-1],
                                 'record': 'fiscal_horse_power',
                                 'inputType': 'text',
-                                'nameInput': 'fiscalHorsePower',
-                                'idInput': 'fiscalHorsePower',
-                                'labelValue': 'Chevaux fiscaux'},
-                            {
-                                'entityRequest': vehicules[counterVehicules-1],
-                                'record': 'manufacture_year',
-                                'inputType': 'text',
-                                'nameInput': 'manufactureYear',
-                                'idInput': 'manufactureYear',
-                                'labelValue': 'Année de fabrication'},
-                            {
-                                'entityRequest': vehicules[counterVehicules-1],
-                                'record': 'door_number',
-                                'inputType': 'text',
-                                'nameInput': 'doorNumber',
-                                'idInput': 'doorNumber',
-                                'labelValue': 'Nombre de portes'},
+                                'nameInput': ['fiscalHorsePower', counterVehicles]|join(''),
+                                'idInput': ['fiscalHorsePower', counterVehicles]|join(''),
+                                'labelValue': 'Chevaux fiscaux'}
                         ] %}
                         {% set fieldToDisplayCol2 = [
                             {
-                                'entityRequest': vehicules[counterVehicules-1],
-                                'record': '',
+                                'entityRequest': vehicles[counterVehicles-1],
+                                'record': 'manufacture_year',
                                 'inputType': 'text',
-                                'nameInput': 'doorNumber',
-                                'idInput': 'doorNumber',
-                                'labelValue': 'A FAIRE'},
+                                'nameInput': ['manufactureYear', counterVehicles]|join(''),
+                                'idInput': ['manufactureYear', counterVehicles]|join(''),
+                                'labelValue': 'Année de fabrication'},
                             {
-                                'entityRequest': vehicules[counterVehicules-1],
-                                'record': '',
-                                'inputType': 'text',
-                                'nameInput': 'doorNumber',
-                                'idInput': 'doorNumber',
-                                'labelValue': 'A FAIRE'},
+                                'entityRequest': vehicles[counterVehicles-1],
+                                'record': 'energy_type',
+                                'inputType': 'select',
+                                'selectRequest': energyTypeEnum,
+                                'nameInput': ['energyType', counterVehicles]|join(''),
+                                'idInput': ['energyType', counterVehicles]|join(''),
+                                'labelValue': 'Carburant'},
                             {
-                                'entityRequest': vehicules[counterVehicules-1],
-                                'record': '',
+                                'entityRequest': vehicles[counterVehicles-1],
+                                'record': 'gear_box',
+                                'inputType': 'select',
+                                'selectRequest': gearBoxTypeEnum,
+                                'nameInput': ['gearBoxLabel', counterVehicles]|join(''),
+                                'idInput': ['gearBoxLabel', counterVehicles]|join(''),
+                                'labelValue': 'Boite à vitesse'},
+                            {
+                                'entityRequest': vehicles[counterVehicles-1],
+                                'record': 'door_number',
                                 'inputType': 'text',
-                                'nameInput': 'doorNumber',
-                                'idInput': 'doorNumber',
-                                'labelValue': 'A FAIRE'}
+                                'nameInput': ['doorNumber', counterVehicles]|join(''),
+                                'idInput': ['doorNumber', counterVehicles]|join(''),
+                                'labelValue': 'Nombre de portes'},
                         ] %}
                         {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
                         {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
@@ -197,16 +214,17 @@
                 {% endfor %}
             </div>
             <div>
-                {# ADD VEHICULE #}
+                {# ADD VEHICLE #}
                 {% if operation == 'edit' or operation == 'add' %}
                     {# TODO : add method for vehicle#}
-                    <button><a href="" class="btn btn-primary btn-sm" aria-label="Add">Nouveau véhicule</a></button>
+                    <a href="" class="btn btn-secondary btn-sm float-right mr-5" aria-label="Add">Nouveau véhicule</a>
                 {% endif %}
             </div>
             <div>
-                {# SUBMIT FORM #}
+                {# SUBMIT FORM AND CANCEL BUTTON#}
                 {% if operation == 'edit' or operation == 'add'  %}
                     <input type="submit" value="Enregistrer" class="btn btn-primary"/>
+                    <a href="/individualcustomer/cancel" class="btn btn-danger">Annuler</a>
                 {% endif %}
             </div>
         </form>

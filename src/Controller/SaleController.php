@@ -2,32 +2,33 @@
 
 namespace App\Controller;
 
-use App\Model\EmployeeManager;
+use App\Model\SaleManager;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 
-class EmployeeController extends AbstractController
+class SaleController extends AbstractController
 {
     public function index(int $currentPage=1)
     {
         /**
-         * Display employees listing
+         * Display sales listing
          */
         /*if ($_SESSION['is_admin'] == "1") {
             header('location:/auth/login');
         }*/
 
-        $employeeManager = new EmployeeManager();
+        $saleManager = new SaleManager();
 
-        $employeeCountRequest=$employeeManager->countRecords();
-        $employeesCount=$employeeCountRequest[0]['countRecords'];
+        $salesCountRequest=$saleManager->countRecords();
+        $salesCount=$salesCountRequest[0]['countRecords'];
         $resultsPerPage = 5;
-        $pagesCount = ceil($employeesCount / $resultsPerPage);
+        $pagesCount = ceil($salesCount / $resultsPerPage);
         $firstResult = ($currentPage * $resultsPerPage) - $resultsPerPage;
-        $employees = $employeeManager->selectEmployeesAndContactsData($resultsPerPage, $firstResult);
+        $sales = $saleManager->selectSalesAndAssociatedData($resultsPerPage, $firstResult);
+        var_dump($sales);
         $paginationDefaultPagesGap = 2;
 
-        return $this->twig->render('Employee/index.html.twig', ['resultPerPage' => $resultsPerPage, 'employees' => $employees,
-            'employeesCount' => $employeesCount, 'pagesCount' => $pagesCount, 'currentPage' => $currentPage,
+        return $this->twig->render('sale/index.html.twig', ['resultPerPage' => $resultsPerPage, 'sales' => $sales,
+            'salesCount' => $salesCount, 'pagesCount' => $pagesCount, 'currentPage' => $currentPage,
             'paginationDefaultPagesGap' => $paginationDefaultPagesGap]);
     }
 
@@ -35,7 +36,7 @@ class EmployeeController extends AbstractController
     public function getDataforEmployee(int $id): array
     {
         /**
-         * Get in database all data need for displaying an employee record.
+         * Get in database all data need for displaying a sale record.
          */
         $employeeManager = new EmployeeManager();
         $employee=$employeeManager->selectEmployeeById($id);
@@ -51,7 +52,7 @@ class EmployeeController extends AbstractController
     public function getDataEnumforEmployee(): array
     {
         /**
-         * Get in database all enum fields values for displaying an employee record.
+         * Get in database all enum fields values for displaying a sale record.
          */
         $employeeManager = new EmployeeManager();
         $civilityEnumRequest=$employeeManager->SelectEnumValues('employee', 'civility');
@@ -73,7 +74,7 @@ class EmployeeController extends AbstractController
     public function getFormDataForUpdateOrAdd(array $dataFromForm): array
     {
         /**
-         * Get all fields in an employee record form.
+         * Get all fields in a sale record form.
          */
         $employeeController= new EmployeeController();
         $allData = [];
@@ -127,7 +128,7 @@ class EmployeeController extends AbstractController
     public function show(int $id)
     {
         /**
-         * Display an employee record for read purpose only.
+         * Display a sale record for read purpose only.
          */
         /*if ($_SESSION['is_admin'] == "1") {
             header('location:/auth/login');
@@ -145,7 +146,7 @@ class EmployeeController extends AbstractController
     public function edit(int $id)
     {
         /**
-         * Display an employee record for modification purpose.
+         * Display a sale record for modification purpose.
          */
         /*if ($_SESSION['is_admin'] == "1") {
             header('location:/auth/login');
@@ -181,24 +182,24 @@ class EmployeeController extends AbstractController
          * @throws \Twig\Error\SyntaxError
          */
 
-        $employeeController = new EmployeeController();
+        $saleController = new SaleController();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $employeeManager = new EmployeeManager();
+            $saleManager = new SaleManager();
 
-            $datafromForm = $employeeController->getFormDataForUpdateOrAdd($_POST);
+            $datafromForm = $saleController->getFormDataForUpdateOrAdd($_POST);
 
-            $idEmployee = $employeeManager->insert('employee', $datafromForm['employeeData']);
+            $idEmployee = $saleManager->insert('employee', $datafromForm['employeeData']);
             $contactFk = ['fk_id_employee2' => $idEmployee];
-            $employeeManager->insert('contact', $datafromForm['contactData'], $contactFk);
+            $saleManager->insert('contact', $datafromForm['contactData'], $contactFk);
             $contractFk = ['fk_employee' => $idEmployee];
-            $employeeManager->insert('contract', $datafromForm['contractData'], $contractFk);
+            $saleManager->insert('contract', $datafromForm['contractData'], $contractFk);
 
             header('Location:/employee/index');
         }
         else
         {
-            $data = $employeeController->getDataEnumforEmployee();
+            $data = $saleController->getDataEnumforEmployee();
         }
         return $this->twig->render('Employee/showEmployee.html.twig', [
             'civilityEnum' => $data['civilityEnum'], 'genderEnum' => $data['genderEnum'],

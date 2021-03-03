@@ -5,6 +5,7 @@
     --lightBlackCPA: #424242;
     --darkBlackCPA: #777777;
     --whiteCPA : #EAEAEA;
+    --alertCPA : #FF7F50;
 }
 a {
     font-family: 'Roboto', sans-serif;
@@ -91,8 +92,13 @@ h1, h2, nav, p {
     border-color: var(--blueCPA);
 }
 
+.btn-danger {
+    background-color: var(--alertCPA);
+    border-color: var(--alertCPA);
+}
+
 .page-link.selected {
-    color: coral;
+    color: var(--alertCPA);
 }
 
 .card-header.uppercase {

@@ -2,9 +2,7 @@
 
 namespace App\Controller;
 
-use App\Model\EmployeeManager;
 use App\Model\IndividualCustomerManager;
-use Symfony\Component\Console\Logger\ConsoleLogger;
 
 class IndividualCustomerController extends AbstractController
 {
@@ -40,32 +38,33 @@ class IndividualCustomerController extends AbstractController
          */
         $individualCustomerManager = new IndividualCustomerManager();
         $individualCustomer=$individualCustomerManager->selectIndividualCustomerById($id);
-        $vehicules=$individualCustomerManager->selectVehiculesByCustomerId($id);
+        $vehicles=$individualCustomerManager->selectVehiclesByCustomerId($id);
 
-        return ['individualCustomer' => $individualCustomer, 'vehicules' => $vehicules];
+        $individualCustomerController = new IndividualCustomerController();
+        $individualCustomerAllEnumValues = $individualCustomerController->getDataEnumforIndividualCustomer();
+
+        return ['individualCustomer' => $individualCustomer, 'vehicles' => $vehicles,
+            'energyTypeEnum' => $individualCustomerAllEnumValues['energyTypeEnum'],
+            'gearBoxTypeEnum' => $individualCustomerAllEnumValues['gearBoxTypeEnum']];
     }
 
-    /*public function getDataEnumforEmployee(): array
-    {*/
+    function getDataEnumforIndividualCustomer(): array
+    {
         /**
-         * Get in database all enum fields values for displaying an employee record.
+         * Get in database all enum fields values for displaying an individual customer record.
          */
-    /* $employeeManager = new EmployeeManager();
-     $civilityEnumRequest=$employeeManager->SelectEnumValues('employee', 'civility');
-     $genderEnumRequest=$employeeManager->SelectEnumValues('employee', 'gender');
-     $contractTypeEnumRequest=$employeeManager->SelectEnumValues('contract','type_contract');
+        $individualCustomerManager = new IndividualCustomerManager();
+        $energyTypeEnumRequest=$individualCustomerManager->SelectEnumValues('vehicle', 'energy_type');
+        $gearBoxTypeEnumRequest=$individualCustomerManager->SelectEnumValues('vehicle', 'gear_box_type');
 
-     $employeeController = new EmployeeController();
-     $civilityEnumFormatted = $employeeController->enumRequestFormatting($civilityEnumRequest);
-     $civilityEnum=$civilityEnumFormatted['enum'];
-     $genderEnumFormatted = $employeeController->enumRequestFormatting($genderEnumRequest);
-     $genderEnum=$genderEnumFormatted['enum'];
-     $contractTypeEnumFormatted = $employeeController->enumRequestFormatting($contractTypeEnumRequest);
-     $contractTypeEnum=$contractTypeEnumFormatted['enum'];
+         $employeeController = new EmployeeController();
+         $energyTypeEnumFormatted = $employeeController->enumRequestFormatting($energyTypeEnumRequest);
+         $energyTypeEnum=$energyTypeEnumFormatted['enum'];
+         $gearBoxTypeEnumFormatted = $employeeController->enumRequestFormatting($gearBoxTypeEnumRequest);
+         $gearBoxTypeEnum=$gearBoxTypeEnumFormatted['enum'];
 
-     return ['civilityEnum' => $civilityEnum, 'genderEnum' => $genderEnum,
-         'contractTypeEnum' => $contractTypeEnum];
- }*/
+         return ['energyTypeEnum' => $energyTypeEnum, 'gearBoxTypeEnum' => $gearBoxTypeEnum];
+    }
 
     public function getFormDataForUpdateOrAdd(array $dataFromForm): array
     {
@@ -74,10 +73,24 @@ class IndividualCustomerController extends AbstractController
          */
         $individualCustomerController = new IndividualCustomerController();
         $allData = [];
+        $vehicleFormFields=['id_vehicle', 'manufacture_year', 'license_plate', 'fiscal_horse_power', 'door_number', 'energy_type',
+            'gear_box_type', 'fk_vehicleModel'];
+        $vehicleModelFormFields=['id_vehicleModel', 'model', 'make'];
+        $vehiclesData = [];
         foreach($dataFromForm as $key => $value) {
-            //echo "POST parameter '$key' has '$value'";
+            //FORMATTING KEY FOR REQUESTS
             $snakeKey = $individualCustomerController->camelToSnakeCase($key);
             $allData[$snakeKey] = $_POST[$key];
+
+            //BUILD VEHICLES ARRAY
+            $fieldLabel  = substr("$snakeKey", 0,-2);
+            $fieldIndex = substr("$snakeKey", -1,1);
+            if (in_array($fieldLabel, $vehicleFormFields )){
+                $vehiclesData[$fieldIndex]['vehicleData'][$fieldLabel] = $allData[$snakeKey];
+            }
+            if (in_array($fieldLabel, $vehicleModelFormFields )){
+                $vehiclesData[$fieldIndex]['vehicleModelData'][$fieldLabel] = $allData[$snakeKey];
+            }
         }
 
         $individualCustomerData['id_customer'] = $allData['id_customer'];
@@ -95,7 +108,7 @@ class IndividualCustomerController extends AbstractController
         $contactData['address_zip_code'] = $allData['address_zip_code'];
         $contactData['address_addition'] = $allData['address_addition'];
 
-        return ['individualCustomerData' => $individualCustomerData, 'contactData' => $contactData];
+        return ['individualCustomerData' => $individualCustomerData, 'contactData' => $contactData, 'vehiclesData' => $vehiclesData];
 
     }
 
@@ -113,7 +126,9 @@ class IndividualCustomerController extends AbstractController
         $data = $individualCustomerController->getDataforIndividualCustomer($id);
 
         return $this->twig->render('individualCustomer/show.html.twig', ['individualCustomer' => $data['individualCustomer'],
-            'vehicules' => $data['vehicules'], 'operation' => 'read']);
+            'vehicles' => $data['vehicles'], 'energyTypeEnum' => $data['energyTypeEnum'], 'gearBoxTypeEnum' => $data['gearBoxTypeEnum'],
+            'operation' => 'read']);
+
     }
 
     public function edit(int $id)
@@ -131,14 +146,30 @@ class IndividualCustomerController extends AbstractController
             $individualCustomerManager = new IndividualCustomerManager();
 
             $datafromForm = $individualCustomerController->getFormDataForUpdateOrAdd($_POST);
+
             $individualCustomerManager->update('customer', $datafromForm['individualCustomerData']);
             $individualCustomerManager->update('contact', $datafromForm['contactData']);
+
+            if (!$datafromForm['vehiclesData']){
+                exit;
+            }
+            foreach($datafromForm['vehiclesData'] as $vehicle) {
+                if ($vehicle['vehicleData']['id_vehicle']) {
+                    /*$individualCustomerManager->update('vehicle', $vehicle['vehicleData']);
+                    $individualCustomerManager->update('vehiclemodel', $vehicle['vehicleData']);*/
+                }
+                /* else {
+                    $idVehicule = $individualCustomerManager->insert('vehicle', $vehicle['vehicleData']);
+                    $idVehiculeModel = $individualCustomerManager->insert('vehiclemodel', $vehicle['vehicleData']);
+                }*/
+            }
         }
 
         $data = $individualCustomerController->getDataforIndividualCustomer($id);
 
         return $this->twig->render('individualCustomer/show.html.twig', ['individualCustomer' => $data['individualCustomer'],
-            'vehicules' => $data['vehicules'], 'operation' => 'edit']);
+            'vehicles' => $data['vehicles'], 'energyTypeEnum' => $data['energyTypeEnum'], 'gearBoxTypeEnum' => $data['gearBoxTypeEnum'],
+            'operation' => 'edit']);
 
     }
 
@@ -159,11 +190,16 @@ class IndividualCustomerController extends AbstractController
             $individualCustomerManager = new IndividualCustomerManager();
 
             $datafromForm = $individualCustomerController->getFormDataForUpdateOrAdd($_POST);
+
             $idIndividualCustomer = $individualCustomerManager->insert('customer', $datafromForm['individualCustomerData']);
             $contactFk = ['fk_id_customer2' => $idIndividualCustomer];
             $individualCustomerManager->insert('contact', $datafromForm['contactData'], $contactFk);
 
             header('Location:/individualCustomer/index');
+        }
+        else
+        {
+            $data = $individualCustomerController->getDataEnumforIndividualCustomer();
         }
 
         return $this->twig->render('individualCustomer/show.html.twig', ['operation' => 'add']);
@@ -186,9 +222,13 @@ class IndividualCustomerController extends AbstractController
         header('Location:/individualCustomer/index');
     }
 
+    function cancel() {
+        return header('Location:/individualCustomer/index');
+    }
+
     function camelToSnakeCase($string, $us = "_") {
         return strtolower(preg_replace(
             '/(?<=\d)(?=[A-Za-z])|(?<=[A-Za-z])(?=\d)|(?<=[a-z])(?=[A-Z])/', $us, $string));
     }
-
+    
 }

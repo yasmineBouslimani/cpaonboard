@@ -330,8 +330,10 @@
                     {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
                 </div>
             </div>
+            {# SUBMIT FORM AND CANCEL BUTTON#}
             {% if operation == 'edit' or operation == 'add'  %}
                 <input type="submit" value="Enregistrer" class="btn btn-primary"/>
+                <a href="/employee/cancel" class="btn btn-danger">Annuler</a>
             {% endif %}
         </form>
     </div>
