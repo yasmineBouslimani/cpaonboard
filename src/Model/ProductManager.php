@@ -28,51 +28,41 @@ class ProductManager extends AbstractManager
          */
         return $this->pdo->query('SELECT * FROM product
             LEFT JOIN producttype ON product.fk_productType = producttype.id_productType
-            WHERE id_product = '.$id.';')->fetchAll();
+            WHERE id_product = ' . $id . ';')->fetchAll();
     }
 
-    public function insert(array $product): int
+    public function selectProductsWithTypeAndDependancyAndTvaWithLimit(int $limit, int $offset): array
     {
-        // prepared request
-        $statement = $this->pdo->prepare("INSERT INTO " . self::TABLE . " (`title`) VALUES (:title)");
-        $statement->bindValue('title', $product['title'], \PDO::PARAM_STR);
-
-        $statement->execute();
-        return (int)$this->pdo->lastInsertId();
+        return $this->pdo->query(
+            "SELECT * FROM " . self::TABLE .
+            " LEFT JOIN tva ON product.fk_tva = tva.id_tva
+            LEFT JOIN producttype  ON product.fk_productType = producttype.id_productType
+            LIMIT " . $limit . " OFFSET " . $offset)->fetchAll();
     }
 
-
-    /**
-     * @param int $id
-     */
-    public function delete(int $id): void
+    public function selectProductsWithTypeAndDependancyAndTva(): array
     {
-        // prepared request
-        $statement = $this->pdo->prepare("DELETE FROM " . self::TABLE . " WHERE id=:id");
-        $statement->bindValue('id', $id, \PDO::PARAM_INT);
-        $statement->execute();
+        return $this->pdo->query(
+            "SELECT * FROM " . self::TABLE .
+            " LEFT JOIN tva ON product.fk_tva = tva.id_tva
+            LEFT JOIN producttype  ON product.fk_productType = producttype.id_productType")
+            ->fetchAll();
     }
 
-
-    /**
-     * @param array $product
-     * @return bool
-     */
-    public function update(array $product): bool
+    public function selectProductsWithTypeAndDependancyAndTvaByd(int $id): array
     {
-        // prepared request
-        $statement = $this->pdo->prepare("UPDATE " . self::TABLE . " SET `title` = :title WHERE id=:id");
-        $statement->bindValue('id', $product['id'], \PDO::PARAM_INT);
-        $statement->bindValue('title', $product['title'], \PDO::PARAM_STR);
-
-        return $statement->execute();
+        return $this->pdo->query(
+            " SELECT * FROM " . self::TABLE .
+            " LEFT JOIN tva ON product.fk_tva = tva.id_tva
+            LEFT JOIN producttype  ON product.fk_productType = producttype.id_productType
+            WHERE product.id_product =" . $id)->fetchAll();
     }
+
 
     public function selectProductByWord($words): array
     {
-        $query = "SELECT * 
-            FROM product
-            WHERE ";
+        $query = "SELECT * FROM " . self::TABLE .
+            " WHERE ";
         $conditions = [];
         foreach ($words as $val) {
             $conditions[] = "
