@@ -19,12 +19,13 @@
 
 {% if session.login %}
     <div class="row">
-        <div class="col-2">
             {% include '_nav.html.twig' %}
-        </div>
-        <div class="col-10 mt-4">
+
+        <main class="col-md-9 col-lg-10 px-0">
+            <div id="app" class="min-vh-100 p-4">
             {% block content %}{% endblock %}
-        </div>
+            </div>
+        </main>
     </div>
 {% else %}
     {% block login %}{% endblock %}

@@ -39,9 +39,9 @@
                     <th>{{employee['function']}}</th>
                     <th>{{employee['type_contract']}}</th>
                     <th>
-                        <a href="/employee/show/{{employee['id_employee']}}/read" class="btn btn-primary btn-sm">Lecture</a>
-                        <a href="/employee/edit/{{employee['id_employee']}}" class="btn btn-primary btn-sm">Modifier</a>
-                        <a href="/employee/delete/{{employee['id_employee']}}/read" class="btn btn-danger btn-sm">Delete</a>
+                        <a href="/employee/show/{{employee['id_employee']}}/read"><i class="far fa-eye"></i></a>
+                        <a href="/employee/edit/{{employee['id_employee']}}"><i class="fas fa-edit"></i></a>
+                        <a href="/employee/delete/{{employee['id_employee']}}/read"><i class="fas fa-user-times"></i></a>
                     </th>
                 </tr>
             {%  endfor %}
