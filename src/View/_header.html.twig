@@ -1,7 +1,19 @@
 <header>
-    <div class="jumbotron mb-0 p-4">
-        {#        <H1 class="display-6">{% block bannerTitle %}{% endblock %}</H1>#}
-        <H1 class="display-6">{{ bannerTitle }}</H1>
+    <nav class="navbar navbar-dark" style="background-color: #4D9FE2">
+        <a class="navbar-brand col-md-3 px-3" href="/admin/index">CPA On Board</a>
+        <button type="button" class="navbar-toggler position-absolute d-md-none" style="top: .5rem; right: 1rem;">
+        </button>
+        <ul class="navbar-nav px-3">
+            <li class="nav-item">
+                <a href="/auth/logout" class="nav-link">
+                    <i class="fa fa-sign-out"></i> Se déconnecter </a></li>
+        </ul>
+    </nav>
+
+    <div class="nav">
+        <H3 class="display-6">{{ bannerTitle }}</H3>
         <hr class="my-4">
     </div>
+
+
 </header>
