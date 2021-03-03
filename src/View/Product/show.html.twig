@@ -4,77 +4,87 @@
 
 {% block bannerTitle %}FICHE PRODUIT{% endblock %}
 
-
-
 {% block content %}
-
     <div>
-        <a class="nav-link mr-3 text-white btn edit-btn-customer" href="{{ root }}/product/extractpdf/{{ entityRequest.0.id }}">
+        <a class="nav-link mr-3 text-white btn extract-pdf-btn"
+           href="{{ root }}/product/extractpdf/{{ product.0.id_product }}">
             <i class="fas fa-file-pdf" style="color: white"></i>Extraire en PDF
         </a>
+    </div>
 
-        <form method="post" action="EmployeeController.php" class="form-group">
-            {% set tabIndex = 0 %}
-            <div class="accordion" id="accordion">
-                <div>
-                    {% set titleCardToDisplay = 'identification' %}
-                    {% set  idCard =  'identification' %}
-                    {% set fieldToDisplayCol1 = [
-                        {
-                            'record': 'label',
-                            'inputType': 'text',
-                            'nameInput': 'label',
-                            'idInput': 'label',
-                            'labelValue': 'Nom'},
-                        {
-                            'record': 'label',
-                            'inputType': 'text',
-                            'nameInput': 'label',
-                            'idInput': 'label',
-                            'labelValue': 'Nom'}
-                    ] %}
-                    {% set fieldToDisplayCol2 = [
-                        {
-                            'record': 'price',
-                            'inputType': 'text',
-                            'nameInput': 'price',
-                            'idInput': 'price',
-                            'labelValue': 'Prix'},
-                        {
-                            'record': 'stock',
-                            'inputType': 'text',
-                            'nameInput': 'stock',
-                            'idInput': 'stock',
-                            'labelValue': 'Stock'},
-                    ] %}
-                    {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
-                    {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
-                    {% set tabIndexBeforeCard = tabIndex %}
-                    {% include '_form_components/_cardForm.html.twig'%}
-                    {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
-                </div>
-                <div>
-                    {% set titleCardToDisplay = 'quantité' %}
-                    {% set  idCard =  'quantity'%}
-                    {% set fieldToDisplayCol1 = [
-                        {
-                            'record': 'stock',
-                            'inputType': 'text',
-                            'nameInput': 'stock',
-                            'idInput': 'stock',
-                            'labelValue': 'Stock'},
-                    ] %}
-                    {% set fieldToDisplayCol2 = [] %}
-                    {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
-                    {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
-                    {% set tabIndexBeforeCard = tabIndex %}
-                    {% include '_form_components/_cardForm.html.twig'%}
-                    {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
-                </div>
+    {% if operation == 'edit' %}
+        {% set formAction = ['/product/edit/', product[0]['id']]|join('') %}
+    {% elseif operation == 'add' %}
+        {% set formAction = '/product/add' %}
+    {% endif %}
+
+    <form method="post" class="form-group" action="{{ formAction }}">
+        {% set tabIndex = 0 %}
+        <div class="accordion" id="accordion">
+            <div>
+                {% set titleCardToDisplay = 'identification' %}
+                {% set  idCard =  'identification' %}
+                {% set fieldToDisplayCol1 = [
+                    {
+                        'entityRequest' : product[0],
+                        'record': 'label',
+                        'inputType': 'text',
+                        'nameInput': 'label',
+                        'idInput': 'label',
+                        'labelValue': 'Nom'},
+                    {
+                        'entityRequest' : product[0],
+                        'record': 'ratio',
+                        'inputType': 'text',
+                        'nameInput': 'ratio',
+                        'idInput': 'ratio',
+                        'labelValue': 'TVA (%)'}
+                ] %}
+                {% set fieldToDisplayCol2 = [
+                    {
+                        'entityRequest' : product[0],
+                        'record': 'price',
+                        'inputType': 'text',
+                        'nameInput': 'price',
+                        'idInput': 'price',
+                        'labelValue': 'Prix (€)'},
+                    {
+                        'entityRequest' : product[0],
+                        'record': 'comment_product',
+                        'inputType': 'text',
+                        'nameInput': 'comment_product',
+                        'idInput': 'comment_product',
+                        'labelValue': 'Commentaire'},
+                ] %}
+                {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
+                {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
+                {% set tabIndexBeforeCard = tabIndex %}
+                {% include '_form_components/_cardForm.html.twig' %}
+                {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
             </div>
-            {% if operation == 'edit' or operation == 'add'  %}
-                <input type="submit" value="Enregistrer" class="btn btn-primary"/>
-            {% endif %}
-        </form>
+            <div>
+                {% set titleCardToDisplay = 'quantité' %}
+                {% set  idCard =  'quantity' %}
+                {% set fieldToDisplayCol1 = [
+                    {
+                        'entityRequest' : product[0],
+                        'record': 'stock',
+                        'inputType': 'text',
+                        'nameInput': 'stock',
+                        'idInput': 'stock',
+                        'labelValue': 'Stock'},
+                ] %}
+                {% set fieldToDisplayCol2 = [] %}
+                {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
+                {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
+                {% set tabIndexBeforeCard = tabIndex %}
+                {% include '_form_components/_cardForm.html.twig' %}
+                {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
+            </div>
+        </div>
+        {% if operation == 'edit' or operation == 'add' %}
+            <input type="submit" value="Enregistrer" class="btn btn-primary"/>
+        {% endif %}
+    </form>
     </div>
 {% endblock %}
