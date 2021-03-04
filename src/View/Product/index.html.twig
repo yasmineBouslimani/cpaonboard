@@ -3,46 +3,111 @@
 {% block bannerTitle %}INVENTAIRE DES PRODUITS{% endblock %}
 
 {% block content %}
+    <div class="navbar-expand py-2">
+    <div class="navbar-collapse" id="navbarSupportedContent">
+        <div class="container-bouton mr-auto w-50">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link mr-3 text-white btn extract-pdf-btn" href="{{ root }}/product/add/">
+                        <i class="fas fa-plus-square" style="color: white"></i>Ajouter un produit
+                    </a>
+                </li>
+                <a class="nav-link mr-3 text-white btn extract-pdf-btn" href="{{ root }}/product/extractcsv">
+                    <i class="fas fa-file-csv mx-2" style="color: white"></i> Extraire en .csv</a>
 
-    <div class="navbar-list-products navbar-expand py-2">
-        <div class="navbar-collapse" id="navbarSupportedContent">
-            <div class="container-bouton mr-auto w-50">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" href="{{ root }}/product/add">
-                            <i class="fas fa-plus mx-2"></i>Nouveau produit</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" href="{{ root }}/product/extractcsv">
-                            <i class="fas fa-file-csv mx-2"></i> Extraire en .csv</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" href="{{ root }}/product/extractpdf">
-                            <i class="fas fa-file-csv mx-2"></i> Extraire en .pdf</a>
-                    </li>
-                </ul>
-            </div>
-            <form class="form-inline my-2 my-lg-0" method="post" action="{{ root }}/product/search">
-
-                <div class="d-flex align-items-center mx-2">
-                    <input class="form-control mr-sm-2" type="search" placeholder="mot-clé, tag, utilisateur" name="search" aria-label="Search">
-                    <button class="btn btn-outline-dark bouton-responsive">Rechercher</button>
-                </div>
-        </form>
+            </ul>
         </div>
+
+
+
+        <form class="form-inline my-2 my-lg-0" method="post" action="{{ root }}/product/search">
+
+            <div class="d-flex align-items-center mx-2">
+                <input class="form-control mr-sm-2" type="search" placeholder="mot-clé, tag, utilisateur" name="search"
+                       aria-label="Search">
+                <button class="btn btn-outline-dark bouton-responsive">Rechercher</button>
+            </div>
+        </form>
     </div>
 
-
-
-
-
-    <h1>Liste des produits</h1>
-    <ul>
+    <table id="datatable_users" class="table table-striped table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th>Référence</th>
+            <th class="text-left">Type de produit</th>
+            <th class="text-left">Nom du produit</th>
+            <th class="text-left">Stock</th>
+            <th class="text-left">Prix HT</th>
+            <th class="text-left">TVA appliquée</th>
+            <th class="text-left">Actions</th>
+        </tr>
+        </thead>
         {% for product in products %}
-            <li><a href="/product/show/{{ product.id_product }}">{{ product.id_product }}. {{ product.label }}</a></li>
+            <tr>
+            <th>{{ product.id_product }}</th>
+            <th>{{ product.type }}</th>
+            <th>{{ product.label }}</th>
+            <th>{{ product.stock }}</th>
+            <th>{{ product.price }}</th>
+            <th>{{ product.ratio }}</th>
+            <th>
+                <a href="/product/show/{{ product.id_product }}"><i class="far fa-eye"></i></a>
+                <a href="/product/edit/{{ product.id_product }}"><i class="fas fa-edit"></i></a>
+                <a href="/product/delete/{{ product.id_product }}"><i class="fas fa-user-times"></i></a>
+            </th>
         {% else %}
-            <li>Nothing to display</li>
+            <th>Il n'y a pas de produits</th>
+            </tr>
         {% endfor %}
-    </ul>
-
+    </table>
+    {% set minimumPageQuantityAround = min(currentPage - 1, pagesCount - currentPage) %}
+    {% set conditionBefore = currentPage != 1 and minimumPageQuantityAround <= currentPage - 1 %}
+    {% set conditionAfter = currentPage != pagesCount and minimumPageQuantityAround <= pagesCount - currentPage %}
+    {% set PageQuantityAroundBefore = conditionBefore ? paginationDefaultPagesGap : minimumPageQuantityAround %}
+    {% set PageQuantityAroundAfter = conditionAfter ? paginationDefaultPagesGap : minimumPageQuantityAround %}
+    <div class="row">
+        <div class="col-6">
+            <nav class="float-right">
+                <ul class="pagination">
+                    {# Previous link #}
+                    {% if currentPage - 1 != 0 %}
+                        <li><a class="page-link" href="/product/index/{{ currentPage-1 }}" aria-label="Previous">
+                                <span aria-hidden="true">&Lang;</span>
+                                <span class="sr-only">Précédente</span>
+                            </a></li>
+                    {% endif %}
+                    {% for i in 1..pagesCount %}
+                        {# Current page to show #}
+                        {% if currentPage == i %}
+                            <li class="page-link selected">{{ i }}</li>
+                            {# Show "..." before current page depending on page numbers to show before #}
+                        {% elseif (i < currentPage and 1 != i) and (i == currentPage - PageQuantityAroundBefore - 1) %}
+                            <li class="m-2">...</li>
+                            {# Show "..." after current page depending on page numbers to show after #}
+                        {% elseif (i > currentPage and pagesCount != i) and (i == currentPage + PageQuantityAroundAfter + 1) %}
+                            <li class="m-2">...</li>
+                        {% elseif i == 1 or i == pagesCount %}
+                            <li><a class="page-link" href="/product/index/{{ i }}">{{ i }}</a></li>
+                        {% elseif (i != 1) and (i > currentPage - PageQuantityAroundBefore - 1) %}
+                            <li><a class="page-link" href="/product/index/{{ i }}">{{ i }}</a></li>
+                        {% elseif (pagesCount != i) and (i < currentPage + PageQuantityAroundAfter + 1) %}
+                            <li><a class="page-link" href="/product/index/{{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {# Next link #}
+                    {% if currentPage + 1 <= pagesCount %}
+                        <li class="page-item">
+                            <a class="page-link" href="/employee/index/{{ currentPage+1 }}" aria-label="Next">
+                                <span aria-hidden="true">&Rang;</span>
+                                <span class="sr-only">Suivante</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        <div class="col">
+            <p class="float-right mr-3"> Nb résultats : {{ productsCount }}</p>
+        </div>
+    </div>
 {% endblock %}

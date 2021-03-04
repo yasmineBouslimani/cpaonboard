@@ -4,23 +4,22 @@
     --blueCPA: #4D9FE2;
     --lightBlackCPA: #424242;
     --darkBlackCPA: #777777;
-    --whiteCPA : #EAEAEA;
     --alertCPA : #FF7F50;
+    --whiteCPA: #EAEAEA;
 }
+
 a {
     font-family: 'Roboto', sans-serif;
 }
+
 h1, h2, nav, p {
     font-family: 'Roboto', sans-serif;
-}
-
-.nav-item {
-    font-size: 1.3em;
 }
 
 .pad-top {
     padding-top: 10vh;
 }
+
 .fas {
     padding: 8px;
 }
@@ -28,6 +27,7 @@ h1, h2, nav, p {
 .fab:hover {
     color: var(--lightBlackCPA);
 }
+
 .footer-copyright a:hover {
     color: var(--lightBlackCPA);
 }
@@ -35,6 +35,7 @@ h1, h2, nav, p {
 .fa-heart {
     color: var(--lightBlackCPA);
 }
+
 .color-white {
     color: var(--whiteCPA);
 }
@@ -42,9 +43,11 @@ h1, h2, nav, p {
 .far {
     height: 20px;
 }
+
 .pad-foot {
     padding-top: 60px;
 }
+
 .page-footer {
     background-color: var(--blueCPA);
 }
@@ -52,9 +55,11 @@ h1, h2, nav, p {
 .li-style {
     list-style-type: none;
 }
+
 .li-style a {
     text-decoration: none;
 }
+
 .overflow-auto {
     height: 60vh;
 }
@@ -63,7 +68,7 @@ h1, h2, nav, p {
     width: 167px;
 }
 
-.admin-card a,a:hover {
+.admin-card a, a:hover {
     color: #212529;
     text-decoration: none;
 }
@@ -73,17 +78,19 @@ h1, h2, nav, p {
         display: flex;
         justify-content: center;
     }
+
     .nav-link {
         font-size: 9px;
     }
 }
+
 @media screen and (max-width: 571px) {
     .title-pl h2 {
         text-align: center;
     }
+
     .nav-link {
         font-size: 9px;
-        color:red;
     }
 }
 
@@ -106,14 +113,29 @@ h1, h2, nav, p {
 }
 
 .nav-link {
-    font-size: 1rem;
     color: var(--lightBlackCPA);
+    margin-bottom: 30px;
+    font-size: 13px
 }
 
-.navbar-list-products {
-    background-color: #EEEEEE;
-    color: white;
-    font-size: 15px;
-    font-weight: bolder;
-    text-transform: uppercase;
+th .fas, .far {
+    color: var(--lightBlackCPA);
+    font-size: 20px;
+}
+
+.fas, .far {
+    color: var(--lightBlackCPA);
+    font-size: 20px;
+}
+
+.extract-pdf-btn {
+    background-color: var(--blueCPA);
+    width: 208px;
+    margin-bottom: 18px;
+}
+
+#sidebarMenu .nav-item.active > .nav-link, #sidebarMenu .nav-link:hover, #sidebarMenu .nav-second-level li.active > .nav-link:hover {
+    color: #000;
+    background-color: #dee2e6;
+    border-left: 4px solid var(--blueCPA);
 }

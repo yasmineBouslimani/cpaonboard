@@ -57,13 +57,13 @@ class IndividualCustomerController extends AbstractController
         $energyTypeEnumRequest=$individualCustomerManager->SelectEnumValues('vehicle', 'energy_type');
         $gearBoxTypeEnumRequest=$individualCustomerManager->SelectEnumValues('vehicle', 'gear_box_type');
 
-         $employeeController = new EmployeeController();
-         $energyTypeEnumFormatted = $employeeController->enumRequestFormatting($energyTypeEnumRequest);
-         $energyTypeEnum=$energyTypeEnumFormatted['enum'];
-         $gearBoxTypeEnumFormatted = $employeeController->enumRequestFormatting($gearBoxTypeEnumRequest);
-         $gearBoxTypeEnum=$gearBoxTypeEnumFormatted['enum'];
+        $employeeController = new EmployeeController();
+        $energyTypeEnumFormatted = $employeeController->enumRequestFormatting($energyTypeEnumRequest);
+        $energyTypeEnum=$energyTypeEnumFormatted['enum'];
+        $gearBoxTypeEnumFormatted = $employeeController->enumRequestFormatting($gearBoxTypeEnumRequest);
+        $gearBoxTypeEnum=$gearBoxTypeEnumFormatted['enum'];
 
-         return ['energyTypeEnum' => $energyTypeEnum, 'gearBoxTypeEnum' => $gearBoxTypeEnum];
+        return ['energyTypeEnum' => $energyTypeEnum, 'gearBoxTypeEnum' => $gearBoxTypeEnum];
     }
 
     public function getFormDataForUpdateOrAdd(array $dataFromForm): array
@@ -214,7 +214,7 @@ class IndividualCustomerController extends AbstractController
          */
         $individualCustomerManager = new IndividualCustomerManager();
 
-        $contactId = $individualCustomerManager->GetIdRecordsByForeignKeys('contact','fk_id_customer2', $id);
+        $contactId = $individualCustomerManager->getIdRecordsByForeignKeys('contact','fk_id_customer2', $id);
 
         $individualCustomerManager->delete('contact', $contactId[0]['id_contact']);
         $individualCustomerManager->delete('customer', $id);
@@ -230,5 +230,5 @@ class IndividualCustomerController extends AbstractController
         return strtolower(preg_replace(
             '/(?<=\d)(?=[A-Za-z])|(?<=[A-Za-z])(?=\d)|(?<=[a-z])(?=[A-Z])/', $us, $string));
     }
-    
+
 }
