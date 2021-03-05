@@ -96,14 +96,14 @@
                                 {% if  currentRecordCol1 == 0%}
                                     {% set checkboxSelectedCol1 = '' %}
                                 {% else %}
-                                    {% set checkboxSelectedCol1 = 'selected'%}
+                                    {% set checkboxSelectedCol1 = 'checked'%}
                                 {% endif %}
                                 <input type="checkbox"
                                        name="{{ currentNameInputCol1 }}"
                                        id="{{ currentIdInputCol1 }}"
                                        class="form-control"
                                        tabindex="{{ tabIndexBeforeCard+1 }}"
-                                       checked="{{ checkboxSelectedCol1 }}"
+                                       {{ checkboxSelectedCol1 }}
                                         {{ disabled }}/></br>
                                 {# OTHERS FIELD TYPES#}
                             {% else %}
@@ -197,15 +197,14 @@
                                 {# Check or uncheck checkbox #}
                                 {% set checkboxSelectedCol2 = '' %}
                                 {% if  currentRecordCol2 == 1 %}
-                                    {% set checkboxSelectedCol2 = 'selected'%}
+                                    {% set checkboxSelectedCol2 = 'checked'%}
                                 {% endif %}
-                                <p>{{ checkboxSelectedCol2 }}</p>
                                 <input type="checkbox"
                                        name="{{ currentNameInputCol2 }}"
                                        id="{{ currentIdInputCol2 }}"
                                        class="form-control"
                                        tabindex="{{ tabIndexForCol2 }}"
-                                       checked="{{ checkboxSelectedCol2 }}"
+                                       {{ checkboxSelectedCol2 }}
                                         {{ disabled }}/></br>
                                 {# OTHERS FIELD TYPES#}
                             {% else %}

@@ -41,7 +41,8 @@ class SaleManager extends AbstractManager
          * @return array
          */
         return $this->pdo->query(
-            'SELECT sale.id_sale, sale.status_sale, sale.date_sale, sale.to_deliver
+            'SELECT sale.id_sale, sale.status_sale, sale.date_sale, sale.to_deliver, 
+                sale.global_price_original, sale.discount, sale.global_price_finalised
             FROM sale
             WHERE id_sale = '.$id.';')->fetchAll();
     }

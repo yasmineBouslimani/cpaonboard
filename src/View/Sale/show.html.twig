@@ -149,35 +149,36 @@
                     {% set  idCard =  'prices'%}
                     {% set fieldToDisplayCol1 = [
                         {
-                            'entityRequest': employee[0],
-                            'record': 'bank_name',
-                            'inputType': 'text',
-                            'nameInput': 'bankName',
-                            'idInput': 'bankName',
-                            'labelValue': 'Banque'},
+                            'entityRequest': sale[0],
+                            'record': 'global_price_original',
+                            'inputType': 'number',
+                            'nameInput': 'globalPriceOriginal',
+                            'idInput': 'globalPriceOriginal',
+                            'labelValue': 'Montant global HT'},
                         {
-                            'entityRequest': employee[0],
-                            'record': 'bank_city',
-                            'inputType': 'text',
-                            'nameInput': 'bankCity',
-                            'idInput': 'bankCity',
-                            'labelValue': 'Ville'},
+                            'entityRequest': sale[0],
+                            'record': 'discount',
+                            'inputType': 'number',
+                            'nameInput': 'discount',
+                            'idInput': 'discount',
+                            'labelValue': 'Remise globale appliquée au montant HT (en %)'},
+                        {
+                            'entityRequest': sale[0],
+                            'record': 'global_price_finalised',
+                            'inputType': 'number',
+                            'nameInput': 'globalPriceFinalised',
+                            'idInput': 'globalPriceFinalised',
+                            'labelValue': 'Montant global TTC'}
                     ] %}
                     {% set fieldToDisplayCol2 = [
+                        {},
                         {
-                            'entityRequest': employee[0],
-                            'record': 'bank_iban',
-                            'inputType': 'text',
-                            'nameInput': 'bankIban',
-                            'idInput': 'bankIban',
-                            'labelValue': 'IBAN'},
-                        {
-                            'entityRequest': employee[0],
-                            'record': 'bank_bic',
-                            'inputType': 'text',
-                            'nameInput': 'bankBic',
-                            'idInput': 'bankBic',
-                            'labelValue': 'BIC'}
+                            'entityRequest': sale[0],
+                            'record': '',
+                            'inputType': 'number',
+                            'nameInput': 'discountSum',
+                            'idInput': 'discountSum',
+                            'labelValue': 'Montant remisé'}
                     ] %}
                     {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
                     {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}

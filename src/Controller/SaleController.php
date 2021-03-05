@@ -192,6 +192,34 @@ class SaleController extends AbstractController
 
     }
 
+    public function editIndividual(int $id)
+    {
+        /**
+         * Display a sale record for modification purpose.
+         */
+        /*if ($_SESSION['is_admin'] == "1") {
+            header('location:/auth/login');
+        }*/
+
+        $saleController = new SaleController();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $saleManager = new SaleManager();
+
+            $datafromForm = $saleController->getFormDataForUpdateOrAdd($_POST);
+            $saleManager->update('employee', $datafromForm['employeeData']);
+            $saleManager->update('contact', $datafromForm['contactData']);
+            $saleManager->update('contract', $datafromForm['contractData']);
+        }
+
+        $data = $saleController->getDataforSale($id, 2);
+
+        return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
+            'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'],
+            'customerType' => '2', 'operation' => 'edit']);
+
+    }
+
     public function addProfessional()
     {
         /**
