@@ -1,0 +1,196 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}CPA : Fiche Vente{% endblock %}
+
+{% block bannerTitle %}FICHE VENTE{% endblock %}
+
+
+
+{% block content %}
+    <div>
+        {% if operation == 'edit' %}
+            {% set formAction = ['/sale/edit/', sale[0]['id_sale']]|join('') %}
+        {% elseif operation == 'add'  %}
+            {% set formAction = '/sale/add' %}
+        {% endif %}
+        <form method="post" action="{{ formAction }}" class="form-group">
+            <input type="hidden"
+                   name="idSale"
+                   id="idSale"
+                   class="form-control"
+                   tabindex="1"
+                   value="{{ sale[0]['id_sale'] }}"
+                    {{ disabled }}/>
+            <input type="hidden"
+                   name="idContact"
+                   id="idContact"
+                   class="form-control"
+                   tabindex="2"
+                   value="{{ sale[0]['id_contact'] }}"
+                    {{ disabled }}/>
+            {% set tabIndex = 3 %}
+            <div class="accordion" id="accordion">
+                <div>
+                    {% set titleCardToDisplay = 'informations' %}
+                    {% set  idCard =  'informations'%}
+                    {% set fieldToDisplayCol1 = [
+                        {
+                            'entityRequest': sale[0],
+                            'record': 'date_sale',
+                            'inputType': 'date',
+                            'nameInput': 'dateSale',
+                            'idInput': 'dateSale',
+                            'labelValue': 'Date de vente'},
+                        {
+                            'entityRequest': sale[0],
+                            'record': 'status_sale',
+                            'inputType': 'select',
+                            'selectType': 'Enum',
+                            'selectRequest': statusEnum,
+                            'nameInput': 'statusSale',
+                            'idInput': 'statusSale',
+                            'labelValue': 'Statut'},
+                    ] %}
+                    {% if customerType == '1' %}
+                        {% set customerSelectValueForRecords = ['corporate_name', 'last_name', 'first_name'] %}
+                    {% elseif customerType == '2'  %}
+                        {% set customerSelectValueForRecords = ['last_name', 'first_name'] %}
+                    {% endif %}
+                    {% set fieldToDisplayCol2 = [
+                        {
+                            'entityRequest': sale[0],
+                            'record': 'id_customer',
+                            'inputType': 'select',
+                            'selectType': 'Records',
+                            'selectValueForRecords': customerSelectValueForRecords,
+                            'selectRequest': customerRecords,
+                            'nameInput': '',
+                            'idInput': '',
+                            'labelValue': 'Client'},
+                        {
+                            'entityRequest': sale[0],
+                            'record': 'to_deliver',
+                            'inputType': 'checkbox',
+                            'nameInput': 'toDeliver',
+                            'idInput': 'toDeliver',
+                            'labelValue': 'A livrer in-situ'}
+                    ] %}
+                    {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
+                    {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
+                    {% set tabIndexBeforeCard = tabIndex %}
+                    {% include '_form_components/_cardForm.html.twig'%}
+                    {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
+                </div>
+                <div>
+                    {% set titleCardToDisplay = 'produit' %}
+                    {% set  idCard =  'product' %}
+                    {% set fieldToDisplayCol1 = [
+                        {
+                            'entityRequest': employee[0],
+                            'record': 'type_contract',
+                            'inputType': 'select',
+                            'selectRequest': contractTypeEnum,
+                            'nameInput': 'typeContract',
+                            'idInput': 'typeContract',
+                            'labelValue': 'Type de contrat'},
+                        {
+                            'entityRequest': employee[0],
+                            'record': 'starting_date',
+                            'inputType': 'date',
+                            'nameInput': 'startingDate',
+                            'idInput': 'startingDate',
+                            'labelValue': 'Date de début'},
+                        {
+                            'entityRequest': employee[0],
+                            'record': 'end_date',
+                            'inputType': 'date',
+                            'nameInput': 'endDate',
+                            'idInput': 'endDate',
+                            'labelValue': 'Date de fin'},
+                        {
+                            'entityRequest': employee[0],
+                            'record': 'on_going',
+                            'inputType': 'checkbox_one',
+                            'nameInput': 'onGoing',
+                            'idInput': 'onGoing',
+                            'labelValue': 'En cours'}
+                    ] %}
+                    {% set fieldToDisplayCol2 = [
+                        {
+                            'entityRequest': employee[0],
+                            'record': 'wage_first_year',
+                            'inputType': 'text',
+                            'nameInput': 'wageFirstYear',
+                            'idInput': 'wageFirstYear',
+                            'labelValue': 'Salaire 1e année'},
+                        {
+                            'entityRequest': employee[0],
+                            'record': 'wage_second_year',
+                            'inputType': 'text',
+                            'nameInput': 'wageSecondYear',
+                            'idInput': 'wageSecondYear',
+                            'labelValue': 'Salaire 2e année'},
+                        {
+                            'entityRequest': employee[0],
+                            'record': 'wage_third_year',
+                            'inputType': 'text',
+                            'nameInput': 'wageThirdYear',
+                            'idInput': 'wageThirdYear',
+                            'labelValue': 'Salaire 3e année'}
+                    ] %}
+                    {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
+                    {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
+                    {% set tabIndexBeforeCard = tabIndex %}
+                    {% include '_form_components/_cardForm.html.twig'%}
+                    {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
+                </div>
+                <div>
+                    {% set titleCardToDisplay = 'prix' %}
+                    {% set  idCard =  'prices'%}
+                    {% set fieldToDisplayCol1 = [
+                        {
+                            'entityRequest': employee[0],
+                            'record': 'bank_name',
+                            'inputType': 'text',
+                            'nameInput': 'bankName',
+                            'idInput': 'bankName',
+                            'labelValue': 'Banque'},
+                        {
+                            'entityRequest': employee[0],
+                            'record': 'bank_city',
+                            'inputType': 'text',
+                            'nameInput': 'bankCity',
+                            'idInput': 'bankCity',
+                            'labelValue': 'Ville'},
+                    ] %}
+                    {% set fieldToDisplayCol2 = [
+                        {
+                            'entityRequest': employee[0],
+                            'record': 'bank_iban',
+                            'inputType': 'text',
+                            'nameInput': 'bankIban',
+                            'idInput': 'bankIban',
+                            'labelValue': 'IBAN'},
+                        {
+                            'entityRequest': employee[0],
+                            'record': 'bank_bic',
+                            'inputType': 'text',
+                            'nameInput': 'bankBic',
+                            'idInput': 'bankBic',
+                            'labelValue': 'BIC'}
+                    ] %}
+                    {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
+                    {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
+                    {% set tabIndexBeforeCard = tabIndex %}
+                    {% include '_form_components/_cardForm.html.twig'%}
+                    {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
+                </div>
+            </div>
+            {# SUBMIT FORM AND CANCEL BUTTON#}
+            {% if operation == 'edit' or operation == 'add'  %}
+                <input type="submit" value="Enregistrer" class="btn btn-primary"/>
+                <a href="/sale/cancel" class="btn btn-danger">Annuler</a>
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}

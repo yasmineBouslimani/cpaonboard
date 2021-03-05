@@ -11,7 +11,8 @@
     <div>
         <div class="row">
             <div class="col" >
-                <a href="/sale/add" class="btn btn-primary btn-sm float-right mb-3 mr-3">Ajout</a>
+                    <a href="/sale/addIndividual" class="btn btn-primary btn-sm float-right mb-3 mr-3">Ajout vente client particulier</a>
+                    <a href="/sale/addProfessional" class="btn btn-primary btn-sm float-right mb-3 mr-3">Ajout vente client professionel</a>
             </div>
         </div>
         <table id="datatable_users" class="table table-striped table-hover">
@@ -32,16 +33,21 @@
                     <th>{{sale['date_sale']}}</th>
                     <th>{{sale['first_name']}} {{sale['last_name']}}</th>
                     <th>{% if sale['id_customerType'] == '1' %}
-                            Particulier
-                        {% else %}
                             Professionnel
+                        {% else %}
+                            Particulier
                         {% endif %}</th>
                     <th>{{sale['corporate_name']}}</th>
                     <th>{{sale['global_price_finalised']}}</th>
                     <th>
-                        <a href="/sale/show/{{sale['id_sale']}}/read" class="btn btn-primary btn-sm">Lecture</a>
-                        <a href="/sale/edit/{{sale['id_sale']}}" class="btn btn-primary btn-sm">Modifier</a>
-                        <a href="/sale/delete/{{sale['id_sale']}}/read" class="btn btn-danger btn-sm">Delete</a>
+                        {% if sale['id_customerType'] == '1' %}
+                            <a href="/sale/showIndividual/{{sale['id_sale']}}/read"><i class="far fa-eye"></i></a>
+                            <a href="/sale/editIndividual/{{sale['id_sale']}}"><i class="fas fa-edit"></i></a>
+                        {% else %}
+                            <a href="/sale/showProfessional/{{sale['id_sale']}}/read"><i class="far fa-eye"></i></a>
+                            <a href="/sale/editProfessional/{{sale['id_sale']}}"><i class="fas fa-edit"></i></a>
+                        {% endif %}
+                        <a href="/sale/delete/{{sale['id_sale']}}/read"><i class="fas fa-user-times"></i></a>
                     </th>
                 </tr>
             {%  endfor %}
@@ -73,11 +79,11 @@
                             {% elseif (i > currentPage and pagesCount != i) and (i == currentPage + PageQuantityAroundAfter + 1) %}
                                 <li class="m-2">...</li>
                             {% elseif i == 1 or i == pagesCount %}
-                                <li><a class="page-link" href="/employee/index/{{ i }}">{{ i }}</a></li>
+                                <li><a class="page-link" href="/sale/index/{{ i }}">{{ i }}</a></li>
                             {% elseif (i != 1) and (i > currentPage - PageQuantityAroundBefore - 1) %}
-                                <li><a class="page-link" href="/employee/index/{{ i }}">{{ i }}</a></li>
+                                <li><a class="page-link" href="/sale/index/{{ i }}">{{ i }}</a></li>
                             {% elseif (pagesCount != i) and (i < currentPage + PageQuantityAroundAfter + 1) %}
-                                <li><a class="page-link" href="/employee/index/{{ i }}">{{ i }}</a></li>
+                                <li><a class="page-link" href="/sale/index/{{ i }}">{{ i }}</a></li>
                             {% endif %}
                         {% endfor %}
                         {# Next link #}
