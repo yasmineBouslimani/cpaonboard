@@ -94,7 +94,7 @@ class IndividualCustomerController extends AbstractController
         }
 
         $individualCustomerData['id_customer'] = $allData['id_customer'];
-        $individualCustomerData['FK_customerType'] = 1;
+        $individualCustomerData['FK_customerType'] = 2;
 
         $contactData['id_contact'] = $allData['id_contact'];
         $contactData['first_name'] = $allData['first_name'];

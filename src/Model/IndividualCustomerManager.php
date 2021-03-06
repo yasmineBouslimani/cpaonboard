@@ -49,18 +49,19 @@ class IndividualCustomerManager extends AbstractManager
     public function selectIndividualCustomers(): array
     {
         /**
-         * Get all row from table Customers when customer type = professional.
+         * Get all rows from table Customers when customer type = professional for customers list.
          *
          * @return array
          */
         return $this->pdo->query(
             'SELECT customer.id_customer, customer.fk_customerType, customertype.id_customerType,
-                customertype.label, contact.last_name, contact.fk_id_customer2,
-                contact.first_name FROM customer
+                customertype.label, CONCAT( contact.last_name, \' \' , contact.first_name) as contactIdentity,
+                contact.fk_id_customer2
+                FROM customer
 			LEFT JOIN contact ON contact.fk_id_customer2 = customer.id_customer
 			LEFT JOIN customertype ON customertype.id_customertype = customer.fk_customerType
 			WHERE customer.FK_customerType = 2
-            ORDER BY contact.last_name ASC, contact.first_name ASC ;')->fetchAll();
+            ORDER BY contactIdentity ASC ;')->fetchAll();
     }
 
     public function selectIndividualCustomerById(int $id): array

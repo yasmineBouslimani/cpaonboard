@@ -52,9 +52,9 @@
                             'labelValue': 'Statut'},
                     ] %}
                     {% if customerType == '1' %}
-                        {% set customerSelectValueForRecords = ['corporate_name', 'last_name', 'first_name'] %}
+                        {% set customerSelectValueForRecords = ['corporate_name', 'contactIdentity'] %}
                     {% elseif customerType == '2'  %}
-                        {% set customerSelectValueForRecords = ['last_name', 'first_name'] %}
+                        {% set customerSelectValueForRecords = ['contactIdentity'] %}
                     {% endif %}
                     {% set fieldToDisplayCol2 = [
                         {
@@ -85,59 +85,69 @@
                     {% set titleCardToDisplay = 'produits' %}
                     {% set  idCard =  'products' %}
                     {% set headlinesToDisplay = [
-                        'Référence', 'Type', 'Stock', 'Prix unitaire HT', 'TVA', 'Quantité',
-                        'Remise', 'Prix de vente réel HT', 'Prix de vente réel TTC'
+                        'Référence', 'Type', 'Stock', 'Prix unitaire HT', 'Quantité', 'Remise'
                     ] %}
-                    {% set identifier = 'label'%}
-                    {% set fieldsOnReadOnly = ['producttype', 'stock', 'price', 'ratio'] %}
-                    {% set fillableFields = ['quantity', 'discount'] %}
-                    {% set finalised_price = ['finalised_price', ''] %}
+                    {% set fieldsOnReadOnly = ['type', 'stock', 'price'] %}
+                    {% set fillableFields = [
+                        {
+                        'record':'quantity',
+                        'nameInput': 'quantity',
+                        'idInput': 'quantity'
+                        },
+                        {
+                            'record':'discount',
+                            'nameInput': 'discount',
+                            'idInput': 'discount'
+                        }
+                    ] %}
                     {% set tabIndexBeforeCard = tabIndex %}
                     {% include 'Sale/_cardProductTable.html.twig' %}
 {#                    {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}#}
                 </div>
-                <div>
-                    {% set titleCardToDisplay = 'prix' %}
-                    {% set  idCard =  'prices'%}
-                    {% set fieldToDisplayCol1 = [
-                        {
-                            'entityRequest': sale[0],
-                            'record': 'global_price_original',
-                            'inputType': 'number',
-                            'nameInput': 'globalPriceOriginal',
-                            'idInput': 'globalPriceOriginal',
-                            'labelValue': 'Montant global HT'},
-                        {
-                            'entityRequest': sale[0],
-                            'record': 'discount',
-                            'inputType': 'number',
-                            'nameInput': 'discount',
-                            'idInput': 'discount',
-                            'labelValue': 'Remise globale appliquée au montant HT (en %)'},
-                        {
-                            'entityRequest': sale[0],
-                            'record': 'global_price_finalised',
-                            'inputType': 'number',
-                            'nameInput': 'globalPriceFinalised',
-                            'idInput': 'globalPriceFinalised',
-                            'labelValue': 'Montant global TTC'}
-                    ] %}
-                    {% set fieldToDisplayCol2 = [
-                        {},
-                        {
-                            'entityRequest': sale[0],
-                            'record': '',
-                            'inputType': 'number',
-                            'nameInput': 'discountSum',
-                            'idInput': 'discountSum',
-                            'labelValue': 'Montant remisé'}
-                    ] %}
-                    {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
-                    {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
-                    {% set tabIndexBeforeCard = tabIndex %}
-                    {% include '_form_components/_cardForm.html.twig'%}
-                    {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
-                </div>
+                {% if operation == 'edit' or operation == 'show'  %}
+                    <div>
+                        {% set titleCardToDisplay = 'recapitulatif' %}
+                        {% set  idCard =  'prices'%}
+                        {% set fieldToDisplayCol1 = [
+                            {
+                                'entityRequest': sale[0],
+                                'record': 'global_price_original',
+                                'inputType': 'number',
+                                'nameInput': 'globalPriceOriginal',
+                                'idInput': 'globalPriceOriginal',
+                                'labelValue': 'Montant global HT'},
+                            {
+                                'entityRequest': sale[0],
+                                'record': 'discount',
+                                'inputType': 'number',
+                                'nameInput': 'discount',
+                                'idInput': 'discount',
+                                'labelValue': 'Remise globale appliquée au montant HT (en %)'},
+                            {
+                                'entityRequest': sale[0],
+                                'record': 'global_price_finalised',
+                                'inputType': 'number',
+                                'nameInput': 'globalPriceFinalised',
+                                'idInput': 'globalPriceFinalised',
+                                'labelValue': 'Montant global TTC'}
+                        ] %}
+                        {% set fieldToDisplayCol2 = [
+                            {},
+                            {
+                                'entityRequest': sale[0],
+                                'record': '',
+                                'inputType': 'number',
+                                'nameInput': 'discountSum',
+                                'idInput': 'discountSum',
+                                'labelValue': 'Montant remisé'}
+                        ] %}
+                        {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
+                        {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
+                        {% set tabIndexBeforeCard = tabIndex %}
+                        {% include '_form_components/_cardForm.html.twig'%}
+                        {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
+                    </div>
+                {% endif %}
             </div>
             {# SUBMIT FORM AND CANCEL BUTTON#}
             {% if operation == 'edit' or operation == 'add'  %}

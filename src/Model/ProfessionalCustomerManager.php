@@ -49,18 +49,18 @@ class ProfessionalCustomerManager extends AbstractManager
     public function selectProfessionalCustomers(): array
     {
         /**
-         * Get all row from table Customers when customer type = professional.
+         * Get all row from table Customers when customer type = professional for customers list.
          *
          * @return array
          */
         return $this->pdo->query(
             'SELECT customer.id_customer, customer.fk_customerType, customertype.id_customerType,
-                customertype.label, contact.last_name, contact.fk_id_customer2,
-                contact.first_name, contact.corporate_name FROM customer
+                customertype.label, contact.fk_id_customer2, CONCAT( contact.last_name, \' \' , contact.first_name) as contactIdentity,
+                contact.corporate_name FROM customer
 			LEFT JOIN contact ON contact.fk_id_customer2 = customer.id_customer
 			LEFT JOIN customertype ON customertype.id_customertype = customer.fk_customerType
 			WHERE customer.FK_customerType = 1
-            ORDER BY contact.corporate_name ASC, contact.last_name ASC, contact.first_name ASC ;')->fetchAll();
+            ORDER BY contact.corporate_name ASC, contactIdentity ASC ;')->fetchAll();
     }
 
     public function selectProfessionalCustomerById(int $id): array
@@ -71,9 +71,11 @@ class ProfessionalCustomerManager extends AbstractManager
          * @return array
          */
         return $this->pdo->query(
-            'SELECT customer.id_customer, contact.id_contact, contact.last_name, contact.first_name, contact.corporate_name,
-                contact.address_street_number, contact.address_addition, contact.address_street , contact.address_zip_code,
-                contact.address_city, contact.phone_number, contact.cellphone_number, contact.professional_email_address FROM customer
+            'SELECT customer.id_customer, contact.id_contact, contact.last_name, contact.first_name,
+                contact.corporate_name, contact.address_street_number, contact.address_addition, contact.address_street,
+                contact.address_zip_code, contact.address_city, contact.phone_number, contact.cellphone_number,
+                contact.professional_email_address
+            FROM customer
             LEFT JOIN contact ON customer.id_customer = contact.fk_id_customer2
             WHERE customer.id_customer =' . $id)->fetchAll();
     }

@@ -56,7 +56,7 @@ class ProfessionalCustomerController extends AbstractController
         }
 
         $professionalCustomerData['id_customer'] = $allData['id_customer'];
-        $professionalCustomerData['FK_customerType'] = 2;
+        $professionalCustomerData['FK_customerType'] = 1;
 
         $contactData['id_contact'] = $allData['id_contact'];
         $contactData['first_name'] = $allData['first_name'];
@@ -139,7 +139,8 @@ class ProfessionalCustomerController extends AbstractController
 
             $datafromForm = $professionalCustomerController->getFormDataForUpdateOrAdd($_POST);
 
-            $idProfessionalCustomer = $professionalCustomerManager->insert('customer', $datafromForm['professionalCustomerData']);
+            $idProfessionalCustomer = $professionalCustomerManager->insert('customer',
+                $datafromForm['professionalCustomerData']);
             $contactFk = ['fk_id_customer2' => $idProfessionalCustomer];
             $professionalCustomerManager->insert('contact', $datafromForm['contactData'], $contactFk);
 

@@ -1,21 +1,15 @@
 <div class="card mr-4 mb-4">
-    <div class="card-header uppercase">{{ titleCardToDisplay }}
+    <div class="card-header text-white bg-dark uppercase">{{ titleCardToDisplay }}
         {#COLLAPSE BUTTON#}
-        <button class="btn btn-secondary btn-sm float-right" type="button" data-toggle="collapse" data-target="#{{ idCard }}" aria-expanded="true
-            aria-controls="{{ idCard }}"> <span aria-hidden="true">&triangledown;</span>
+        <button class="btn btn-secondary btn-sm float-right" type="button" data-toggle="collapse" data-target="#{{ idCard }}"
+                aria-expanded="true aria-controls="{{ idCard }}"> <span aria-hidden="true">&triangledown;</span>
         <span class="sr-only">Déplier-Replier</span></button>
         {#DELETE BUTTON#}
         {% if deletable and (operation == 'edit' or operation == 'add' ) %}
-            <a href="/individualcustomer/show/{{customer['id_customer']}}" class="btn btn-danger btn-sm float-right mr-3" aria-label="Delete">X</a>
+            <a href="/individualcustomer/show/{{customer['id_customer']}}" class="btn btn-danger btn-sm float-right mr-3"
+               aria-label="Delete">X</a>
         {% endif %}
     </div>
-    {# Number of row need for displaying all datas #}
-    {% set CountRow = LengthArrayCol1 > LengthArrayCol2 ? LengthArrayCol1 : LengthArrayCol2 %}
-    {# Current field handle in column 1 #}
-    {% set currentIndiceArrayCol1 = 0 %}
-    {# Current field handle in column 2 #}
-    {% set currentIndiceArrayCol2 = 0 %}
-    {# Last tabIndex before process #}
     {% set tabIndexBeforeCard = tabIndex %}
     {# Determine if fields must be in read only #}
     {% if operation == 'edit' or operation == 'add'  %}
@@ -25,8 +19,22 @@
     {% endif %}
     <div id="{{ idCard }}" class="collapse show" aria-labelledby="{{ idCard }}" data-parent="{{ accordion }}">
         <div class="card-body">
+            <div class="row mb-1 mt-1">
+                <div class="col-2 ">
+                    <label for="discount" class="mr-1" >Remise globale appliquée au montant HT (en %)</label>
+                </div>
+                <div class="col-2 ">
+                    <input type="number"
+                           name="discount"
+                           id="discount"
+                           class="form-control mb-3"
+                           tabindex="{{ tabIndexBeforeCard+1 }}"
+                           value="{{ sale[0]['discount'] }}"
+                            {{ disabled }} />
+                </div>
+            </div>
             <table id="datatable_products" class="table table-striped table-hover">
-                <thead class="thead-dark">
+                <thead class="thead-light">
                 <tr>
                     {% for headline in headlinesToDisplay %}
                         <th class="text-left">{{ headline }}</th>
@@ -35,211 +43,23 @@
                 </thead>
                 {% for product in productsRecords %}
                     <tr>
-                        <th><a href="/product/show/{{product['id_product']}}" class="">{{ product[identifier] }}</a></th>
+                        <th><a href="/product/show/{{product['id_product']}}" class="">{{ product['label'] }}</a></th>
                         {% for field in fieldsOnReadOnly %}
                             <th>{{ product[field] }}</th>
+                        {%  endfor %}
+                        {% for field in fillableFields %}
+                            <th>
+                                <input type="number"
+                                       name="{{ field[nameInput] }}"
+                                       id="{{ field[idInput] }}"
+                                       class="form-control"
+                                       tabindex="{{ tabIndexBeforeCard+1 }}"
+                                       value="{{ product[field[record]] }}"
+                                        {{ disabled }} /></th>
                         {%  endfor %}
                     </tr>
                 {%  endfor %}
             </table>
-            {#FOR EVERY ROW#}{#
-            {% for currentRow in 1..CountRow %}
-                <div class="row mb-1 mt-1">
-            #}{# COL 1#}{#
-            {% if currentIndiceArrayCol1 < LengthArrayCol1 %}
-            #}{# Input type for current field in column 1 #}{#
-            {% set currentInputCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['inputType'] %}
-            #}{# Request name for current field value in column 1 #}{#
-            {% set currentEntityRequestCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['entityRequest'] %}
-            #}{# Input value for current field in column 1 #}{#
-            {% set currentRecordCol1 = currentEntityRequestCol1[fieldToDisplayCol1[currentIndiceArrayCol1]['record']] %}
-            #}{# Input name for current field in column 1 #}{#
-            {% set currentNameInputCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['nameInput'] %}
-            #}{# Input Id for current field in column 1 #}{#
-            {% set currentIdInputCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['idInput'] %}
-            #}{# Input Label to display for current field in column 1 #}{#
-            {% set currentLabelValueCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['labelValue'] %}
-            #}{# Request type (only select input) : list of enum field values or list of records #}{#
-            {% set currentSelectTypeCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['selectType'] %}
-            #}{# Request name (only select input) for current field in column 1 #}{#
-            {% set currentSelectRequestValueCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['selectRequest'] %}
-            #}{# DISPLAY LABEL #}{#
-            <div class="col-2 ">
-                <label for="{{ currentIdInputCol1 }}" class="mr-1" >
-                    {{ currentLabelValueCol1 }}
-                </label>
-            </div>
-            <div class="col-2 ">
-            #}{# IF SELECT FIELD #}{#
-            {% if currentInputCol1 == 'select' %}
-                {% if currentSelectTypeCol1 == 'Enum' %}
-                    <select name="{{ currentNameInputCol1 }}"
-                            tabindex="{{ tabIndexBeforeCard+1 }}"
-                            class="form-control"
-                            {{ disabled }}">
-            #}{# Add an option for every value in enum field and display value selected in database#}{#
-            {% for item in currentSelectRequestValueCol1 %}
-                {% if item == currentRecordCol1 %}
-                    <option selected value="{{ item }}">{{ item }}</option>
-                {% else %}
-                    <option value="{{ item }}">{{ item }}</option>
-                {% endif %}
-            {%  endfor %}
-            </select>
-        {% elseif currentSelectTypeCol1 == 'Records' %}
-            <select name="{{ currentNameInputCol1 }}"
-                    tabindex="{{ tabIndexBeforeCard+1 }}"
-                    class="form-control"
-                    {{ disabled }} >
-            #}{# Add an option for every value in enum field and display value selected in database #}{#
-            {% for item in currentSelectRequestValueCol1 %}
-                {% set label = '' %}
-                {% for valueToDisplay in currentSelectRecordsValuesCol1 %}
-                    {% set label = [label, item[valueToDisplay]]|join(' - ') %}
-                {%  endfor %}
-                {% set label = label|slice(3) %}
-                {% if item['id_customer'] == currentRecordCol1 %}
-                    <option selected value="{{ item['id_customer'] }}">{{ label }}</option>
-                {% else %}
-                    <option value="{{ item['id_customer'] }}">{{ label }}</option>
-                {% endif %}
-            {%  endfor %}
-        </select>
-    {% endif %}
-            #}{# IF CHECKBOX FIELD #}{#
-            {% elseif  currentInputCol1 == 'checkbox'%}
-            #}{# Check or uncheck checkbox #}{#
-            <p>currentRecordCol1</p>
-            {% if  currentRecordCol1 == 0%}
-                {% set checkboxSelectedCol1 = '' %}
-            {% else %}
-                {% set checkboxSelectedCol1 = 'checked'%}
-            {% endif %}
-            <input type="checkbox"
-                   name="{{ currentNameInputCol1 }}"
-                   id="{{ currentIdInputCol1 }}"
-                   class="form-control"
-                   tabindex="{{ tabIndexBeforeCard+1 }}"
-                   {{ checkboxSelectedCol1 }}
-                    {{ disabled }}/></br>
-            #}{# OTHERS FIELD TYPES#}{#
-            {% else %}
-                <input type="{{ currentInputCol1 }}"
-                       name="{{ currentNameInputCol1 }}"
-                       id="{{ currentIdInputCol1 }}"
-                       class="form-control"
-                       tabindex="{{ tabIndexBeforeCard+1 }}"
-                       value="{{ currentRecordCol1 }}"
-                        {{ disabled }} /></br>
-            {% endif %}
-        </div>
-            #}{# UPDATE VALUE FOR TAB INDEX AND ARRAY COL 1#}{#
-            {% set currentIndiceArrayCol1 = currentIndiceArrayCol1 + 1 %}
-            {% set tabIndex = tabIndex + 1 %}
-        {% endif %}
-        <div class="col-2"></div>
-            #}{# COL 2#}{#
-            {% if currentIndiceArrayCol2 < LengthArrayCol2 %}
-            #}{# Input type for current field in column 2 #}{#
-            {% set currentInputCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['inputType'] %}
-            #}{# Request name for current field value in column 2 #}{#
-            {% set currentEntityRequestCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['entityRequest'] %}
-            #}{# Input value for current field in column 2 #}{#
-            {% set currentRecordCol2 = currentEntityRequestCol2[fieldToDisplayCol2[currentIndiceArrayCol2]['record']] %}
-            #}{# Input name for current field in column 2 #}{#
-            {% set currentNameInputCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['nameInput'] %}
-            #}{# Input Id for current field in column 2 #}{#
-            {% set currentIdInputCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['idInput'] %}
-            #}{# Input Label to display for current field in column 2 #}{#
-            {% set currentLabelValueCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['labelValue'] %}
-            #}{# Request type (only select input) : list of enum field values or list of records for current field in
-                            column 2#}{#
-            {% set currentSelectTypeCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['selectType'] %}
-            #}{# Array of values to display in select input for current field in column 2 #}{#
-            {% set currentSelectRecordsValuesCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['selectValueForRecords'] %}
-            #}{# Request name (only select input) for current field in column 2 #}{#
-            {% set currentSelectRequestValueCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['selectRequest'] %}
-            #}{# UPDATE CURRENT VALUE FOR TAB INDEX #}{#
-            {% if LengthArrayCol1 < CountRow and currentRow == CountRow %}
-                {% set tabIndexForCol2 = tabIndexBeforeCard+currentRow+CountRow+1 %}
-            {% else %}
-                {% set tabIndexForCol2 = tabIndexBeforeCard+currentRow+CountRow %}
-            {% endif %}
-            <div class="col-2">
-            #}{# DISPLAY LABEL #}{#
-            <label for="{{ currentIdInputCol2 }}" class="mr-1">
-                {{ currentLabelValueCol2}}
-            </label>
-        </div>
-        <div class="col-2 ">
-            #}{# IF SELECT FIELD #}{#
-            {% if currentInputCol2 == 'select' %}
-                {% if currentSelectTypeCol2 == 'Enum' %}
-                    <select name="{{ currentNameInputCol2 }}"
-                            tabindex="{{ tabIndexForCol2 }}"
-                            class="form-control"
-                            {{ disabled }} >
-            #}{# Add an option for every value in enum field and display value selected in database #}{#
-            {% for item in currentSelectRequestValueCol2 %}
-                <p>item</p>
-                {% if item == currentRecordCol2 %}
-                    <option selected value="{{ item }}">{{ item }}</option>
-                {% else %}
-                    <option value="{{ item }}">{{ item }}</option>
-                {% endif %}
-            {%  endfor %}
-        </select>
-    {% elseif currentSelectTypeCol2 == 'Records' %}
-        <select name="{{ currentNameInputCol2 }}"
-                tabindex="{{ tabIndexForCol2 }}"
-                class="form-control"
-                {{ disabled }} >
-            #}{# Add an option for every value in enum field and display value selected in database #}{#
-            {% for item in currentSelectRequestValueCol2 %}
-                {% set label = '' %}
-                {% for valueToDisplay in currentSelectRecordsValuesCol2 %}
-                    {% set label = [label, item[valueToDisplay]]|join(' - ') %}
-                {%  endfor %}
-                {% set label = label|slice(3) %}
-                {% if item['id_customer'] == currentRecordCol2 %}
-                    <option selected value="{{ item['id_customer'] }}">{{ label }}</option>
-                {% else %}
-                    <option value="{{ item['id_customer'] }}">{{ label }}</option>
-                {% endif %}
-            {%  endfor %}
-        </select>
-    {% endif %}
-            #}{# IF CHECKBOX FIELD #}{#
-            {% elseif currentInputCol2 == 'checkbox'%}
-            #}{# Check or uncheck checkbox #}{#
-            {% set checkboxSelectedCol2 = '' %}
-            {% if  currentRecordCol2 == 1 %}
-                {% set checkboxSelectedCol2 = 'checked'%}
-            {% endif %}
-            <input type="checkbox"
-                   name="{{ currentNameInputCol2 }}"
-                   id="{{ currentIdInputCol2 }}"
-                   class="form-control"
-                   tabindex="{{ tabIndexForCol2 }}"
-                   {{ checkboxSelectedCol2 }}
-                    {{ disabled }}/></br>
-            #}{# OTHERS FIELD TYPES#}{#
-            {% else %}
-                <input type="{{ currentInputCol2 }}"
-                       name="{{ currentNameInputCol2 }}"
-                       id="{{ currentIdInputCol2 }}"
-                       class="form-control"
-                       tabindex="{{ tabIndexForCol2 }}"
-                       value="{{ currentRecordCol2 }}"
-                        {{ disabled }}/></br>
-            {% endif %}
-        </div>
-            #}{# UPDATE VALUE FOR TAB INDEX AND ARRAY COL 2 #}{#
-            {% set currentIndiceArrayCol2 = currentIndiceArrayCol2 + 1 %}
-            {% set tabIndex = tabIndex + 1 %}
-        {% endif %}
-    </div>
-{% endfor %}#}
         </div>
     </div>
 </div>
