@@ -45,7 +45,9 @@ class SaleController extends AbstractController
         $saleController = new SaleController();
         $saleAllEnumValues = $saleController->getDataEnumforSale($customerType);
 
-        return ['sale' => $sale, 'statusEnum' => $saleAllEnumValues['statusEnum']];
+        return ['sale' => $sale, 'statusEnum' => $saleAllEnumValues['statusEnum'],
+            'customerRecords' => $saleAllEnumValues['customerRecords'],
+            'productsRecords'=> $saleAllEnumValues['productsRecords']];
     }
 
     public function getDataEnumforSale(int $customerType): array
@@ -63,16 +65,14 @@ class SaleController extends AbstractController
             $individualCustomerManager = new IndividualCustomerManager();
             $customerRecords=$individualCustomerManager->selectIndividualCustomers();
         }
+        $productsRecords = $saleManager->selectProductsForSale();
+        var_dump($productsRecords);
 
         $saleController = new SaleController();
         $statusEnumFormatted = $saleController->enumRequestFormatting($statusEnumRequest);
         $statusEnum=$statusEnumFormatted['enum'];
-//        $genderEnumFormatted = $employeeController->enumRequestFormatting($genderEnumRequest);
-//        $genderEnum=$genderEnumFormatted['enum'];
-//        $contractTypeEnumFormatted = $employeeController->enumRequestFormatting($contractTypeEnumRequest);
-//        $contractTypeEnum=$contractTypeEnumFormatted['enum'];
 
-        return ['statusEnum' => $statusEnum, 'customerRecords' => $customerRecords];
+        return ['statusEnum' => $statusEnum, 'customerRecords' => $customerRecords, 'productsRecords' => $productsRecords];
     }
 
     public function getFormDataForUpdateOrAdd(array $dataFromForm): array
@@ -139,11 +139,11 @@ class SaleController extends AbstractController
         }*/
 
         $saleController = new SaleController();
-        $data = $saleController->getDataforSale($id, 'Professional');
+        $data = $saleController->getDataforSale($id, 1);
 
         return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
-            'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'],
-            'customerType' => '1', 'operation' => 'show']);
+            'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '1',
+            'productsRecords' => $data['productsRecords'],'operation' => 'show']);
     }
 
     public function showIndividual(int $id)
@@ -160,8 +160,8 @@ class SaleController extends AbstractController
         $data = $saleController->getDataforSale($id, 2);
 
         return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
-            'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'],
-            'customerType' => '2', 'operation' => 'show']);
+            'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '2',
+            'productsRecords' => $data['productsRecords'], 'operation' => 'show']);
     }
 
     public function editProfessional(int $id)
@@ -187,8 +187,8 @@ class SaleController extends AbstractController
         $data = $saleController->getDataforSale($id, 1);
 
         return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
-            'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'],
-            'customerType' => '1', 'operation' => 'edit']);
+            'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '1',
+            'productsRecords' => $data['productsRecords'],'operation' => 'edit']);
 
     }
 
@@ -200,6 +200,7 @@ class SaleController extends AbstractController
         /*if ($_SESSION['is_admin'] == "1") {
             header('location:/auth/login');
         }*/
+
 
         $saleController = new SaleController();
 
@@ -215,8 +216,8 @@ class SaleController extends AbstractController
         $data = $saleController->getDataforSale($id, 2);
 
         return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
-            'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'],
-            'customerType' => '2', 'operation' => 'edit']);
+            'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '2',
+            'productsRecords' => $data['productsRecords'], 'operation' => 'edit']);
 
     }
 
@@ -251,7 +252,8 @@ class SaleController extends AbstractController
             $data = $saleController->getDataEnumforSale(1);
         }
         return $this->twig->render('sale/show.html.twig', ['statusEnum' => $data['statusEnum'],
-            'customerRecords' => $data['customerRecords'], 'customerType' => '1', 'operation' => 'add']);
+            'customerRecords' => $data['customerRecords'], 'customerType' => '1',
+            'productsRecords' => $data['productsRecords'], 'operation' => 'add']);
     }
 
     public function addIndividual()
@@ -285,7 +287,8 @@ class SaleController extends AbstractController
             $data = $saleController->getDataEnumforSale(2);
         }
         return $this->twig->render('sale/show.html.twig', ['statusEnum' => $data['statusEnum'],
-            'customerRecords' => $data['customerRecords'], 'customerType' => '2', 'operation' => 'add']);
+            'customerRecords' => $data['customerRecords'], 'customerType' => '2',
+            'productsRecords' => $data['productsRecords'], 'operation' => 'add']);
     }
 
     public function delete(int $id)

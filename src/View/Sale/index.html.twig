@@ -15,7 +15,7 @@
                     <a href="/sale/addProfessional" class="btn btn-primary btn-sm float-right mb-3 mr-3">Ajout vente client professionel</a>
             </div>
         </div>
-        <table id="datatable_users" class="table table-striped table-hover">
+        <table id="datatable_sales" class="table table-striped table-hover">
             <thead class="thead-dark">
             <tr>
                 <th class="text-left">Status</th>
@@ -41,11 +41,11 @@
                     <th>{{sale['global_price_finalised']}}</th>
                     <th>
                         {% if sale['id_customerType'] == '1' %}
-                            <a href="/sale/showIndividual/{{sale['id_sale']}}/read"><i class="far fa-eye"></i></a>
-                            <a href="/sale/editIndividual/{{sale['id_sale']}}"><i class="fas fa-edit"></i></a>
-                        {% else %}
                             <a href="/sale/showProfessional/{{sale['id_sale']}}/read"><i class="far fa-eye"></i></a>
                             <a href="/sale/editProfessional/{{sale['id_sale']}}"><i class="fas fa-edit"></i></a>
+                        {% else %}
+                            <a href="/sale/showIndividual/{{sale['id_sale']}}/read"><i class="far fa-eye"></i></a>
+                            <a href="/sale/editIndividual/{{sale['id_sale']}}"><i class="fas fa-edit"></i></a>
                         {% endif %}
                         <a href="/sale/delete/{{sale['id_sale']}}/read"><i class="fas fa-user-times"></i></a>
                     </th>

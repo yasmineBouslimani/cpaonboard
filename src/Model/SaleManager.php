@@ -47,4 +47,23 @@ class SaleManager extends AbstractManager
             WHERE id_sale = '.$id.';')->fetchAll();
     }
 
+    public function selectProductsForSale(): array
+    {
+        /**
+         * Get all row from table sales when criterion are meet.
+         *
+         * @return array
+         */
+        return $this->pdo->query(
+            'SELECT sale.id_sale, product_sale.quantity, product_sale.discount, product_sale.finalised_price,
+                product.id_product, product.label, product.stock, product.price, product.fk_tva, producttype.label as producttype, tva.id_tva,
+                tva.ratio
+            FROM sale
+            LEFT JOIN product_sale ON product_sale.fk_id_sale = sale.id_sale
+            RIGHT JOIN product ON product.id_product = product_sale.fk_id_product 
+            LEFT JOIN producttype ON producttype.id_producttype = product.fk_productType
+            LEFT JOIN tva ON tva.id_tva = product.fk_tva
+            ORDER BY producttype.label ASC, product.price ASC, product.label ASC ;')->fetchAll();
+    }
+
 }

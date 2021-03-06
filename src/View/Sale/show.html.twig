@@ -78,71 +78,23 @@
                     {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
                     {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
                     {% set tabIndexBeforeCard = tabIndex %}
-                    {% include '_form_components/_cardForm.html.twig'%}
+                    {% include '_form_components/_cardForm.html.twig' %}
                     {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
                 </div>
                 <div>
-                    {% set titleCardToDisplay = 'produit' %}
-                    {% set  idCard =  'product' %}
-                    {% set fieldToDisplayCol1 = [
-                        {
-                            'entityRequest': employee[0],
-                            'record': 'type_contract',
-                            'inputType': 'select',
-                            'selectRequest': contractTypeEnum,
-                            'nameInput': 'typeContract',
-                            'idInput': 'typeContract',
-                            'labelValue': 'Type de contrat'},
-                        {
-                            'entityRequest': employee[0],
-                            'record': 'starting_date',
-                            'inputType': 'date',
-                            'nameInput': 'startingDate',
-                            'idInput': 'startingDate',
-                            'labelValue': 'Date de début'},
-                        {
-                            'entityRequest': employee[0],
-                            'record': 'end_date',
-                            'inputType': 'date',
-                            'nameInput': 'endDate',
-                            'idInput': 'endDate',
-                            'labelValue': 'Date de fin'},
-                        {
-                            'entityRequest': employee[0],
-                            'record': 'on_going',
-                            'inputType': 'checkbox_one',
-                            'nameInput': 'onGoing',
-                            'idInput': 'onGoing',
-                            'labelValue': 'En cours'}
+                    {% set titleCardToDisplay = 'produits' %}
+                    {% set  idCard =  'products' %}
+                    {% set headlinesToDisplay = [
+                        'Référence', 'Type', 'Stock', 'Prix unitaire HT', 'TVA', 'Quantité',
+                        'Remise', 'Prix de vente réel HT', 'Prix de vente réel TTC'
                     ] %}
-                    {% set fieldToDisplayCol2 = [
-                        {
-                            'entityRequest': employee[0],
-                            'record': 'wage_first_year',
-                            'inputType': 'text',
-                            'nameInput': 'wageFirstYear',
-                            'idInput': 'wageFirstYear',
-                            'labelValue': 'Salaire 1e année'},
-                        {
-                            'entityRequest': employee[0],
-                            'record': 'wage_second_year',
-                            'inputType': 'text',
-                            'nameInput': 'wageSecondYear',
-                            'idInput': 'wageSecondYear',
-                            'labelValue': 'Salaire 2e année'},
-                        {
-                            'entityRequest': employee[0],
-                            'record': 'wage_third_year',
-                            'inputType': 'text',
-                            'nameInput': 'wageThirdYear',
-                            'idInput': 'wageThirdYear',
-                            'labelValue': 'Salaire 3e année'}
-                    ] %}
-                    {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
-                    {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
+                    {% set identifier = 'label'%}
+                    {% set fieldsOnReadOnly = ['producttype', 'stock', 'price', 'ratio'] %}
+                    {% set fillableFields = ['quantity', 'discount'] %}
+                    {% set finalised_price = ['finalised_price', ''] %}
                     {% set tabIndexBeforeCard = tabIndex %}
-                    {% include '_form_components/_cardForm.html.twig'%}
-                    {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
+                    {% include 'Sale/_cardProductTable.html.twig' %}
+{#                    {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}#}
                 </div>
                 <div>
                     {% set titleCardToDisplay = 'prix' %}
@@ -190,8 +142,8 @@
             {# SUBMIT FORM AND CANCEL BUTTON#}
             {% if operation == 'edit' or operation == 'add'  %}
                 <input type="submit" value="Enregistrer" class="btn btn-primary"/>
-                <a href="/sale/cancel" class="btn btn-danger">Annuler</a>
             {% endif %}
+            <a href="/sale/cancel" class="btn btn-danger">Annuler</a>
         </form>
     </div>
 {% endblock %}
