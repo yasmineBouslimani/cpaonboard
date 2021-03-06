@@ -27,7 +27,7 @@ class IndividualCustomerManager extends AbstractManager
          * @return array
          */
         return $this->pdo->query(
-            'SELECT COUNT(*) AS countRecords FROM customer WHERE customer.FK_customerType = 2')->fetchAll();
+            'SELECT COUNT(*) AS countRecords FROM customer WHERE customer.FK_customerType = 1')->fetchAll();
     }
 
     public function selectIndividualCustomersData(int $limit, int $offset): array
@@ -41,7 +41,7 @@ class IndividualCustomerManager extends AbstractManager
             'SELECT customer.id_customer, contact.last_name, contact.first_name, contact.phone_number,
                 contact.cellphone_number, personal_email_address FROM customer
             LEFT JOIN contact ON customer.id_customer = contact.fk_id_customer2
-            WHERE customer.FK_customerType = 2
+            WHERE customer.FK_customerType = 1
             ORDER BY contact.last_name ASC, contact.first_name ASC
             LIMIT '.$limit.' OFFSET '.$offset.';')->fetchAll();
     }
@@ -60,7 +60,7 @@ class IndividualCustomerManager extends AbstractManager
                 FROM customer
 			LEFT JOIN contact ON contact.fk_id_customer2 = customer.id_customer
 			LEFT JOIN customertype ON customertype.id_customertype = customer.fk_customerType
-			WHERE customer.FK_customerType = 2
+			WHERE customer.FK_customerType = 1
             ORDER BY contactIdentity ASC ;')->fetchAll();
     }
 

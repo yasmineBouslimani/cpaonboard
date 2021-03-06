@@ -52,9 +52,9 @@
                             'labelValue': 'Statut'},
                     ] %}
                     {% if customerType == '1' %}
-                        {% set customerSelectValueForRecords = ['corporate_name', 'contactIdentity'] %}
-                    {% elseif customerType == '2'  %}
                         {% set customerSelectValueForRecords = ['contactIdentity'] %}
+                    {% elseif customerType == '2'  %}
+                        {% set customerSelectValueForRecords = ['corporate_name', 'contactIdentity'] %}
                     {% endif %}
                     {% set fieldToDisplayCol2 = [
                         {

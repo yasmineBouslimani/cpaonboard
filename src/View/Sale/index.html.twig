@@ -33,9 +33,9 @@
                     <th>{{sale['date_sale']}}</th>
                     <th>{{sale['first_name']}} {{sale['last_name']}}</th>
                     <th>{% if sale['id_customerType'] == '1' %}
-                            Professionnel
-                        {% else %}
                             Particulier
+                        {% else %}
+                            Professionnel
                         {% endif %}</th>
                     <th>{{sale['corporate_name']}}</th>
                     <th>{{sale['global_price_finalised']}}</th>

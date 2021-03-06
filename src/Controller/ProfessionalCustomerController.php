@@ -56,7 +56,7 @@ class ProfessionalCustomerController extends AbstractController
         }
 
         $professionalCustomerData['id_customer'] = $allData['id_customer'];
-        $professionalCustomerData['FK_customerType'] = 1;
+        $professionalCustomerData['FK_customerType'] = 2;
 
         $contactData['id_contact'] = $allData['id_contact'];
         $contactData['first_name'] = $allData['first_name'];

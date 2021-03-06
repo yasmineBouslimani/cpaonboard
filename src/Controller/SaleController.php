@@ -58,12 +58,12 @@ class SaleController extends AbstractController
         $saleManager = new SaleManager();
         $statusEnumRequest=$saleManager->SelectEnumValues('sale', 'status_sale');
         if ($customerType == 1) {
-            $professionalCustomerManager = new ProfessionalCustomerManager();
-            $customerRecords=$professionalCustomerManager->selectProfessionalCustomers();
-        }
-        else{
             $individualCustomerManager = new IndividualCustomerManager();
             $customerRecords=$individualCustomerManager->selectIndividualCustomers();
+        }
+        else{
+            $professionalCustomerManager = new ProfessionalCustomerManager();
+            $customerRecords=$professionalCustomerManager->selectProfessionalCustomers();
         }
         $productsRecords = $saleManager->selectProductsForSale();
         var_dump($productsRecords);
@@ -142,7 +142,7 @@ class SaleController extends AbstractController
         $data = $saleController->getDataforSale($id, 1);
 
         return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
-            'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '1',
+            'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '2',
             'productsRecords' => $data['productsRecords'],'operation' => 'show']);
     }
 
@@ -160,7 +160,7 @@ class SaleController extends AbstractController
         $data = $saleController->getDataforSale($id, 2);
 
         return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
-            'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '2',
+            'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '1',
             'productsRecords' => $data['productsRecords'], 'operation' => 'show']);
     }
 
@@ -187,7 +187,7 @@ class SaleController extends AbstractController
         $data = $saleController->getDataforSale($id, 1);
 
         return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
-            'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '1',
+            'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '2',
             'productsRecords' => $data['productsRecords'],'operation' => 'edit']);
 
     }
@@ -216,7 +216,7 @@ class SaleController extends AbstractController
         $data = $saleController->getDataforSale($id, 2);
 
         return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
-            'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '2',
+            'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '1',
             'productsRecords' => $data['productsRecords'], 'operation' => 'edit']);
 
     }
@@ -249,10 +249,10 @@ class SaleController extends AbstractController
         }
         else
         {
-            $data = $saleController->getDataEnumforSale(1);
+            $data = $saleController->getDataEnumforSale(2);
         }
         return $this->twig->render('sale/show.html.twig', ['statusEnum' => $data['statusEnum'],
-            'customerRecords' => $data['customerRecords'], 'customerType' => '1',
+            'customerRecords' => $data['customerRecords'], 'customerType' => '2',
             'productsRecords' => $data['productsRecords'], 'operation' => 'add']);
     }
 
@@ -284,10 +284,10 @@ class SaleController extends AbstractController
         }
         else
         {
-            $data = $saleController->getDataEnumforSale(2);
+            $data = $saleController->getDataEnumforSale(1);
         }
         return $this->twig->render('sale/show.html.twig', ['statusEnum' => $data['statusEnum'],
-            'customerRecords' => $data['customerRecords'], 'customerType' => '2',
+            'customerRecords' => $data['customerRecords'], 'customerType' => '1',
             'productsRecords' => $data['productsRecords'], 'operation' => 'add']);
     }
 
