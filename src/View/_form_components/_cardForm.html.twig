@@ -42,10 +42,15 @@
                         {% set currentIdInputCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['idInput'] %}
                         {# Input Label to display for current field in column 1 #}
                         {% set currentLabelValueCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['labelValue'] %}
-                        {# Request type (only select input) : list of enum field values or list of records #}
+                        {# Request (only select input) : request for enum in column 1#}
+                        {% set currentSelectRequestCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['selectRequest'] %}
+                        {# Request type (only select input) : list of enum field values or list of records for current field in
+                            column 1#}
                         {% set currentSelectTypeCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['selectType'] %}
-                        {# Request name (only select input) for current field in column 1 #}
-                       {% set currentSelectRequestValueCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['selectRequest'] %}
+                        {# Id to save (only select input) in  records select for current field in column 1 #}
+                        {% set currentSelectRecordsIdCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['selectIdForRecords'] %}
+                        {# Array of values to display (only select input) for current field in column 1 #}
+                        {% set currentSelectRecordsDisplayCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['selectDisplayForRecords'] %}
                         {# DISPLAY LABEL #}
                         <div class="col-2 ">
                             <label for="{{ currentIdInputCol1 }}" class="mr-1" >
@@ -61,7 +66,7 @@
                                             class="form-control"
                                             {{ disabled }}">
                                     {# Add an option for every value in enum field and display value selected in database#}
-                                    {% for item in currentSelectRequestValueCol1 %}
+                                    {% for item in currentSelectRequestCol1 %}
                                         {% if item == currentRecordCol1 %}
                                             <option selected value="{{ item }}">{{ item }}</option>
                                         {% else %}
@@ -75,16 +80,20 @@
                                             class="form-control"
                                             {{ disabled }} >
                                         {# Add an option for every value in enum field and display value selected in database #}
-                                        {% for item in currentSelectRequestValueCol1 %}
+                                        {% for item in currentSelectRequestCol1 %}
                                             {% set label = '' %}
-                                            {% for valueToDisplay in currentSelectRecordsValuesCol1 %}
+                                            {% for valueToDisplay in currentSelectRecordsDisplayCol1 %}
                                                 {% set label = [label, item[valueToDisplay]]|join(' - ') %}
                                             {%  endfor %}
                                             {% set label = label|slice(3) %}
-                                            {% if item['id_customer'] == currentRecordCol1 %}
-                                                <option selected value="{{ item['id_customer'] }}">{{ label }}</option>
+                                            {% if item[currentSelectRecordsIdCol1] == currentRecordCol1 %}
+                                                <option selected value="{{ item[currentSelectRecordsIdCol1] }}">
+                                                    {{ label }}
+                                                </option>
                                             {% else %}
-                                                <option value="{{ item['id_customer'] }}">{{ label }}</option>
+                                                <option value="{{ item[currentSelectRecordsIdCol1] }}">
+                                                    {{ label }}
+                                                </option>
                                             {% endif %}
                                         {%  endfor %}
                                     </select>
@@ -135,13 +144,15 @@
                         {% set currentIdInputCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['idInput'] %}
                         {# Input Label to display for current field in column 2 #}
                         {% set currentLabelValueCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['labelValue'] %}
+                        {# Request (only select input) : request for enum in column 2#}
+                        {% set currentSelectRequestCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['selectRequest'] %}
                         {# Request type (only select input) : list of enum field values or list of records for current field in
                             column 2#}
                         {% set currentSelectTypeCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['selectType'] %}
-                        {# Array of values to display in select input for current field in column 2 #}
-                        {% set currentSelectRecordsValuesCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['selectValueForRecords'] %}
-                        {# Request name (only select input) for current field in column 2 #}
-                        {% set currentSelectRequestValueCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['selectRequest'] %}
+                        {# Id to save (only select input) in  records select for current field in column 2 #}
+                        {% set currentSelectRecordsIdCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['selectIdForRecords'] %}
+                        {# Array of values to display (only select input) for current field in column 2 #}
+                        {% set currentSelectRecordsDisplayCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['selectDisplayForRecords'] %}
                         {# UPDATE CURRENT VALUE FOR TAB INDEX #}
                         {% if LengthArrayCol1 < CountRow and currentRow == CountRow %}
                             {% set tabIndexForCol2 = tabIndexBeforeCard+currentRow+CountRow+1 %}
@@ -163,8 +174,7 @@
                                             class="form-control"
                                             {{ disabled }} >
                                         {# Add an option for every value in enum field and display value selected in database #}
-                                        {% for item in currentSelectRequestValueCol2 %}
-                                            <p>item</p>
+                                        {% for item in currentSelectRequestCol2 %}
                                             {% if item == currentRecordCol2 %}
                                                 <option selected value="{{ item }}">{{ item }}</option>
                                             {% else %}
@@ -178,16 +188,20 @@
                                             class="form-control"
                                             {{ disabled }} >
                                         {# Add an option for every value in enum field and display value selected in database #}
-                                        {% for item in currentSelectRequestValueCol2 %}
+                                        {% for item in currentSelectRequestCol2 %}
                                             {% set label = '' %}
-                                            {% for valueToDisplay in currentSelectRecordsValuesCol2 %}
+                                            {% for valueToDisplay in currentSelectRecordsDisplayCol2 %}
                                                 {% set label = [label, item[valueToDisplay]]|join(' - ') %}
                                             {%  endfor %}
                                             {% set label = label|slice(3) %}
-                                            {% if item['id_customer'] == currentRecordCol2 %}
-                                                <option selected value="{{ item['id_customer'] }}">{{ label }}</option>
+                                            {% if item[currentSelectRecordsIdCol2] == currentRecordCol2 %}
+                                                <option selected value="{{ item[currentSelectRecordsIdCol2] }}">
+                                                    {{ label }}
+                                                </option>
                                             {% else %}
-                                                <option value="{{ item['id_customer'] }}">{{ label }}</option>
+                                                <option value="{{ item[currentSelectRecordsIdCol2] }}">
+                                                    {{ label }}
+                                                </option>
                                             {% endif %}
                                         {%  endfor %}
                                     </select>

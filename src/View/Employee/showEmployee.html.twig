@@ -41,10 +41,10 @@
                    value="{{ employee[0]['id_contract'] }}"
                     {{ disabled }}/></br>
             <div>
-                <label for="active" class="mr-1" >Actif</label>
+                <label for="isActive" class="mr-1" >Actif</label>
                 <input type="checkbox"
-                       name="active"
-                       id="employeeActive"
+                       name="isActive"
+                       id="employeeIsActive"
                        class="form-control"
                        tabindex="4"
                        checked="{{ selectedActive }}"
@@ -320,10 +320,14 @@
                     {% set fieldToDisplayCol2 = [
                         {
                             'entityRequest': employee[0],
-                            'record': 'department',
-                            'inputType': 'text',
-                            'nameInput': 'department',
-                            'idInput': 'department',
+                            'record': 'fk_department',
+                            'inputType': 'select',
+                            'selectType': 'Records',
+                            'selectRequest': departmentRecords,
+                            'selectIdForRecords': 'id_department',
+                            'selectDisplayForRecords': ['label'],
+                            'nameInput': 'fkDepartment',
+                            'idInput': 'fkDepartment',
                             'labelValue': 'Service'}
                     ] %}
                     {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
