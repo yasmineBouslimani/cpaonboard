@@ -50,7 +50,6 @@ abstract class AbstractManager
         if (!is_null($recordFk)){
             foreach ($recordFk as $key => $value) {
                 $recordFields = array_merge($recordFields, $recordFk);
-                var_dump($recordFields);
             }
         }
         $labelsToUpdate = ' (';
@@ -81,7 +80,6 @@ abstract class AbstractManager
         $fieldsToUpdate = substr($fieldsToUpdate, 0, -1);
         $statement = $this->pdo->prepare(
             'UPDATE ' . $table . $fieldsToUpdate . ' WHERE `' . $idFieldName . '`='. $id);
-        var_dump('UPDATE ' . $table . $fieldsToUpdate . ' WHERE `' . $idFieldName . '`='. $id);
         $statement->execute();
         return $id;
     }

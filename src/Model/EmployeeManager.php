@@ -49,7 +49,7 @@ class EmployeeManager extends AbstractManager
                 employee.bank_name, employee.bank_city, employee.bank_iban, employee.bank_bic, employee.wage_ratio,
                 employee.wage_hiring, contact.address_street_number, contact.address_street, contact.address_addition,
                 contact.address_zip_code, contact.address_city, contact.phone_number, contact.cellphone_number,
-                contact.personal_email_address, contract.type_contract, contract.starting_date, contract.finishing_date,
+                contact.personal_email_address, contract.type_contract, contract.starting_date, contract.end_date,
                 contract.wage_first_year, contract.wage_second_year, contract.wage_third_year, contract.on_going 
             FROM employee
             LEFT JOIN contact ON employee.id_employee = contact.fk_id_employee2

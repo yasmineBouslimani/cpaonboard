@@ -99,7 +99,7 @@ INSERT INTO `contact` VALUES
 (5,'Myriam','Mitier',NULL,67,'Rue du Noyer','','m.mitter@gmail.com','0675376847',NULL,'Bordeaux',33400,'4e étage - Bat C',NULL,3,NULL),
 (6,'Yann','Kerec','Déménageur breton',76,'Avenue Voltaire','ybarthes@gmail.com',NULL,'0567859687',NULL,'BORDEAUX',33300,'NULL',NULL,NULL,2),
 (7,'Eric','Dupont','HergéInc',12,'rue Edmond Rostand','edupont@gmail.com',NULL,'0553782222',NULL,'MERIGNAC',33700,'NULL',NULL,NULL,3),
-(8,'Frédérick','Dupond','HergéInc',13,'rue Edmond Rostand','edupont@gmail.com',NULL,'0553783333',NULL,'MERIGNAC',33700,'NULL',NULL,NULL,4),
+(8,'Frédérick','Dupond','HergéInc',13,'rue Edmond Rostand','edupond@gmail.com',NULL,'0553783333',NULL,'MERIGNAC',33700,'NULL',NULL,NULL,4),
 (9,'Nathalie','Perlet',NULL,27,'rue de la rose','nperlet@gmail.com',NULL,'055585672',NULL,'PESSAC',33600,'NULL',NULL,4,NULL),
 (10,'Laurent','Dupuis',NULL,43,'rue des jonquilles','ldpuis@gmail.com',NULL,'055665653',NULL,'PESSAC',33600,'NULL',NULL,5,NULL),
 (11,'Chloé','Laforge',NULL,4,'avenue de Paris','claforge@gmail.com',NULL,'056545682',0511853268,'BORDEAUX',33300,'NULL',NULL,6,NULL);
@@ -171,7 +171,7 @@ CREATE TABLE `contract` (
                             `wage_third_year` int DEFAULT NULL,
                             `on_going` tinyint(1) DEFAULT NULL,
                             `fk_employee` int DEFAULT NULL,
-                            `finishing_date` date DEFAULT NULL,
+                            `end_date` date DEFAULT NULL,
                             PRIMARY KEY (`id_contract`),
                             KEY `FK_employee` (`fk_employee`),
                             CONSTRAINT `FK_employee` FOREIGN KEY (`fk_employee`) REFERENCES `employee` (`id_employee`)
@@ -186,10 +186,10 @@ LOCK TABLES `contract` WRITE;
 /*!40000 ALTER TABLE `contract` DISABLE KEYS */;
 INSERT INTO `contract` VALUES
 (1,'CDI','2003-12-03',NULL,NULL,NULL,1,1,NULL),
-(2,'CDD','2003-11-25',NULL,NULL,NULL,0,2,2004-05-14),
+(2,'CDD','2003-11-25',NULL,NULL,NULL,0,2,'2004-05-14'),
 (3,'CDI','2004-05-15',NULL,NULL,NULL,1,2,NULL),
 (4,'CDI','2020-03-05',NULL,NULL,NULL,1,3,NULL),
-(5,'Stage','2011-02-25',NULL,NULL,NULL,1,4,2011-03-30),
+(5,'Stage','2011-02-25',NULL,NULL,NULL,1,4,'2011-03-30'),
 (6,'CDI','2000-12-04',NULL,NULL,NULL,1,5,NULL),
 (7,'CDI','2021-07-26',NULL,NULL,NULL,1,6,NULL);
 /*!40000 ALTER TABLE `contract` ENABLE KEYS */;
