@@ -81,7 +81,7 @@ abstract class AbstractManager
         $fieldsToUpdate = substr($fieldsToUpdate, 0, -1);
         $statement = $this->pdo->prepare(
             'UPDATE ' . $table . $fieldsToUpdate . ' WHERE `' . $idFieldName . '`='. $id);
-        die(var_dump('UPDATE ' . $table . $fieldsToUpdate . ' WHERE `' . $idFieldName . '`='. $id));
+        var_dump('UPDATE ' . $table . $fieldsToUpdate . ' WHERE `' . $idFieldName . '`='. $id);
         $statement->execute();
         return $id;
     }

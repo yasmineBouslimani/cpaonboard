@@ -320,6 +320,17 @@
                     {% set fieldToDisplayCol2 = [
                         {
                             'entityRequest': employee[0],
+                            'record': 'fk_employeeFunction',
+                            'inputType': 'select',
+                            'selectType': 'Records',
+                            'selectRequest': functionRecords,
+                            'selectIdForRecords': 'id_employeeFunction',
+                            'selectDisplayForRecords': ['label'],
+                            'nameInput': 'fkEmployeeFunction',
+                            'idInput': 'fkEmployeeFunction',
+                            'labelValue': 'Fonction'},
+                        {
+                            'entityRequest': employee[0],
                             'record': 'fk_department',
                             'inputType': 'select',
                             'selectType': 'Records',
