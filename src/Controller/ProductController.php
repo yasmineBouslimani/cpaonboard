@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Model\ProductManager;
+use App\Model\ProductTypeManager;
+use App\Model\TvaManager;
 use Dompdf\Dompdf;
 
 
@@ -20,6 +22,7 @@ class ProductController extends AbstractController
         $products = $productManager->selectProductsWithTypeAndDependancyAndTvaWithLimit($resultsPerPage, $firstResult);
         $paginationDefaultPagesGap = 2;
 
+        var_dump($_SESSION);
         return $this->twig->render('Product/index.html.twig', [
             'products'                  => $products,
             'productsCount'             => $productsCount,
@@ -32,25 +35,87 @@ class ProductController extends AbstractController
 
     public function show(int $id)
     {
+        if (!in_array("product_management", $_SESSION['permissions'])) {
+            header('location:/admin/index');
+        }
+
         $productManager = new ProductManager();
-        $product = $productManager->selectProductsWithTypeAndDependancyAndTvaByd($id);
+        $product = $productManager->selectProductWithTypeAndDependancyAndTvaByd($id);
+
+        $tvaManager = new TvaManager();
+        $tva = $tvaManager->selectAll();
+
+        $productTypeManager = new ProductTypeManager();
+        $productType = $productTypeManager->selectAll();
 
         return $this->twig->render('Product/show.html.twig', [
-            'product' => $product
+            'product'       => $product,
+            'tva'           => $tva,
+            'productType'   => $productType,
+            'opération' => 'read'
         ]);
-    }
+}
 
     public function edit(int $id): string
     {
         $productManager = new ProductManager();
-        $product = $productManager->selectProductsWithTypeAndDependancyAndTvaByd($id);
+        $product = $productManager->selectProductWithTypeAndDependancyAndTvaByd($id);
+
+        $tvaManager = new TvaManager();
+        $tva = $tvaManager->selectAll();
+
+        $productTypeManager = new ProductTypeManager();
+        $productType = $productTypeManager->selectAll();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $product['title'] = $_POST['title'];
-            $productManager->update($product);
+            $product['label'] = $_POST['label'];
+            $product['stock'] = $_POST['stock'];
+            $product['price'] = $_POST['price'];
+            $product['comment_product'] = $_POST['comment_product'];
+            $product['fk_tva'] = $_POST['fk_tva'];
+            $product['fk_productType'] = $_POST['fk_productType'];
+            $productManager->updateProduct($product);
+            header('Location:/admin/index');
         }
 
-        return $this->twig->render('Product/edit.html.twig', ['product' => $product]);
+        return $this->twig->render('Product/show.html.twig', [
+            'product'       => $product,
+            'tva'           => $tva,
+            'productType'   => $productType,
+            'operation'     => 'edit'
+
+        ]);
+    }
+
+
+    public function getDataForProduct(int $id): array
+    {
+        $productManager = new ProductManager();
+        $product = $productManager->selectProductWithTypeAndDependancyAndTvaByd($id);
+
+    }
+
+    public function fetFormDataForUpdateOrAdd(array $dataFromForm):array
+{
+    $allData = [];
+
+}
+
+    public function getDataEnumForProduct(): array
+    {
+        $productManager = new ProductManager();
+        $tvaEnumRequest = $productManager->selectEnumValues('tva', 'ratio' );
+        $productTypeEnumRequest = $productManager->selectEnumValues('producttype', 'type');
+
+        $tvaEnumFormatted = $this->enumRequestFormatting($productTypeEnumRequest);
+        $tvaEnum = $tvaEnumFormatted['enum'];
+        $productTypeEnumFormatted = $this->enumRequestFormatting($productTypeEnumRequest);
+        $productTypeEnum = $productTypeEnumFormatted['enum'];
+
+        return [
+            'tvaEnum'           => $tvaEnum,
+            'prductTypeEnum'    => $productTypeEnum
+            ];
     }
 
     public function add()
@@ -103,7 +168,7 @@ class ProductController extends AbstractController
         $dompdf = new Dompdf();
         $productManager = new ProductManager();
 
-        $product = $productManager->selectProductsWithTypeAndDependancyAndTvaByd($id);
+        $product = $productManager->selectProductWithTypeAndDependancyAndTvaByd($id);
 
         $html = $this->twig->render(
             'product/pdf.html.twig',

@@ -5,6 +5,8 @@
 {% block bannerTitle %}FICHE PRODUIT{% endblock %}
 
 {% block content %}
+
+
     <div>
         <a class="nav-link mr-3 text-white btn extract-pdf-btn"
            href="{{ root }}/product/extractpdf/{{ product.0.id_product }}">
@@ -13,7 +15,7 @@
     </div>
 
     {% if operation == 'edit' %}
-        {% set formAction = ['/product/edit/', product[0]['id']]|join('') %}
+        {% set formAction = ['/product/edit/', product[0]['id_product']]|join('') %}
     {% elseif operation == 'add' %}
         {% set formAction = '/product/add' %}
     {% endif %}
@@ -35,11 +37,13 @@
                     {
                         'entityRequest' : product[0],
                         'record': 'ratio',
-                        'inputType': 'text',
+                        'inputType': 'select',
                         'nameInput': 'ratio',
                         'idInput': 'ratio',
-                        'labelValue': 'TVA (%)'}
+                        'labelValue': 'TVA appliquée (%)'},
+
                 ] %}
+
                 {% set fieldToDisplayCol2 = [
                     {
                         'entityRequest' : product[0],
@@ -85,6 +89,8 @@
         {% if operation == 'edit' or operation == 'add' %}
             <input type="submit" value="Enregistrer" class="btn btn-primary"/>
         {% endif %}
+
+
     </form>
-    </div>
+
 {% endblock %}
