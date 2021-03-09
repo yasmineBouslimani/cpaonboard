@@ -46,6 +46,24 @@ class IndividualCustomerManager extends AbstractManager
             LIMIT '.$limit.' OFFSET '.$offset.';')->fetchAll();
     }
 
+    public function selectIndividualCustomers(): array
+    {
+        /**
+         * Get all rows from table Customers when customer type = professional for customers list.
+         *
+         * @return array
+         */
+        return $this->pdo->query(
+            'SELECT customer.id_customer, customer.fk_customerType, customertype.id_customerType,
+                customertype.label, CONCAT( contact.last_name, \' \' , contact.first_name) as contactIdentity,
+                contact.fk_id_customer2
+                FROM customer
+			LEFT JOIN contact ON contact.fk_id_customer2 = customer.id_customer
+			LEFT JOIN customertype ON customertype.id_customertype = customer.fk_customerType
+			WHERE customer.FK_customerType = 1
+            ORDER BY contactIdentity ASC ;')->fetchAll();
+    }
+
     public function selectIndividualCustomerById(int $id): array
     {
         /**
@@ -70,7 +88,7 @@ class IndividualCustomerManager extends AbstractManager
          */
         return $this->pdo->query(
             'SELECT vehicle.id_vehicle , vehicle.manufacture_year, vehicle.license_plate, vehicle.fiscal_horse_power,
-                vehicle.door_number, vehicle.energy_type, vehicle.gear_box_type, vehicle.fk_vehicleModel,
+                vehicle.door_number, vehicle.energy_type, vehicle.gearbox_type, vehicle.fk_vehicleModel,
                 customer_vehicle.fk_id_vehicle, customer_vehicle.fk_id_customer, vehiclemodel.model, vehiclemodel.make
             FROM customer_vehicle
             INNER JOIN vehicle ON vehicle.id_vehicle = customer_vehicle.fk_id_vehicle

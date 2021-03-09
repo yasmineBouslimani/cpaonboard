@@ -1,5 +1,5 @@
 <div class="card mr-4 mb-4">
-    <div class="card-header uppercase">{{ titleCardToDisplay }}
+    <div class="card-header text-white bg-dark uppercase">{{ titleCardToDisplay }}
         {#COLLAPSE BUTTON#}
         <button class="btn btn-secondary btn-sm float-right" type="button" data-toggle="collapse" data-target="#{{ idCard }}" aria-expanded="true
             aria-controls="{{ idCard }}"> <span aria-hidden="true">&triangledown;</span>
@@ -42,8 +42,15 @@
                         {% set currentIdInputCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['idInput'] %}
                         {# Input Label to display for current field in column 1 #}
                         {% set currentLabelValueCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['labelValue'] %}
-                        {# Request name (only select input) for current field in column 1 #}
-                       {% set currentSelectRequestValueCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['selectRequest'] %}
+                        {# Request (only select input) : request for enum in column 1#}
+                        {% set currentSelectRequestCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['selectRequest'] %}
+                        {# Request type (only select input) : list of enum field values or list of records for current field in
+                            column 1#}
+                        {% set currentSelectTypeCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['selectType'] %}
+                        {# Id to save (only select input) in  records select for current field in column 1 #}
+                        {% set currentSelectRecordsIdCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['selectIdForRecords'] %}
+                        {# Array of values to display (only select input) for current field in column 1 #}
+                        {% set currentSelectRecordsDisplayCol1 = fieldToDisplayCol1[currentIndiceArrayCol1]['selectDisplayForRecords'] %}
                         {# DISPLAY LABEL #}
                         <div class="col-2 ">
                             <label for="{{ currentIdInputCol1 }}" class="mr-1" >
@@ -53,31 +60,59 @@
                         <div class="col-2 ">
                             {# IF SELECT FIELD #}
                             {% if currentInputCol1 == 'select' %}
-                                <select name="{{ currentNameInputCol1 }}"
-                                        tabindex="{{ tabIndexBeforeCard+1 }}" class="form-control" {{ disabled }}">
-                                {# Add an option for every value in enum field and display value selected in database#}
-                                {% for item in currentSelectRequestValueCol1 %}
-                                    {% if item == currentRecordCol1 %}
-                                        <option selected value="{{ item }}">{{ item }}</option>
-                                    {% else %}
-                                        <option value="{{ item }}">{{ item }}</option>
-                                    {% endif %}
-                                {%  endfor %}
-                                </select>
+                                {% if currentSelectTypeCol1 == 'Enum' %}
+                                    <select name="{{ currentNameInputCol1 }}"
+                                            tabindex="{{ tabIndexBeforeCard+1 }}"
+                                            class="form-control"
+                                            {{ disabled }}">
+                                    {# Add an option for every value in enum field and display value selected in database#}
+                                    {% for item in currentSelectRequestCol1 %}
+                                        {% if item == currentRecordCol1 %}
+                                            <option selected value="{{ item }}">{{ item }}</option>
+                                        {% else %}
+                                            <option value="{{ item }}">{{ item }}</option>
+                                        {% endif %}
+                                    {%  endfor %}
+                                    </select>
+                                {% elseif currentSelectTypeCol1 == 'Records' %}
+                                    <select name="{{ currentNameInputCol1 }}"
+                                            tabindex="{{ tabIndexBeforeCard+1 }}"
+                                            class="form-control"
+                                            {{ disabled }} >
+                                        {# Add an option for every value in enum field and display value selected in database #}
+                                        {% for item in currentSelectRequestCol1 %}
+                                            {% set label = '' %}
+                                            {% for valueToDisplay in currentSelectRecordsDisplayCol1 %}
+                                                {% set label = [label, item[valueToDisplay]]|join(' - ') %}
+                                            {%  endfor %}
+                                            {% set label = label|slice(3) %}
+                                            {% if item[currentSelectRecordsIdCol1] == currentRecordCol1 %}
+                                                <option selected value="{{ item[currentSelectRecordsIdCol1] }}">
+                                                    {{ label }}
+                                                </option>
+                                            {% else %}
+                                                <option value="{{ item[currentSelectRecordsIdCol1] }}">
+                                                    {{ label }}
+                                                </option>
+                                            {% endif %}
+                                        {%  endfor %}
+                                    </select>
+                                {% endif %}
                                 {# IF CHECKBOX FIELD #}
-                            {% elseif  currentInputCol1 == 'checkbox_one'%}
+                            {% elseif  currentInputCol1 == 'checkbox'%}
                                 {# Check or uncheck checkbox #}
+                                <p>currentRecordCol1</p>
                                 {% if  currentRecordCol1 == 0%}
                                     {% set checkboxSelectedCol1 = '' %}
                                 {% else %}
-                                    {% set checkboxSelectedCol1 = 'selected'%}
+                                    {% set checkboxSelectedCol1 = 'checked'%}
                                 {% endif %}
                                 <input type="checkbox"
                                        name="{{ currentNameInputCol1 }}"
                                        id="{{ currentIdInputCol1 }}"
                                        class="form-control"
                                        tabindex="{{ tabIndexBeforeCard+1 }}"
-                                       checked="{{ checkboxSelectedCol1 }}"
+                                       {{ checkboxSelectedCol1 }}
                                         {{ disabled }}/></br>
                                 {# OTHERS FIELD TYPES#}
                             {% else %}
@@ -109,8 +144,15 @@
                         {% set currentIdInputCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['idInput'] %}
                         {# Input Label to display for current field in column 2 #}
                         {% set currentLabelValueCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['labelValue'] %}
-                        {# Request name (only select input) for current field in column 2 #}
-                        {% set currentSelectRequestValueCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['selectRequest'] %}
+                        {# Request (only select input) : request for enum in column 2#}
+                        {% set currentSelectRequestCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['selectRequest'] %}
+                        {# Request type (only select input) : list of enum field values or list of records for current field in
+                            column 2#}
+                        {% set currentSelectTypeCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['selectType'] %}
+                        {# Id to save (only select input) in  records select for current field in column 2 #}
+                        {% set currentSelectRecordsIdCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['selectIdForRecords'] %}
+                        {# Array of values to display (only select input) for current field in column 2 #}
+                        {% set currentSelectRecordsDisplayCol2 = fieldToDisplayCol2[currentIndiceArrayCol2]['selectDisplayForRecords'] %}
                         {# UPDATE CURRENT VALUE FOR TAB INDEX #}
                         {% if LengthArrayCol1 < CountRow and currentRow == CountRow %}
                             {% set tabIndexForCol2 = tabIndexBeforeCard+currentRow+CountRow+1 %}
@@ -126,34 +168,57 @@
                         <div class="col-2 ">
                             {# IF SELECT FIELD #}
                             {% if currentInputCol2 == 'select' %}
-                                <select name="{{ currentNameInputCol2 }}"
-                                        tabindex="{{ tabIndexForCol2 }}"
-                                        class="form-control"
-                                        {{ disabled }} >
-                                    {# Add an option for every value in enum field and display value selected in database #}
-                                    {% for item in currentSelectRequestValueCol2 %}
-                                        <p>item</p>
-                                        {% if item == currentRecordCol2 %}
-                                            <option selected value="{{ item }}">{{ item }}</option>
-                                        {% else %}
-                                            <option value="{{ item }}">{{ item }}</option>
-                                        {% endif %}
-                                    {%  endfor %}
-                                </select>
+                                {% if currentSelectTypeCol2 == 'Enum' %}
+                                    <select name="{{ currentNameInputCol2 }}"
+                                            tabindex="{{ tabIndexForCol2 }}"
+                                            class="form-control"
+                                            {{ disabled }} >
+                                        {# Add an option for every value in enum field and display value selected in database #}
+                                        {% for item in currentSelectRequestCol2 %}
+                                            {% if item == currentRecordCol2 %}
+                                                <option selected value="{{ item }}">{{ item }}</option>
+                                            {% else %}
+                                                <option value="{{ item }}">{{ item }}</option>
+                                            {% endif %}
+                                        {%  endfor %}
+                                    </select>
+                                {% elseif currentSelectTypeCol2 == 'Records' %}
+                                    <select name="{{ currentNameInputCol2 }}"
+                                            tabindex="{{ tabIndexForCol2 }}"
+                                            class="form-control"
+                                            {{ disabled }} >
+                                        {# Add an option for every value in enum field and display value selected in database #}
+                                        {% for item in currentSelectRequestCol2 %}
+                                            {% set label = '' %}
+                                            {% for valueToDisplay in currentSelectRecordsDisplayCol2 %}
+                                                {% set label = [label, item[valueToDisplay]]|join(' - ') %}
+                                            {%  endfor %}
+                                            {% set label = label|slice(3) %}
+                                            {% if item[currentSelectRecordsIdCol2] == currentRecordCol2 %}
+                                                <option selected value="{{ item[currentSelectRecordsIdCol2] }}">
+                                                    {{ label }}
+                                                </option>
+                                            {% else %}
+                                                <option value="{{ item[currentSelectRecordsIdCol2] }}">
+                                                    {{ label }}
+                                                </option>
+                                            {% endif %}
+                                        {%  endfor %}
+                                    </select>
+                                {% endif %}
                                 {# IF CHECKBOX FIELD #}
-                            {% elseif currentInputCol2 == 'checkbox_one'%}
+                            {% elseif currentInputCol2 == 'checkbox'%}
                                 {# Check or uncheck checkbox #}
-                                {% if  currentRecordCol2 == 0%}
-                                    {% set checkboxSelectedCol2 = '' %}
-                                {% else %}
-                                    {% set checkboxSelectedCol2 = 'selected'%}
+                                {% set checkboxSelectedCol2 = '' %}
+                                {% if  currentRecordCol2 == 1 %}
+                                    {% set checkboxSelectedCol2 = 'checked'%}
                                 {% endif %}
                                 <input type="checkbox"
                                        name="{{ currentNameInputCol2 }}"
                                        id="{{ currentIdInputCol2 }}"
                                        class="form-control"
                                        tabindex="{{ tabIndexForCol2 }}"
-                                       checked="{{ checkboxSelectedCol2 }}"
+                                       {{ checkboxSelectedCol2 }}
                                         {{ disabled }}/></br>
                                 {# OTHERS FIELD TYPES#}
                             {% else %}

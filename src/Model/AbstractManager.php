@@ -50,7 +50,6 @@ abstract class AbstractManager
         if (!is_null($recordFk)){
             foreach ($recordFk as $key => $value) {
                 $recordFields = array_merge($recordFields, $recordFk);
-                var_dump($recordFields);
             }
         }
         $labelsToUpdate = ' (';

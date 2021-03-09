@@ -20,8 +20,8 @@
                 <th>Référence</th>
                 <th>Actif</th>
                 <th class="text-left">Collaborateur</th>
-                <th class="text-left">Service</th>
                 <th class="text-left">Fonction</th>
+                <th class="text-left">Service</th>
                 <th class="text-left">Type de contrat</th>
                 <th class="text-left">Actions</th>
             </tr>
@@ -35,8 +35,8 @@
                             Oui
                         {% endif %}</th>
                     <th>{{employee['first_name']}} {{employee['last_name']}}</th>
+                    <th>{{employee['employeeFunction']}}</th>
                     <th>{{employee['department']}}</th>
-                    <th>{{employee['function']}}</th>
                     <th>{{employee['type_contract']}}</th>
                     <th>
                         <a href="/employee/show/{{employee['id_employee']}}/read"><i class="far fa-eye"></i></a>

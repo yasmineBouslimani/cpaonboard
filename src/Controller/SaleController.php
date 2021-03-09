@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Model\ProfessionalCustomerManager;
+use App\Model\IndividualCustomerManager;
 use App\Model\SaleManager;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 
@@ -24,7 +26,6 @@ class SaleController extends AbstractController
         $pagesCount = ceil($salesCount / $resultsPerPage);
         $firstResult = ($currentPage * $resultsPerPage) - $resultsPerPage;
         $sales = $saleManager->selectSalesAndAssociatedData($resultsPerPage, $firstResult);
-        var_dump($sales);
         $paginationDefaultPagesGap = 2;
 
         return $this->twig->render('sale/index.html.twig', ['resultPerPage' => $resultsPerPage, 'sales' => $sales,
@@ -33,42 +34,45 @@ class SaleController extends AbstractController
     }
 
 
-    public function getDataforEmployee(int $id): array
+    public function getDataforSale(int $id, int $customerType): array
     {
         /**
          * Get in database all data need for displaying a sale record.
          */
-        $employeeManager = new EmployeeManager();
-        $employee=$employeeManager->selectEmployeeById($id);
+        $saleManager = new SaleManager();
+        $sale=$saleManager->selectSaleById($id);
 
-        $employeeController = new EmployeeController();
-        $employeeAllEnumValues = $employeeController->getDataEnumforEmployee();
+        $saleController = new SaleController();
+        $saleAllEnumValues = $saleController->getDataEnumforSale($customerType);
 
-        return ['employee' => $employee, 'civilityEnum' => $employeeAllEnumValues['civilityEnum'],
-            'genderEnum' => $employeeAllEnumValues['genderEnum'],
-            'contractTypeEnum' => $employeeAllEnumValues['contractTypeEnum']];
+        return ['sale' => $sale, 'statusEnum' => $saleAllEnumValues['statusEnum'],
+            'customerRecords' => $saleAllEnumValues['customerRecords'],
+            'productsRecords'=> $saleAllEnumValues['productsRecords']];
     }
 
-    public function getDataEnumforEmployee(): array
+    public function getDataEnumforSale(int $customerType): array
     {
         /**
          * Get in database all enum fields values for displaying a sale record.
          */
-        $employeeManager = new EmployeeManager();
-        $civilityEnumRequest=$employeeManager->SelectEnumValues('employee', 'civility');
-        $genderEnumRequest=$employeeManager->SelectEnumValues('employee', 'gender');
-        $contractTypeEnumRequest=$employeeManager->SelectEnumValues('contract','type_contract');
+        $saleManager = new SaleManager();
+        $statusEnumRequest=$saleManager->SelectEnumValues('sale', 'status_sale');
+        if ($customerType == 1) {
+            $individualCustomerManager = new IndividualCustomerManager();
+            $customerRecords=$individualCustomerManager->selectIndividualCustomers();
+        }
+        else{
+            $professionalCustomerManager = new ProfessionalCustomerManager();
+            $customerRecords=$professionalCustomerManager->selectProfessionalCustomers();
+        }
+        $productsRecords = $saleManager->selectProductsForSale();
+        var_dump($productsRecords);
 
-        $employeeController = new EmployeeController();
-        $civilityEnumFormatted = $employeeController->enumRequestFormatting($civilityEnumRequest);
-        $civilityEnum=$civilityEnumFormatted['enum'];
-        $genderEnumFormatted = $employeeController->enumRequestFormatting($genderEnumRequest);
-        $genderEnum=$genderEnumFormatted['enum'];
-        $contractTypeEnumFormatted = $employeeController->enumRequestFormatting($contractTypeEnumRequest);
-        $contractTypeEnum=$contractTypeEnumFormatted['enum'];
+        $saleController = new SaleController();
+        $statusEnumFormatted = $saleController->enumRequestFormatting($statusEnumRequest);
+        $statusEnum=$statusEnumFormatted['enum'];
 
-        return ['civilityEnum' => $civilityEnum, 'genderEnum' => $genderEnum,
-            'contractTypeEnum' => $contractTypeEnum];
+        return ['statusEnum' => $statusEnum, 'customerRecords' => $customerRecords, 'productsRecords' => $productsRecords];
     }
 
     public function getFormDataForUpdateOrAdd(array $dataFromForm): array
@@ -76,11 +80,11 @@ class SaleController extends AbstractController
         /**
          * Get all fields in a sale record form.
          */
-        $employeeController= new EmployeeController();
+        $saleController = new SaleController();
         $allData = [];
         foreach($dataFromForm as $key => $value) {
             //echo "POST parameter '$key' has '$value'";
-            $snakeKey = $employeeController->camelToSnakeCase($key);
+            $snakeKey = $saleController->camelToSnakeCase($key);
             $allData[$snakeKey] = $_POST[$key];
         }
 
@@ -125,7 +129,24 @@ class SaleController extends AbstractController
 
     }
 
-    public function show(int $id)
+    public function showProfessional(int $id)
+    {
+        /**
+         * Display a sale record for read purpose only.
+         */
+        /*if ($_SESSION['is_admin'] == "1") {
+            header('location:/auth/login');
+        }*/
+
+        $saleController = new SaleController();
+        $data = $saleController->getDataforSale($id, 1);
+
+        return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
+            'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '2',
+            'productsRecords' => $data['productsRecords'],'operation' => 'show']);
+    }
+
+    public function showIndividual(int $id)
     {
         /**
          * Display a sale record for read purpose only.
@@ -135,15 +156,15 @@ class SaleController extends AbstractController
         }*/
 
 
-        $employeeController = new EmployeeController();
-        $data = $employeeController->getDataforEmployee($id);
+        $saleController = new SaleController();
+        $data = $saleController->getDataforSale($id, 2);
 
-        return $this->twig->render('Employee/showEmployee.html.twig', ['employee' => $data['employee'],
-            'civilityEnum' => $data['civilityEnum'], 'genderEnum' => $data['genderEnum'], 'contractTypeEnum' => $data['contractTypeEnum'],
-            'operation' => 'read']);
+        return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
+            'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '1',
+            'productsRecords' => $data['productsRecords'], 'operation' => 'show']);
     }
 
-    public function edit(int $id)
+    public function editProfessional(int $id)
     {
         /**
          * Display a sale record for modification purpose.
@@ -152,26 +173,55 @@ class SaleController extends AbstractController
             header('location:/auth/login');
         }*/
 
-        $employeeController = new EmployeeController();
+        $saleController = new SaleController();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $employeeManager = new EmployeeManager();
+            $saleManager = new SaleManager();
 
-            $datafromForm = $employeeController->getFormDataForUpdateOrAdd($_POST);
-            $employeeManager->update('employee', $datafromForm['employeeData']);
-            $employeeManager->update('contact', $datafromForm['contactData']);
-            $employeeManager->update('contract', $datafromForm['contractData']);
+            $datafromForm = $saleController->getFormDataForUpdateOrAdd($_POST);
+            $saleManager->update('employee', $datafromForm['employeeData']);
+            $saleManager->update('contact', $datafromForm['contactData']);
+            $saleManager->update('contract', $datafromForm['contractData']);
         }
 
-        $data = $employeeController->getDataforEmployee($id);
+        $data = $saleController->getDataforSale($id, 1);
 
-        return $this->twig->render('Employee/showEmployee.html.twig', ['employee' => $data['employee'],
-            'civilityEnum' => $data['civilityEnum'], 'genderEnum' => $data['genderEnum'],
-            'contractTypeEnum' => $data['contractTypeEnum'], 'operation' => 'edit']);
+        return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
+            'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '2',
+            'productsRecords' => $data['productsRecords'],'operation' => 'edit']);
 
     }
 
-    public function add()
+    public function editIndividual(int $id)
+    {
+        /**
+         * Display a sale record for modification purpose.
+         */
+        /*if ($_SESSION['is_admin'] == "1") {
+            header('location:/auth/login');
+        }*/
+
+
+        $saleController = new SaleController();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $saleManager = new SaleManager();
+
+            $datafromForm = $saleController->getFormDataForUpdateOrAdd($_POST);
+            $saleManager->update('employee', $datafromForm['employeeData']);
+            $saleManager->update('contact', $datafromForm['contactData']);
+            $saleManager->update('contract', $datafromForm['contractData']);
+        }
+
+        $data = $saleController->getDataforSale($id, 2);
+
+        return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
+            'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '1',
+            'productsRecords' => $data['productsRecords'], 'operation' => 'edit']);
+
+    }
+
+    public function addProfessional()
     {
         /**
          * Display employee creation page
@@ -199,11 +249,46 @@ class SaleController extends AbstractController
         }
         else
         {
-            $data = $saleController->getDataEnumforEmployee();
+            $data = $saleController->getDataEnumforSale(2);
         }
-        return $this->twig->render('Employee/showEmployee.html.twig', [
-            'civilityEnum' => $data['civilityEnum'], 'genderEnum' => $data['genderEnum'],
-            'contractTypeEnum' => $data['contractTypeEnum'], 'operation' => 'add']);
+        return $this->twig->render('sale/show.html.twig', ['statusEnum' => $data['statusEnum'],
+            'customerRecords' => $data['customerRecords'], 'customerType' => '2',
+            'productsRecords' => $data['productsRecords'], 'operation' => 'add']);
+    }
+
+    public function addIndividual()
+    {
+        /**
+         * Display employee creation page
+         *
+         * @return string
+         * @throws \Twig\Error\LoaderError
+         * @throws \Twig\Error\RuntimeError
+         * @throws \Twig\Error\SyntaxError
+         */
+
+        $saleController = new SaleController();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $saleManager = new SaleManager();
+
+            $datafromForm = $saleController->getFormDataForUpdateOrAdd($_POST);
+
+            $idEmployee = $saleManager->insert('employee', $datafromForm['employeeData']);
+            $contactFk = ['fk_id_employee2' => $idEmployee];
+            $saleManager->insert('contact', $datafromForm['contactData'], $contactFk);
+            $contractFk = ['fk_employee' => $idEmployee];
+            $saleManager->insert('contract', $datafromForm['contractData'], $contractFk);
+
+            header('Location:/employee/index');
+        }
+        else
+        {
+            $data = $saleController->getDataEnumforSale(1);
+        }
+        return $this->twig->render('sale/show.html.twig', ['statusEnum' => $data['statusEnum'],
+            'customerRecords' => $data['customerRecords'], 'customerType' => '1',
+            'productsRecords' => $data['productsRecords'], 'operation' => 'add']);
     }
 
     public function delete(int $id)
@@ -213,22 +298,22 @@ class SaleController extends AbstractController
          *
          * @param int $id
          */
-        $employeeManager = new EmployeeManager();
+        $saleManager = new SaleManager();
 
-        $contactId = $employeeManager->GetIdRecordsByForeignKeys('contact','fk_id_employee2', $id);
-        $contractsId = $employeeManager->GetIdRecordsByForeignKeys('contract','fk_employee', $id);
+        $contactId = $saleManager->GetIdRecordsByForeignKeys('contact','fk_id_employee2', $id);
+        $contractsId = $saleManager->GetIdRecordsByForeignKeys('contract','fk_employee', $id);
 
-        $employeeManager->delete('contact', $contactId[0]['id_contact']);
+        $saleManager->delete('contact', $contactId[0]['id_contact']);
         foreach($contractsId as $contract) {
-            $employeeManager->delete('contract', $contract['id_contract']);
+            $saleManager->delete('contract', $contract['id_contract']);
         }
-        $employeeManager->delete('employee', $id);
+        $saleManager->delete('employee', $id);
 
         header('Location:/employee/index');
     }
 
     function cancel() {
-        return header('Location:/employee/index');
+        return header('Location:/sale/index');
     }
 
     function camelToSnakeCase($string, $us = "_") {

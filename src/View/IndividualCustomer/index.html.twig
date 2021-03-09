@@ -11,7 +11,7 @@
                 <a href="/individualcustomer/add" class="btn btn-primary btn-sm float-right mb-3 mr-3">Ajout</a>
             </div>
         </div>
-        <table id="datatable_users" class="table table-striped table-hover">
+        <table id="datatable_individual_customers" class="table table-striped table-hover">
             <thead class="thead-dark">
             <tr>
                 <th class="text-left">Client</th>
@@ -28,9 +28,9 @@
                     <th>{{customer['cellphone_number']}}</th>
                     <th>{{customer['personal_email_address']}}</th>
                     <th>
-                        <a href="/individualcustomer/show/{{customer['id_customer']}}" class="btn btn-primary btn-sm">Lecture</a>
-                        <a href="/individualcustomer/edit/{{customer['id_customer']}}" class="btn btn-primary btn-sm">Modifier</a>
-                        <a href="/individualcustomer/delete/{{customer['id_customer']}}/read" class="btn btn-danger btn-sm">Supprimer</a>
+                        <a href="/individualcustomer/show/{{customer['id_customer']}}"><i class="far fa-eye"></i></a>
+                        <a href="/individualcustomer/edit/{{customer['id_customer']}}"><i class="fas fa-edit"></i></a>
+                        <a href="/individualcustomer/delete/{{customer['id_customer']}}"><i class="fas fa-user-times"></i></a>
                     </th>
                 </tr>
             {%  endfor %}

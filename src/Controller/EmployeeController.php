@@ -45,7 +45,9 @@ class EmployeeController extends AbstractController
 
         return ['employee' => $employee, 'civilityEnum' => $employeeAllEnumValues['civilityEnum'],
             'genderEnum' => $employeeAllEnumValues['genderEnum'],
-            'contractTypeEnum' => $employeeAllEnumValues['contractTypeEnum']];
+            'contractTypeEnum' => $employeeAllEnumValues['contractTypeEnum'],
+            'departmentRecords' => $employeeAllEnumValues['departmentRecords'],
+            'functionRecords' => $employeeAllEnumValues['functionRecords']];
     }
 
     public function getDataEnumforEmployee(): array
@@ -58,6 +60,9 @@ class EmployeeController extends AbstractController
         $genderEnumRequest=$employeeManager->SelectEnumValues('employee', 'gender');
         $contractTypeEnumRequest=$employeeManager->SelectEnumValues('contract','type_contract');
 
+        $departmentRecords=$employeeManager->selectDepartments();
+        $functionRecords=$employeeManager->selectFunctions();
+
         $employeeController = new EmployeeController();
         $civilityEnumFormatted = $employeeController->enumRequestFormatting($civilityEnumRequest);
         $civilityEnum=$civilityEnumFormatted['enum'];
@@ -67,7 +72,8 @@ class EmployeeController extends AbstractController
         $contractTypeEnum=$contractTypeEnumFormatted['enum'];
 
         return ['civilityEnum' => $civilityEnum, 'genderEnum' => $genderEnum,
-            'contractTypeEnum' => $contractTypeEnum];
+            'contractTypeEnum' => $contractTypeEnum, 'departmentRecords' => $departmentRecords,
+            'functionRecords' => $functionRecords];
     }
 
     public function getFormDataForUpdateOrAdd(array $dataFromForm): array
@@ -82,9 +88,8 @@ class EmployeeController extends AbstractController
             $snakeKey = $employeeController->camelToSnakeCase($key);
             $allData[$snakeKey] = $_POST[$key];
         }
-
         $employeeData['id_employee'] = $allData['id_employee'];
-        $employeeData['active'] = $allData['active'];
+        $employeeData['is_active'] = $allData['is_active'];
         $employeeData['employee_hr_id'] = $allData['employee_hr_id'];
         $employeeData['gender'] = $allData['gender'];
         $employeeData['civility'] = $allData['civility'];
@@ -97,7 +102,8 @@ class EmployeeController extends AbstractController
         $employeeData['bank_bic'] = $allData['bank_bic'];
         $employeeData['wage_ratio'] = $allData['wage_ratio'];
         $employeeData['wage_hiring'] = $allData['wage_hiring'];
-        $employeeData['department'] = $allData['department'];
+        $employeeData['fk_department'] = $allData['fk_department'];
+        $employeeData['fk_employeeFunction'] = $allData['fk_employee_function'];
 
         $contactData['id_contact'] = $allData['id_contact'];
         $contactData['first_name'] = $allData['first_name'];
@@ -138,8 +144,9 @@ class EmployeeController extends AbstractController
         $data = $employeeController->getDataforEmployee($id);
 
         return $this->twig->render('Employee/showEmployee.html.twig', ['employee' => $data['employee'],
-            'civilityEnum' => $data['civilityEnum'], 'genderEnum' => $data['genderEnum'], 'contractTypeEnum' => $data['contractTypeEnum'],
-            'operation' => 'read']);
+            'civilityEnum' => $data['civilityEnum'], 'genderEnum' => $data['genderEnum'],
+            'contractTypeEnum' => $data['contractTypeEnum'], 'departmentRecords' => $data['departmentRecords'],
+            'functionRecords'  => $data['functionRecords'], 'operation' => 'read']);
     }
 
     public function edit(int $id)
@@ -166,7 +173,8 @@ class EmployeeController extends AbstractController
 
         return $this->twig->render('Employee/showEmployee.html.twig', ['employee' => $data['employee'],
             'civilityEnum' => $data['civilityEnum'], 'genderEnum' => $data['genderEnum'],
-            'contractTypeEnum' => $data['contractTypeEnum'], 'operation' => 'edit']);
+            'contractTypeEnum' => $data['contractTypeEnum'], 'departmentRecords' => $data['departmentRecords'],
+            'functionRecords'  => $data['functionRecords'], 'operation' => 'edit']);
 
     }
 
@@ -202,7 +210,8 @@ class EmployeeController extends AbstractController
         }
         return $this->twig->render('Employee/showEmployee.html.twig', [
             'civilityEnum' => $data['civilityEnum'], 'genderEnum' => $data['genderEnum'],
-            'contractTypeEnum' => $data['contractTypeEnum'], 'operation' => 'add']);
+            'contractTypeEnum' => $data['contractTypeEnum'], 'departmentRecords' => $data['departmentRecords'],
+            'functionRecords'  => $data['functionRecords'], 'operation' => 'add']);
     }
 
     public function delete(int $id)
