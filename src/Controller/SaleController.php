@@ -66,7 +66,6 @@ class SaleController extends AbstractController
             $customerRecords=$professionalCustomerManager->selectProfessionalCustomers();
         }
         $productsRecords = $saleManager->selectProductsForSale();
-        var_dump($productsRecords);
 
         $saleController = new SaleController();
         $statusEnumFormatted = $saleController->enumRequestFormatting($statusEnumRequest);
@@ -80,15 +79,15 @@ class SaleController extends AbstractController
         /**
          * Get all fields in a sale record form.
          */
-        $saleController = new SaleController();
         $allData = [];
         foreach($dataFromForm as $key => $value) {
             //echo "POST parameter '$key' has '$value'";
-            $snakeKey = $saleController->camelToSnakeCase($key);
+            $snakeKey = $this->camelToSnakeCase($key);
             $allData[$snakeKey] = $_POST[$key];
+            var_dump($key . ' : ' . $value);
         }
 
-        $employeeData['id_employee'] = $allData['id_employee'];
+        $saleData['id_sale'] = $allData['id_sale'];
         $employeeData['active'] = $allData['active'];
         $employeeData['employee_hr_id'] = $allData['employee_hr_id'];
         $employeeData['gender'] = $allData['gender'];
@@ -104,28 +103,18 @@ class SaleController extends AbstractController
         $employeeData['wage_hiring'] = $allData['wage_hiring'];
         $employeeData['department'] = $allData['department'];
 
-        $contactData['id_contact'] = $allData['id_contact'];
-        $contactData['first_name'] = $allData['first_name'];
-        $contactData['last_name'] = $allData['last_name'];
-        $contactData['address_street_number'] = $allData['address_street_number'];
-        $contactData['address_street'] = $allData['address_street'];
-        $contactData['personal_email_address'] = $allData['personal_email_address'];
-        $contactData['cellphone_number'] = $allData['cellphone_number'];
-        $contactData['phone_number'] = $allData['phone_number'];
-        $contactData['address_city'] = $allData['address_city'];
-        $contactData['address_zip_code'] = $allData['address_zip_code'];
-        $contactData['address_addition'] = $allData['address_addition'];
 
-        $contractData['id_contract'] = $allData['id_contract'];
-        $contractData['type_contract'] = $allData['type_contract'];
-        $contractData['starting_date'] = $allData['starting_date'];
-        $contractData['end_date'] = $allData['end_date'];
-        $contractData['wage_first_year'] = $allData['wage_first_year'];
-        $contractData['wage_second_year'] = $allData['wage_second_year'];
-        $contractData['wage_third_year'] = $allData['wage_third_year'];
+        $productSaleData['fk_id_product'] = $allData['id_product_sale'];
+        $productSaleData['fk_id_sale'] = $allData['id_sale'];
+        $productSaleData['original_price'] = $allData['original_price'];
+        $productSaleData['quantity'] = $allData['quantity'];
+        $productSaleData['discount'] = $allData['discount'];
+        $productSaleData['finalised_price'] = $allData['finalised_price'];
+        $productSaleData['created_at'] = $allData['created_at'];
+        die(var_dump($productSaleData));
         $contractData['on_going'] = $allData['on_going'] ? 1 : 0;
 
-        return ['employeeData' => $employeeData, 'contactData' => $contactData, 'contractData' => $contractData];
+        return ['saleData' => $saleData, 'productSaleData' => $productSaleData];
 
     }
 
@@ -139,7 +128,7 @@ class SaleController extends AbstractController
         }*/
 
         $saleController = new SaleController();
-        $data = $saleController->getDataforSale($id, 1);
+        $data = $saleController->getDataforSale($id, 2);
 
         return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
             'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '2',
@@ -157,7 +146,7 @@ class SaleController extends AbstractController
 
 
         $saleController = new SaleController();
-        $data = $saleController->getDataforSale($id, 2);
+        $data = $saleController->getDataforSale($id, 1);
 
         return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
             'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '1',
@@ -184,7 +173,7 @@ class SaleController extends AbstractController
             $saleManager->update('contract', $datafromForm['contractData']);
         }
 
-        $data = $saleController->getDataforSale($id, 1);
+        $data = $saleController->getDataforSale($id, 2);
 
         return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
             'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '2',
@@ -213,7 +202,7 @@ class SaleController extends AbstractController
             $saleManager->update('contract', $datafromForm['contractData']);
         }
 
-        $data = $saleController->getDataforSale($id, 2);
+        $data = $saleController->getDataforSale($id, 1);
 
         return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
             'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '1',

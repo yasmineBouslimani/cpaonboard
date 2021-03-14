@@ -47,15 +47,16 @@
                         {% for field in fieldsOnReadOnly %}
                             <th>{{ product[field] }}</th>
                         {%  endfor %}
-                        {% for field in fillableFields %}
+                        {% for currentRow in 0..lengthFillableFields-1 %}
                             <th>
-                                <input type="number"
-                                       name="{{ field[nameInput] }}"
-                                       id="{{ field[idInput] }}"
+                                <input type="text"
+                                       name="{{ [fillableFields[currentRow]['nameInput'], product['id_product']]|join('')  }}"
+                                       id="{{ [fillableFields[currentRow]['idInput'], product['id_product']]|join('') }}"
                                        class="form-control"
                                        tabindex="{{ tabIndexBeforeCard+1 }}"
-                                       value="{{ product[field[record]] }}"
-                                        {{ disabled }} /></th>
+                                       value="{{ product[fillableFields[currentRow]['record']]}}"
+                                        {{ disabled }} />
+                            </th>
                         {%  endfor %}
                     </tr>
                 {%  endfor %}

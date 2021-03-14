@@ -9,9 +9,17 @@
 {% block content %}
     <div>
         {% if operation == 'edit' %}
-            {% set formAction = ['/sale/edit/', sale[0]['id_sale']]|join('') %}
-        {% elseif operation == 'add'  %}
-            {% set formAction = '/sale/add' %}
+            {% if customerType == '1' %}
+                {% set formAction = ['/sale/editIndividual/', sale[0]['id_sale']]|join('') %}
+            {% else %}
+                {% set formAction = ['/sale/editProfessional', sale[0]['id_sale']]|join('')  %}
+            {% endif %}
+        {% elseif operation == 'edit' %}
+            {% if customerType == '1' %}
+                {% set formAction = ['/sale/addIndividual', sale[0]['id_sale']]|join('')  %}
+            {% else %}
+                {% set formAction = ['/sale/addProfessional', sale[0]['id_sale']]|join('')  %}
+            {% endif %}
         {% endif %}
         <form method="post" action="{{ formAction }}" class="form-group">
             <input type="hidden"
@@ -100,6 +108,7 @@
                             'idInput': 'discount'
                         }
                     ] %}
+                    {% set lengthFillableFields = fillableFields | length %}
                     {% set tabIndexBeforeCard = tabIndex %}
                     {% include 'Sale/_cardProductTable.html.twig' %}
 {#                    {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}#}
