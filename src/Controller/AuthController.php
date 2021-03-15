@@ -19,6 +19,7 @@ class AuthController extends AbstractController
 
         if (($_POST['password'] == $userData['password'])) {
             $_SESSION['login'] = ucfirst($_POST['login']);
+            $_SESSION['id'] = $userData['id_users'];
             $_SESSION['fk_id_userType'] = $userData['fk_id_userType'];
             header('Location: /admin/index/');
         } else {

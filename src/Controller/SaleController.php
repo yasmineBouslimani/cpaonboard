@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Model\ProfessionalCustomerManager;
 use App\Model\IndividualCustomerManager;
+use App\Model\ProductManager;
 use App\Model\SaleManager;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 
@@ -79,40 +80,65 @@ class SaleController extends AbstractController
         /**
          * Get all fields in a sale record form.
          */
+        $productManager = new ProductManager();
         $allData = [];
+        ksort($dataFromForm);
+        $allProducts = [];
+        $productSaleData = [];
+        $productFormFields=['quantity', 'product_discount'];
         foreach($dataFromForm as $key => $value) {
-            //echo "POST parameter '$key' has '$value'";
             $snakeKey = $this->camelToSnakeCase($key);
             $allData[$snakeKey] = $_POST[$key];
-            var_dump($key . ' : ' . $value);
+
+            $fieldLabel  = substr("$snakeKey", 0,-2);
+            $fieldIndex = substr("$snakeKey", -1,1);
+            if (in_array($fieldLabel, $productFormFields)){
+                $allProducts[$fieldIndex][$fieldLabel] = $allData[$snakeKey];
+                $allProducts[$fieldIndex]['id_product'] = $fieldIndex;
+            }
         }
-
         $saleData['id_sale'] = $allData['id_sale'];
-        $employeeData['active'] = $allData['active'];
-        $employeeData['employee_hr_id'] = $allData['employee_hr_id'];
-        $employeeData['gender'] = $allData['gender'];
-        $employeeData['civility'] = $allData['civility'];
-        $employeeData['birth_date'] = $allData['birth_date'];
-        $employeeData['birth_place'] = $allData['birth_place'];
-        $employeeData['social_security_number'] = $allData['social_security_number'];
-        $employeeData['bank_name'] = $allData['bank_name'];
-        $employeeData['bank_city'] = $allData['bank_city'];
-        $employeeData['bank_iban'] = $allData['bank_iban'];
-        $employeeData['bank_bic'] = $allData['bank_bic'];
-        $employeeData['wage_ratio'] = $allData['wage_ratio'];
-        $employeeData['wage_hiring'] = $allData['wage_hiring'];
-        $employeeData['department'] = $allData['department'];
+        $saleData['date_sale'] = $allData['date_sale'];
+        $saleData['global_price_original'] = $allData['global_price_original'];
+        $saleData['discount'] = $allData['discount'];
+        $saleData['global_price_finalised'] = $allData['global_price_finalised'];
+        $saleData['to_deliver'] = $allData['to_deliver'];
+        $saleData['status_sale'] = $allData['status_sale'];
+        $saleData['fk_users'] = $_SESSION['id'];
+        $saleData['fk_customer'] = $allData['id_customer'];
 
+        $index = 0;
+        for ($i = 1; $i <= count($allProducts); $i++) {
+            $quantity = $allProducts[$i]['quantity'];
+            if ($quantity){
+                $id_product = $allProducts[$i]['id_product'];
+                $ComputationPriceRequest=$productManager->getProductInformationsForPriceComputation($id_product);
+                $tva = $ComputationPriceRequest[0]['ratio'];
+                $HTUnitPrice  = $ComputationPriceRequest[0]['price'];
+                $discountPercentage = $allProducts[$i]['product_discount'];
+                $TTCPrice = ($HTUnitPrice + $tva * $HTUnitPrice / 100) * $quantity;
+                if ($discountPercentage) {
+                    $discountAmount = $discountPercentage * $HTUnitPrice / 100 * $quantity;
+                    var_dump('discountAmount');
+                    var_dump($discountAmount);
+                }
+                else{
+                    $discountAmount = 0;
+                }
 
-        $productSaleData['fk_id_product'] = $allData['id_product_sale'];
-        $productSaleData['fk_id_sale'] = $allData['id_sale'];
-        $productSaleData['original_price'] = $allData['original_price'];
-        $productSaleData['quantity'] = $allData['quantity'];
-        $productSaleData['discount'] = $allData['discount'];
-        $productSaleData['finalised_price'] = $allData['finalised_price'];
-        $productSaleData['created_at'] = $allData['created_at'];
+                $productSaleData[$index]['fk_id_product'] = $id_product;
+                $productSaleData[$index]['fk_id_sale'] = $allData['id_sale'];
+                $productSaleData[$index]['original_price'] = $HTUnitPrice;
+                $productSaleData[$index]['quantity'] = $quantity;
+                $productSaleData[$index]['discount'] = $discountPercentage;
+                $productSaleData[$index]['finalised_price'] = $TTCPrice - $discountAmount;
+                $productSaleData[$index]['tva'] = $tva;
+                //$productSaleData[$index]['created_at'] = '';
+                $index++;
+            }
+        }
         die(var_dump($productSaleData));
-        $contractData['on_going'] = $allData['on_going'] ? 1 : 0;
+        //$contractData['on_going'] = $allData['on_going'] ? 1 : 0;
 
         return ['saleData' => $saleData, 'productSaleData' => $productSaleData];
 

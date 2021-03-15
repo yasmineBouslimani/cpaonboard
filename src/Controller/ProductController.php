@@ -160,5 +160,4 @@ class ProductController extends AbstractController
 
         fpassthru($fopenAction);
     }
-
 }

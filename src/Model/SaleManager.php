@@ -65,5 +65,4 @@ class SaleManager extends AbstractManager
             LEFT JOIN tva ON tva.id_tva = product.fk_tva
             ORDER BY producttype.type ASC, product.price ASC, product.label ASC ;')->fetchAll();
     }
-
 }
