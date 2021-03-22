@@ -45,7 +45,7 @@ abstract class AbstractManager
         return $this->pdo->query('SHOW COLUMNS FROM ' . $table . ' LIKE \'' . $enumField . '\';')->fetchAll();
     }
 
-    public function insert(string $table, array $recordFields,array $recordFk=null): int
+    public function insert(string $table, array $recordFields,array $recordFk=null, bool $isAssociativeTable=false): int
     {
         if (!is_null($recordFk)){
             foreach ($recordFk as $key => $value) {
@@ -66,7 +66,13 @@ abstract class AbstractManager
         // prepared request
         $statement = $this->pdo->prepare('INSERT INTO ' . $table . $labelsToUpdate .' VALUES ' . $valuesToUpdate);
         $statement->execute();
-        return (int)$this->pdo->lastInsertId();
+        if ($isAssociativeTable){
+            return 0;
+        }
+        else{
+            return (int)$this->pdo->lastInsertId();
+        }
+
     }
 
     public function update(string $table, array $recordFields): bool

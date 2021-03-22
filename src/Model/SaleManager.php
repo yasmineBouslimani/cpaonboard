@@ -65,4 +65,17 @@ class SaleManager extends AbstractManager
             LEFT JOIN tva ON tva.id_tva = product.fk_tva
             ORDER BY producttype.type ASC, product.price ASC, product.label ASC ;')->fetchAll();
     }
+
+    public function selectProductsForSaleByProductAndSaleId(int $fkIdProduct, int $fkIdSale): array
+    {
+        /**
+         * Get record by sale and product id in product_sale table.
+         *
+         * @return array
+         */
+        return $this->pdo->query(
+            'SELECT product_sale.fk_id_product , product_sale.fk_id_sale
+            FROM product_sale
+            WHERE fk_id_product = '. $fkIdProduct .' AND `fk_id_sale`='. $fkIdSale . ';')->fetchAll();
+    }
 }

@@ -186,10 +186,20 @@ class SaleController extends AbstractController
         $datafromForm = $this->getFormDataForUpdateOrAdd($_POST);
         $saleManager->update('sale', $datafromForm['saleData']);
         foreach ($datafromForm['productSaleData'] as $productSale){
-            var_dump("productSale");
-            var_dump($productSale);
-            $saleManager->updateAssociativeTable(
-                'product_sale', 'fk_id_product', 'fk_id_sale', $productSale);
+            $productId = $productSale['fk_id_product'];
+            $saleId = $productSale['fk_id_sale'];
+            if ($saleManager->selectProductsForSaleByProductAndSaleId($productId, $saleId)) {
+                var_dump("yes : ");
+                var_dump($productSale);
+                $saleManager->updateAssociativeTable(
+                    'product_sale', 'fk_id_product', 'fk_id_sale', $productSale);
+            }
+            else{
+                var_dump("no : ");
+                var_dump($productSale);
+                $saleManager->insert('product_sale', $productSale, null,true);
+            }
+
         }
     }
 
