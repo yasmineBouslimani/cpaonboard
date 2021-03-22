@@ -84,6 +84,23 @@ abstract class AbstractManager
         return $id;
     }
 
+    public function updateAssociativeTable(string $table, string $foreignKeyOneName, string $foreignKeyTwoName, array $recordFields)
+    {
+        $foreignKeyOneValue = $recordFields[$foreignKeyOneName];
+        $foreignKeyTwoValue = $recordFields[$foreignKeyTwoName];
+        $fieldsToUpdate = ' SET ';
+        foreach($recordFields as $key => $value) {
+            $fieldsToUpdate = $fieldsToUpdate . '`' . $key . '`=\'' . $value . '\',';
+        }
+        $fieldsToUpdate = substr($fieldsToUpdate, 0, -1);
+        var_dump('UPDATE ' . $table . $fieldsToUpdate . ' 
+            WHERE `' . $foreignKeyOneName . '`='. $foreignKeyOneValue . ' AND `'. $foreignKeyTwoName . '`='. $foreignKeyTwoValue);
+        $statement = $this->pdo->prepare(
+            'UPDATE ' . $table . $fieldsToUpdate . ' 
+            WHERE `' . $foreignKeyOneName . '`='. $foreignKeyOneValue . ' AND `'. $foreignKeyTwoName . '`='. $foreignKeyTwoValue );
+        $statement->execute();
+    }
+
     public function delete(string $table, int $idRecord)
     {
         $idFieldName = 'id_' . $table;

@@ -84,64 +84,113 @@ class SaleController extends AbstractController
         $allData = [];
         ksort($dataFromForm);
         $allProducts = [];
-        $productSaleData = [];
         $productFormFields=['quantity', 'product_discount'];
         foreach($dataFromForm as $key => $value) {
             $snakeKey = $this->camelToSnakeCase($key);
             $allData[$snakeKey] = $_POST[$key];
-
             $fieldLabel  = substr("$snakeKey", 0,-2);
             $fieldIndex = substr("$snakeKey", -1,1);
+            //GET ALL PRODUCTS DATA IN FORM
             if (in_array($fieldLabel, $productFormFields)){
                 $allProducts[$fieldIndex][$fieldLabel] = $allData[$snakeKey];
                 $allProducts[$fieldIndex]['id_product'] = $fieldIndex;
             }
         }
-        $saleData['id_sale'] = $allData['id_sale'];
-        $saleData['date_sale'] = $allData['date_sale'];
-        $saleData['global_price_original'] = $allData['global_price_original'];
-        $saleData['discount'] = $allData['discount'];
-        $saleData['global_price_finalised'] = $allData['global_price_finalised'];
-        $saleData['to_deliver'] = $allData['to_deliver'];
-        $saleData['status_sale'] = $allData['status_sale'];
-        $saleData['fk_users'] = $_SESSION['id'];
-        $saleData['fk_customer'] = $allData['id_customer'];
 
-        $index = 0;
-        for ($i = 1; $i <= count($allProducts); $i++) {
-            $quantity = $allProducts[$i]['quantity'];
-            if ($quantity){
-                $id_product = $allProducts[$i]['id_product'];
-                $ComputationPriceRequest=$productManager->getProductInformationsForPriceComputation($id_product);
-                $tva = $ComputationPriceRequest[0]['ratio'];
-                $HTUnitPrice  = $ComputationPriceRequest[0]['price'];
-                $discountPercentage = $allProducts[$i]['product_discount'];
-                $TTCPrice = ($HTUnitPrice + $tva * $HTUnitPrice / 100) * $quantity;
-                if ($discountPercentage) {
-                    $discountAmount = $discountPercentage * $HTUnitPrice / 100 * $quantity;
-                    var_dump('discountAmount');
-                    var_dump($discountAmount);
-                }
-                else{
-                    $discountAmount = 0;
-                }
-
-                $productSaleData[$index]['fk_id_product'] = $id_product;
-                $productSaleData[$index]['fk_id_sale'] = $allData['id_sale'];
-                $productSaleData[$index]['original_price'] = $HTUnitPrice;
-                $productSaleData[$index]['quantity'] = $quantity;
-                $productSaleData[$index]['discount'] = $discountPercentage;
-                $productSaleData[$index]['finalised_price'] = $TTCPrice - $discountAmount;
-                $productSaleData[$index]['tva'] = $tva;
-                //$productSaleData[$index]['created_at'] = '';
-                $index++;
-            }
-        }
-        die(var_dump($productSaleData));
-        //$contractData['on_going'] = $allData['on_going'] ? 1 : 0;
+        $productSaleData = $this->ComputeProductSaleData($allProducts, $productManager, $allData['id_sale']);
+        $saleData = $this->ComputeSaleData($allData, $productSaleData);
 
         return ['saleData' => $saleData, 'productSaleData' => $productSaleData];
 
+    }
+
+    public function ComputeProductSaleData(array $allProducts, ProductManager $productManager, $id_sale): array
+    {
+        /**
+         * @param array $allProducts
+         * @param ProductManager $productManager
+         * @param array $productSaleData
+         * @param $id_sale
+         * @return array
+         */
+        $productSaleData = [];
+        $index = 0;
+        for ($i = 1; $i <= count($allProducts); $i++) {
+            $quantity = $allProducts[$i]['quantity'];
+            //GET SOLD PRODUCTS ONLY
+            if ($quantity) {
+                $id_product = $allProducts[$i]['id_product'];
+                $ComputationPriceRequest = $productManager->getProductInformationsForPriceComputation($id_product);
+                $tva = $ComputationPriceRequest[0]['ratio'];
+                $HTUnitPrice = $ComputationPriceRequest[0]['price'];
+                $discountPercentage = $allProducts[$i]['product_discount'];
+                if ($discountPercentage) {
+                    $HTUnitPriceForSale = $HTUnitPrice - $discountPercentage * $HTUnitPrice / 100;
+                } else {
+                    $HTUnitPriceForSale = $HTUnitPrice;
+                }
+                $HTPriceForSale = $HTUnitPriceForSale * $quantity;
+                $TTCUnitPriceForSale = $HTUnitPriceForSale + $tva * $HTUnitPrice / 100;
+                $TTCPriceForSale = $TTCUnitPriceForSale * $quantity;
+
+                $productSaleData[$index]['fk_id_product'] = $id_product;
+                $productSaleData[$index]['fk_id_sale'] = $id_sale;
+                $productSaleData[$index]['original_price'] = $HTPriceForSale;
+                $productSaleData[$index]['quantity'] = $quantity;
+                $productSaleData[$index]['discount_percentage'] = $discountPercentage;
+                $productSaleData[$index]['finalised_price'] = $TTCPriceForSale;
+                //$productSaleData[$index]['created_at'] = '';
+
+                $index++;
+            }
+        }
+        return $productSaleData;
+    }
+
+
+    public function ComputeSaleData(array $allData, array $productSaleData)
+    {
+        /**
+     * @param array $allData
+     * @param array $productSaleData
+     * @param $saleData
+     * @return mixed
+     */
+        $saleData = [];
+        $globalPriceOriginal = 0;
+        $globalPriceFinalised = 0;
+        $globalDiscountPercentage = $allData['discount_sale_percentage'];
+        foreach ($productSaleData as $product) {
+            $globalPriceOriginal = $globalPriceOriginal + $product['original_price'];
+            $globalPriceFinalised = $globalPriceFinalised + $product['finalised_price'];
+        }
+        $globalPriceFinalised = $globalPriceFinalised - $globalDiscountPercentage / 100 * $globalPriceOriginal;
+
+        $saleData['id_sale'] = $allData['id_sale'];
+        $saleData['date_sale'] = $allData['date_sale'];
+        $saleData['to_deliver'] = $allData['to_deliver'] ? 1 : 0;;
+        $saleData['status_sale'] = $allData['status_sale'];
+        $saleData['fk_users'] = $_SESSION['id'];
+        $saleData['fk_customer'] = $allData['id_customer'];
+        $saleData['global_price_original'] = $globalPriceOriginal;
+        $saleData['discount_percentage'] = $globalDiscountPercentage;
+        $saleData['global_price_finalised'] = $globalPriceFinalised;
+        return $saleData;
+    }
+
+    public function UpdateForEdit(SaleManager $saleManager)
+    {
+        /**
+         * @param SaleManager $saleManager
+         */
+        $datafromForm = $this->getFormDataForUpdateOrAdd($_POST);
+        $saleManager->update('sale', $datafromForm['saleData']);
+        foreach ($datafromForm['productSaleData'] as $productSale){
+            var_dump("productSale");
+            var_dump($productSale);
+            $saleManager->updateAssociativeTable(
+                'product_sale', 'fk_id_product', 'fk_id_sale', $productSale);
+        }
     }
 
     public function showProfessional(int $id)
@@ -153,8 +202,7 @@ class SaleController extends AbstractController
             header('location:/auth/login');
         }*/
 
-        $saleController = new SaleController();
-        $data = $saleController->getDataforSale($id, 2);
+        $data = $this->getDataforSale($id, 2);
 
         return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
             'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '2',
@@ -171,8 +219,7 @@ class SaleController extends AbstractController
         }*/
 
 
-        $saleController = new SaleController();
-        $data = $saleController->getDataforSale($id, 1);
+        $data = $this->getDataforSale($id, 1);
 
         return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
             'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '1',
@@ -188,18 +235,13 @@ class SaleController extends AbstractController
             header('location:/auth/login');
         }*/
 
-        $saleController = new SaleController();
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $saleManager = new SaleManager();
 
-            $datafromForm = $saleController->getFormDataForUpdateOrAdd($_POST);
-            $saleManager->update('employee', $datafromForm['employeeData']);
-            $saleManager->update('contact', $datafromForm['contactData']);
-            $saleManager->update('contract', $datafromForm['contractData']);
+            $this->UpdateForEdit($saleManager);
         }
 
-        $data = $saleController->getDataforSale($id, 2);
+        $data = $this->getDataforSale($id, 2);
 
         return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
             'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '2',
@@ -216,19 +258,13 @@ class SaleController extends AbstractController
             header('location:/auth/login');
         }*/
 
-
-        $saleController = new SaleController();
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $saleManager = new SaleManager();
 
-            $datafromForm = $saleController->getFormDataForUpdateOrAdd($_POST);
-            $saleManager->update('employee', $datafromForm['employeeData']);
-            $saleManager->update('contact', $datafromForm['contactData']);
-            $saleManager->update('contract', $datafromForm['contractData']);
+            $this->UpdateForEdit($saleManager);
         }
 
-        $data = $saleController->getDataforSale($id, 1);
+        $data = $this->getDataforSale($id, 1);
 
         return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
             'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '1',
@@ -247,12 +283,10 @@ class SaleController extends AbstractController
          * @throws \Twig\Error\SyntaxError
          */
 
-        $saleController = new SaleController();
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $saleManager = new SaleManager();
 
-            $datafromForm = $saleController->getFormDataForUpdateOrAdd($_POST);
+            $datafromForm = $this->getFormDataForUpdateOrAdd($_POST);
 
             $idEmployee = $saleManager->insert('employee', $datafromForm['employeeData']);
             $contactFk = ['fk_id_employee2' => $idEmployee];
@@ -264,7 +298,7 @@ class SaleController extends AbstractController
         }
         else
         {
-            $data = $saleController->getDataEnumforSale(2);
+            $data = $this->getDataEnumforSale(2);
         }
         return $this->twig->render('sale/show.html.twig', ['statusEnum' => $data['statusEnum'],
             'customerRecords' => $data['customerRecords'], 'customerType' => '2',
@@ -282,12 +316,11 @@ class SaleController extends AbstractController
          * @throws \Twig\Error\SyntaxError
          */
 
-        $saleController = new SaleController();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $saleManager = new SaleManager();
 
-            $datafromForm = $saleController->getFormDataForUpdateOrAdd($_POST);
+            $datafromForm = $this->getFormDataForUpdateOrAdd($_POST);
 
             $idEmployee = $saleManager->insert('employee', $datafromForm['employeeData']);
             $contactFk = ['fk_id_employee2' => $idEmployee];
@@ -299,7 +332,7 @@ class SaleController extends AbstractController
         }
         else
         {
-            $data = $saleController->getDataEnumforSale(1);
+            $data = $this->getDataEnumforSale(1);
         }
         return $this->twig->render('sale/show.html.twig', ['statusEnum' => $data['statusEnum'],
             'customerRecords' => $data['customerRecords'], 'customerType' => '1',

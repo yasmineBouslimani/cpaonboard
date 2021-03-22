@@ -42,7 +42,7 @@ class SaleManager extends AbstractManager
          */
         return $this->pdo->query(
             'SELECT sale.id_sale, sale.status_sale, sale.date_sale, sale.to_deliver, 
-                sale.global_price_original, sale.discount, sale.global_price_finalised
+                sale.global_price_original, sale.discount_percentage, sale.global_price_finalised
             FROM sale
             WHERE id_sale = '.$id.';')->fetchAll();
     }
@@ -55,7 +55,7 @@ class SaleManager extends AbstractManager
          * @return array
          */
         return $this->pdo->query(
-            'SELECT sale.id_sale, product_sale.quantity, product_sale.discount, product_sale.finalised_price,
+            'SELECT sale.id_sale, product_sale.quantity, product_sale.discount_percentage, product_sale.finalised_price,
                 product.id_product, product.label, product.stock, product.price, product.fk_tva, producttype.type, tva.id_tva,
                 tva.ratio
             FROM sale
