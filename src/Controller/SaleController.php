@@ -6,7 +6,6 @@ use App\Model\ProfessionalCustomerManager;
 use App\Model\IndividualCustomerManager;
 use App\Model\ProductManager;
 use App\Model\SaleManager;
-use Symfony\Component\Console\Logger\ConsoleLogger;
 
 class SaleController extends AbstractController
 {
@@ -47,8 +46,7 @@ class SaleController extends AbstractController
         $saleAllEnumValues = $saleController->getDataEnumforSale($customerType);
 
         return ['sale' => $sale, 'statusEnum' => $saleAllEnumValues['statusEnum'],
-            'customerRecords' => $saleAllEnumValues['customerRecords'],
-            'productsRecords'=> $saleAllEnumValues['productsRecords']];
+            'customerRecords' => $saleAllEnumValues['customerRecords']];
     }
 
     public function getDataEnumforSale(int $customerType): array
@@ -66,13 +64,12 @@ class SaleController extends AbstractController
             $professionalCustomerManager = new ProfessionalCustomerManager();
             $customerRecords=$professionalCustomerManager->selectProfessionalCustomers();
         }
-        $productsRecords = $saleManager->selectProductsForSale();
 
         $saleController = new SaleController();
         $statusEnumFormatted = $saleController->enumRequestFormatting($statusEnumRequest);
         $statusEnum=$statusEnumFormatted['enum'];
 
-        return ['statusEnum' => $statusEnum, 'customerRecords' => $customerRecords, 'productsRecords' => $productsRecords];
+        return ['statusEnum' => $statusEnum, 'customerRecords' => $customerRecords];
     }
 
     public function getFormDataForUpdateOrAdd(array $dataFromForm): array
@@ -244,18 +241,19 @@ class SaleController extends AbstractController
         /*if ($_SESSION['is_admin'] == "1") {
             header('location:/auth/login');
         }*/
+        $saleManager = new SaleManager();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $saleManager = new SaleManager();
 
             $this->UpdateForEdit($saleManager);
         }
 
         $data = $this->getDataforSale($id, 2);
+        $productsRecords = $saleManager->selectProductsForSale($id);
 
         return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
             'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '2',
-            'productsRecords' => $data['productsRecords'],'operation' => 'edit']);
+            'productsRecords' => $productsRecords,'operation' => 'edit']);
 
     }
 
@@ -267,18 +265,19 @@ class SaleController extends AbstractController
         /*if ($_SESSION['is_admin'] == "1") {
             header('location:/auth/login');
         }*/
+        $saleManager = new SaleManager();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $saleManager = new SaleManager();
 
             $this->UpdateForEdit($saleManager);
         }
 
         $data = $this->getDataforSale($id, 1);
+        $productsRecords = $saleManager->selectProductsForSale($id);
 
         return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
             'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '1',
-            'productsRecords' => $data['productsRecords'], 'operation' => 'edit']);
+            'productsRecords' => $productsRecords, 'operation' => 'edit']);
 
     }
 
@@ -292,9 +291,8 @@ class SaleController extends AbstractController
          * @throws \Twig\Error\RuntimeError
          * @throws \Twig\Error\SyntaxError
          */
-
+        $saleManager = new SaleManager();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $saleManager = new SaleManager();
 
             $datafromForm = $this->getFormDataForUpdateOrAdd($_POST);
 
@@ -309,10 +307,11 @@ class SaleController extends AbstractController
         else
         {
             $data = $this->getDataEnumforSale(2);
+            $productsRecords = $saleManager->selectProductsForSale();
         }
         return $this->twig->render('sale/show.html.twig', ['statusEnum' => $data['statusEnum'],
             'customerRecords' => $data['customerRecords'], 'customerType' => '2',
-            'productsRecords' => $data['productsRecords'], 'operation' => 'add']);
+            'productsRecords' => $productsRecords, 'operation' => 'add']);
     }
 
     public function addIndividual()
@@ -326,9 +325,8 @@ class SaleController extends AbstractController
          * @throws \Twig\Error\SyntaxError
          */
 
-
+        $saleManager = new SaleManager();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $saleManager = new SaleManager();
 
             $datafromForm = $this->getFormDataForUpdateOrAdd($_POST);
 
@@ -343,10 +341,11 @@ class SaleController extends AbstractController
         else
         {
             $data = $this->getDataEnumforSale(1);
+            $productsRecords = $saleManager->selectProductsForSale();
         }
         return $this->twig->render('sale/show.html.twig', ['statusEnum' => $data['statusEnum'],
             'customerRecords' => $data['customerRecords'], 'customerType' => '1',
-            'productsRecords' => $data['productsRecords'], 'operation' => 'add']);
+            'productsRecords' => $productsRecords, 'operation' => 'add']);
     }
 
     public function delete(int $id)
