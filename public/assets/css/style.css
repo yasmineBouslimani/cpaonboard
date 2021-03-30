@@ -4,7 +4,7 @@
     --blueCPA: #4D9FE2;
     --lightBlackCPA: #424242;
     --darkBlackCPA: #777777;
-    --alertCPA : #FF7F50;
+    --alertCPA : #DF0D00;
     --whiteCPA: #EAEAEA;
 }
 
@@ -128,6 +128,10 @@ th .fas, .far {
     font-size: 20px;
 }
 
+.fas.fa-user-times {
+    color: var(--alertCPA);
+}
+
 .extract-pdf-btn {
     background-color: var(--blueCPA);
     width: 208px;
@@ -138,4 +142,16 @@ th .fas, .far {
     color: #000;
     background-color: #dee2e6;
     border-left: 4px solid var(--blueCPA);
+}
+
+#sign-out {
+    font-size: 20px;
+    color: #FFF;
+}
+
+.cardContainer {
+    width: 290px;
+    height: 290px;
+    justify-content: center;
+    margin-top: 40px;
 }
