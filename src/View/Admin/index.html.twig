@@ -2,7 +2,7 @@
 
 {% block title %}Tableau de bord{% endblock %}
 
-{% block bannerTitle %}BIENVENUE SUR CPAONBOARD{% endblock %}
+{% block bannerTitle %}TABLEAU DE BORD{% endblock %}
 {% block bannerInfo %}[Insérer le slogan de l'entreprise]]{% endblock %}
 
 {% block content %}
@@ -11,9 +11,6 @@
         <div class="row h-100">
             <main class="col">
                 <div class="container">
-                    <div class="row center-align">
-                        <h1>Tableau de bord</h1>
-                    </div>
                     <div class="row">
                         <div class="col s12 l3 admin-card" id="users-card-admin">
                             {% include 'Admin/admin_components/_employees.html.twig' %}
@@ -26,14 +23,14 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col s12 l3 admin-card" id="civil-card-admin">
-                            {% include 'Admin/admin_components/_disagreements.html.twig' %}
+                        <div class="col s12 l3 admin-card" id="comments-card-admin">
+                            {% include 'Admin/admin_components/_sales.html.twig' %}
                         </div>
                         <div class="col s12 l3 admin-card" id="subjects-card-admin">
                             {% include 'Admin/admin_components/_acquisitions.html.twig' %}
                         </div>
-                        <div class="col s12 l3 admin-card" id="comments-card-admin">
-                            {% include 'Admin/admin_components/_sales.html.twig' %}
+                        <div class="col s12 l3 admin-card" id="civil-card-admin">
+                            {% include 'Admin/admin_components/_disagreements.html.twig' %}
                         </div>
                     </div>
                 </div>
