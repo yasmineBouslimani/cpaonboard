@@ -1,0 +1,30 @@
+
+{% block content %}
+
+    <h2>
+        <button>
+            Fiche litige - CPA
+        </button>
+    </h2>
+
+    <p>Référence du litige :
+        {{ litigation.id_litigation }}
+    </p>
+
+    <p>Date d'ouverture du litige :
+        {{ litigation.date_litigation is empty ? "NC" : litigation.date_litigation|date("d/m/Y")}}
+    </p>
+
+    <p>Référence de l'achat concerné :
+        {{ litigation.fk_acqusition is empty ? "NC" : litigation.fk_acqusition }}
+    </p>
+
+    <p>Référence de l'achat concerné :
+        {{ litigation.fk_sale is empty ? "NC" : litigation.fk_sale }}
+    </p>
+
+    <p>Commentaire :
+        {{ litigation.comment_acquisition is empty ? "Pas de commentaire" : litigation.comment_acquisition }}
+    </p>
+
+{% endblock %}

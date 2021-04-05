@@ -1,0 +1,23 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+
+    <p> Litiges correspondant à la recherche <strong>"{{ search }}"</strong></p>
+
+    <div class="row">
+        {% if products is not empty %}
+            {% for key,litigation in litigations %}
+                <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                    <div class="card index-card">
+                        <a href="/product/show/{{ litigation.id_litigation }}" class="card-header">
+                            <p class="ellipsis-title">{{ litigation.id_litigation }}</p>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <h3>Aucun litige ne correspond à votre recherche</h3>
+        {% endif %}
+    </div>
+
+{% endblock %}

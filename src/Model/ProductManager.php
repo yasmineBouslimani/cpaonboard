@@ -59,7 +59,7 @@ class ProductManager extends AbstractManager
     }
 
 
-    public function selectProductByWord($words): array
+    public function selectProductByWords($words): array
     {
         $query = "SELECT * FROM " . $this->table .
             " LEFT JOIN tva ON product.fk_tva = tva.id_tva
