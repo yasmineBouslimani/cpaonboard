@@ -89,7 +89,7 @@ class EmployeeController extends AbstractController
             $allData[$snakeKey] = $_POST[$key];
         }
         $employeeData['id_employee'] = $allData['id_employee'];
-        $employeeData['is_active'] = $allData['is_active'];
+        $employeeData['is_active'] = $allData['is_active'] ? 1 : 0;
         $employeeData['employee_hr_id'] = $allData['employee_hr_id'];
         $employeeData['gender'] = $allData['gender'];
         $employeeData['civility'] = $allData['civility'];
