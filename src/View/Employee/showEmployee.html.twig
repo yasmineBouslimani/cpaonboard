@@ -14,10 +14,12 @@
             {% set formAction = '/employee/add' %}
         {% endif %}
         <form method="post" action="{{ formAction }}" class="form-group">
-            {% if employee[0]['active'] == 0 %}
+            {% if employee[0]['is_active'] == 0 %}
+                <p>{{ employee[0]['is_active'] }}</p>
                 {% set selectedActive = '' %}
             {% else %}
-                {% set selectedActive = 'selected' %}
+                <p>{{ employee[0]['is_active'] }}</p>
+                {% set selectedActive = 'checked' %}
             {% endif %}
             <input type="hidden"
                    name="idEmployee"
@@ -47,7 +49,7 @@
                        id="employeeIsActive"
                        class="form-control"
                        tabindex="4"
-                       checked="{{ selectedActive }}"
+                       {{ selectedActive }}
                         {{ disabled }}/></br>
             </div>
             {% set tabIndex = 5 %}
@@ -223,7 +225,7 @@
                         {
                             'entityRequest': employee[0],
                             'record': 'on_going',
-                            'inputType': 'checkbox_one',
+                            'inputType': 'checkbox',
                             'nameInput': 'onGoing',
                             'idInput': 'onGoing',
                             'labelValue': 'En cours'}
