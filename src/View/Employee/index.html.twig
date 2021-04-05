@@ -29,7 +29,7 @@
             {% for employee in employees %}
                 <tr>
                     <th>{{employee['employee_hr_id']}}</th>
-                    <th>{% if employee['active'] == 0 %}
+                    <th>{% if employee['is_active'] == 0 %}
                             Non
                         {% else %}
                             Oui
