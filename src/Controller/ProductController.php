@@ -123,7 +123,7 @@ class ProductController extends AbstractController
             $words = explode(' ', $search);
 
             $productManager = new ProductManager();
-            $products = $productManager->selectProductByWord($words);
+            $products = $productManager->selectProductByWords($words);
 
             return $this->twig->render(
                 'Product/search.html.twig',
