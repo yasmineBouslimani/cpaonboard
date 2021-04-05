@@ -1,0 +1,75 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}CPA : Editer une fiche d'utilisateur{% endblock %}
+
+{% block bannerTitle %}Editer - Fiche d'utilisateur{% endblock %}
+
+{% block content %}
+    <div class="container w-50 mt-5 user-show">
+
+        <form role="form" method="POST" action="/user/edit/{{ user.id_users }}" class="mt-4">
+
+            <div class="form-group">
+
+                <label class="control-label" for="login">
+                    Identifiant de connexion :
+                </label>
+
+                <input type="text" id="login" name="login"
+                       class="form-control"
+                       value="{{ user.login }}">
+
+            </div>
+
+            <div class="form-group">
+                <p class="control-label">Utilisateur actif ?</p>
+
+                <div class="custom-control custom-checkbox">
+                    <input type="radio" name="is_active" id="is_active"
+                           class="custom-control-input"
+                           value="1" {{ user.is_active == "1" ? 'checked' : ' ' }}>
+                    <label class="custom-control-label" for="is_active">Oui</label>
+                </div>
+
+                <div class="custom-control custom-checkbox">
+                    <input type="radio" name="is_active" id="is_not_active"
+                           class="custom-control-input"
+                           value="0" {{ user.is_active == "0" ? 'checked' : ' ' }}>
+                    <label class="custom-control-label" for="is_not_active">Non</label>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="control-label" for="permissions[]">
+                    Permissions accordées :
+                </label>
+                {% for key, role in constant('App\\Model\\UserManager::PERMISSIONS') %}
+
+                    <div class="custom-control custom-checkbox">
+                        <input name="permissions[]" type="checkbox" value="{{ key }}"
+                               class="custom-control-input"
+                               id="role-{{ key }}"{{ key in user.permissions ? "checked" : ' ' }}
+                        >
+                        <label class="custom-control-label" for="role-{{ key }}">{{ role }}</label>
+                    </div>
+
+                {% endfor %}
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <a href="/user/index" class="btn btn-outline-danger btn-block p-2">
+                        <span class="fa fa-arrow-left"></span> Retour
+                    </a>
+                </div>
+
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-orange btn-block p-2">
+                        Modifier
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
