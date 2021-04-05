@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Model\LitigationManager;
-
 use Dompdf\Dompdf;
 
 
@@ -11,6 +10,13 @@ class LitigationController extends AbstractController
 {
     public function index(int $currentPage = 1)
     {
+        /**
+         * @param int $currentPage
+         * @return string
+         * @throws \Twig\Error\LoaderError
+         * @throws \Twig\Error\RuntimeError
+         * @throws \Twig\Error\SyntaxError
+         */
         $litigationManager = new LitigationManager();
 
         $litigationsCountRequest = $litigationManager->countRecords();
@@ -31,8 +37,16 @@ class LitigationController extends AbstractController
         ]);
     }
 
+
     public function show(int $id)
     {
+        /**
+         * @param int $id
+         * @return string
+         * @throws \Twig\Error\LoaderError
+         * @throws \Twig\Error\RuntimeError
+         * @throws \Twig\Error\SyntaxError
+         */
         /*   if (!in_array("litigation_management", $_SESSION['permissions'])) {
                header('location:/admin/index');
            }*/
@@ -45,8 +59,13 @@ class LitigationController extends AbstractController
         ]);
     }
 
+
     public function getDataForLitigation(int $id): array
     {
+        /**
+         * @param int $id
+         * @return array
+         */
         $litigationManager = new LitigationManager();
 
         $litigationTypeRecords = $litigationManager->selectLitigationWithAcquisitionAndSaleById($id);
@@ -59,6 +78,13 @@ class LitigationController extends AbstractController
 
     public function edit(int $id): string
     {
+        /**
+         * @param int $id
+         * @return string
+         * @throws \Twig\Error\LoaderError
+         * @throws \Twig\Error\RuntimeError
+         * @throws \Twig\Error\SyntaxError
+         */
         $data = $this->getDataForLitigation($id);
         $litigationManager = new LitigationManager();
 
@@ -77,9 +103,14 @@ class LitigationController extends AbstractController
         ]);
     }
 
-
     public function add()
     {
+        /**
+         * @return string
+         * @throws \Twig\Error\LoaderError
+         * @throws \Twig\Error\RuntimeError
+         * @throws \Twig\Error\SyntaxError
+         */
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $litigationManager = new LitigationManager();
             $litigation = [
@@ -91,15 +122,26 @@ class LitigationController extends AbstractController
         return $this->twig->render('Litigation/add.html.twig');
     }
 
+
     public function delete(int $id)
     {
+        /**
+         * @param int $id
+         */
         $litigationManager = new LitigationManager();
         $litigationManager->delete($id);
         header('Location:/litigation/index');
     }
 
+
     public function search()
     {
+        /**
+         * @return string
+         * @throws \Twig\Error\LoaderError
+         * @throws \Twig\Error\RuntimeError
+         * @throws \Twig\Error\SyntaxError
+         */
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $search = $_POST['search'];
             $search = str_replace('\'', '', $search);
@@ -118,8 +160,15 @@ class LitigationController extends AbstractController
         }
     }
 
+
     public function extractPdf(int $id)
     {
+        /**
+         * @param int $id
+         * @throws \Twig\Error\LoaderError
+         * @throws \Twig\Error\RuntimeError
+         * @throws \Twig\Error\SyntaxError
+         */
         /* //A ajuster en fonction des permissions accordées !
          if ($_SESSION['permissions'] != 'Magazinier') {
              header('location:/admin/index');
