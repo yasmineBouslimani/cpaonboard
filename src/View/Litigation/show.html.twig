@@ -1,0 +1,191 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}CPA : Fiche litige{% endblock %}
+
+{% block bannerTitle %}FICHE LITIGE{% endblock %}
+
+{% block content %}
+    <div>
+        <a class="nav-link mr-3 text-white btn extract-pdf-btn"
+           href="{{ root }}/litigation/extractpdf/{{ litigation.id_litigation }}">
+            <i class="fas fa-file-pdf" style="color: white"></i>Extraire en PDF
+        </a>
+    </div>
+
+    {% if operation == 'edit' %}
+        {% set formAction = ['/litigation/edit/', litigation[0]['id_litigation']]|join('') %}
+    {% elseif operation == 'add' %}
+        {% set formAction = '/litigation/add' %}
+    {% endif %}
+
+    <form method="post" class="form-group" action="{{ formAction }}">
+        {% set tabIndex = 0 %}
+        <div class="accordion" id="accordion">
+            <div>
+                {% set titleCardToDisplay = 'identification' %}
+                {% set  idCard =  'identification' %}
+                {% set fieldToDisplayCol1 = [
+                    {
+                        'entityRequest' : litigation,
+                        'record': 'id_litigation',
+                        'inputType': 'text',
+                        'nameInput': 'id_litigation',
+                        'idInput': 'id_litigation',
+                        'labelValue': 'Référence du litige'},
+                    {
+                        'entityRequest' : litigation,
+                        'record': 'date_litigation',
+                        'inputType': 'text',
+                        'nameInput': 'date_litigation',
+                        'idInput': 'date_litigation',
+                        'labelValue': 'Date d\'ouverture du litige'},
+
+                ] %}
+                {% set fieldToDisplayCol2 = [
+                    {
+                        'entityRequest' : litigation,
+                        'record': 'comment_litigation',
+                        'inputType': 'text',
+                        'nameInput': 'comment_litigation',
+                        'idInput': 'comment_litigation',
+                        'labelValue': 'Commentaire'},
+                ] %}
+                {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
+                {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
+                {% set tabIndexBeforeCard = tabIndex %}
+                {% include '_form_components/_cardForm.html.twig' %}
+                {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
+            </div>
+            <div>
+                {% set titleCardToDisplay = 'Achat concerné' %}
+                {% set  idCard =  'acquisition' %}
+                {% set fieldToDisplayCol1 = [
+                    {
+                        'entityRequest' : litigation,
+                        'record': 'id_acquisition',
+                        'inputType': 'text',
+                        'nameInput': 'id_acquisition',
+                        'idInput': 'id_acquisition',
+                        'labelValue': 'Référence de l\'achat'},
+                    {
+                        'entityRequest' : litigation,
+                        'record': 'date_acquisition',
+                        'inputType': 'text',
+                        'nameInput': 'date_acquisition',
+                        'idInput': 'date_acquisition',
+                        'labelValue': 'Date de l\'achat'},
+                    {
+                        'entityRequest' : litigation,
+                        'record': 'date_reception',
+                        'inputType': 'text',
+                        'nameInput': 'date_reception',
+                        'idInput': 'date_reception',
+                        'labelValue': 'Date de réception'},
+                    ]%}
+                {% set fieldToDisplayCol2 = [
+                    {
+                        'entityRequest' : litigation,
+                        'record': 'global_price',
+                        'inputType': 'text',
+                        'nameInput': 'global_price',
+                        'idInput': 'global_price',
+                        'labelValue': 'Prix global d\'achat (en €)'},
+                    {
+                        'entityRequest' : litigation,
+                        'record': 'status_acquisition',
+                        'inputType': 'text',
+                        'nameInput': 'status_acquisition',
+                        'idInput': 'status_acquisition',
+                        'labelValue': 'Status'},
+                    {
+                        'entityRequest' : litigation,
+                        'record': 'fk_id_users',
+                        'inputType': 'text',
+                        'nameInput': 'fk_id_users',
+                        'idInput': 'fk_id_users',
+                        'labelValue': 'Identifiant du responsable de l\'achat'},
+
+                ] %}
+                {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
+                {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
+                {% set tabIndexBeforeCard = tabIndex %}
+                {% include '_form_components/_cardForm.html.twig' %}
+                {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
+            </div>
+            <div>
+                {% set titleCardToDisplay = 'Vente concernée' %}
+                {% set  idCard =  'sale' %}
+                {% set fieldToDisplayCol1 = [
+                    {
+                        'entityRequest' : litigation,
+                        'record': 'id_sale',
+                        'inputType': 'text',
+                        'nameInput': 'id_sale',
+                        'idInput': 'id_sale',
+                        'labelValue': 'Référence de la vente'},
+                    {
+                        'entityRequest' : litigation,
+                        'record': 'date_sale',
+                        'inputType': 'text',
+                        'nameInput': 'date_sale',
+                        'idInput': 'date_sale',
+                        'labelValue': 'Date de le vente'},
+                    {
+                        'entityRequest' : litigation,
+                        'record': 'date_reception',
+                        'inputType': 'text',
+                        'nameInput': 'date_reception',
+                        'idInput': 'date_reception',
+                        'labelValue': 'Date de réception'},
+                    {
+                        'entityRequest' : litigation,
+                        'record': 'fk_customer',
+                        'inputType': 'text',
+                        'nameInput': 'fk_customer',
+                        'idInput': 'fk_customer',
+                        'labelValue': 'Référence client'},
+                ]%}
+                {% set fieldToDisplayCol2 = [
+                    {
+                        'entityRequest' : litigation,
+                        'record': 'global_price_original',
+                        'inputType': 'text',
+                        'nameInput': 'global_price_original',
+                        'idInput': 'global_price_original',
+                        'labelValue': 'Prix global de vente (en €)'},
+                    {
+                        'entityRequest' : litigation,
+                        'record': 'discount',
+                        'inputType': 'text',
+                        'nameInput': 'discount',
+                        'idInput': 'discount',
+                        'labelValue': 'Rabais effectué (en %)'},
+                    {
+                        'entityRequest' : litigation,
+                        'record': 'to_deliver',
+                        'inputType': 'text',
+                        'nameInput': 'to_deliver',
+                        'idInput': 'to_deliver',
+                        'labelValue': 'A délivrer'},
+                    {
+                        'entityRequest' : litigation,
+                        'record': 'fk_id_users',
+                        'inputType': 'text',
+                        'nameInput': 'fk_id_users',
+                        'idInput': 'fk_id_users',
+                        'labelValue': 'Identifiant du responsable de la vente'},
+
+                ] %}
+                {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
+                {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}
+                {% set tabIndexBeforeCard = tabIndex %}
+                {% include '_form_components/_cardForm.html.twig' %}
+                {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}
+            </div>
+        </div>
+        {% if operation == 'edit' or operation == 'add' %}
+            <input type="submit" value="Enregistrer" class="btn btn-primary"/>
+        {% endif %}
+    </form>
+    </div>
+{% endblock %}

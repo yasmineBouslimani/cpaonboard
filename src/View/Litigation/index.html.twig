@@ -1,6 +1,6 @@
 {% extends 'layout.html.twig' %}
 
-{% block bannerTitle %}INVENTAIRE DES PRODUITS{% endblock %}
+{% block bannerTitle %}LISTE DES LITIGES{% endblock %}
 
 {% block content %}
     <div class="navbar-expand py-2">
@@ -8,11 +8,11 @@
         <div class="container-bouton mr-auto w-50">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link mr-3 text-white btn extract-pdf-btn" href="{{ root }}/product/add/">
-                        <i class="fas fa-plus-square" style="color: white"></i>Ajouter un produit
+                    <a class="nav-link mr-3 text-white btn extract-pdf-btn" href="{{ root }}/litigation/add/">
+                        <i class="fas fa-plus-square" style="color: white"></i>Ajouter un litige
                     </a>
                 </li>
-                <a class="nav-link mr-3 text-white btn extract-pdf-btn" href="{{ root }}/product/extractcsv">
+                <a class="nav-link mr-3 text-white btn extract-pdf-btn" href="{{ root }}/litigation/extractcsv">
                     <i class="fas fa-file-csv mx-2" style="color: white"></i> Extraire en .csv</a>
 
             </ul>
@@ -20,43 +20,39 @@
 
 
 
-        <form class="form-inline my-2 my-lg-0" method="post" action="{{ root }}/product/search">
+        <form class="form-inline my-2 my-lg-0" method="post" action="{{ root }}/litigation/search">
 
             <div class="d-flex align-items-center mx-2">
-                <input class="form-control mr-sm-2" type="search" placeholder="mot-clé, tag, numéro client" name="search"
+                <input class="form-control mr-sm-2" type="search" placeholder="mot-clé, tag, utilisateur" name="search"
                        aria-label="Search">
                 <button class="btn btn-outline-dark bouton-responsive">Rechercher</button>
             </div>
         </form>
     </div>
 
-    <table id="datatable_products" class="table table-striped table-hover">
+    <table id="datatable_litigations" class="table table-striped table-hover">
         <thead class="thead-dark">
         <tr>
             <th>Référence</th>
-            <th class="text-left">Type de produit</th>
-            <th class="text-left">Nom du produit</th>
-            <th class="text-left">Stock</th>
-            <th class="text-left">Prix HT</th>
-            <th class="text-left">TVA appliquée</th>
+            <th class="text-left">Date de l'ouverture du litige</th>
+            <th class="text-left">Référence de l'achat concerné</th>
+            <th class="text-left">Référence de la vente concernée</th>
             <th class="text-left">Actions</th>
         </tr>
         </thead>
-        {% for product in products %}
+        {% for litigation in litigations %}
             <tr>
-            <th>{{ product.id_product }}</th>
-            <th>{{ product.type }}</th>
-            <th>{{ product.label }}</th>
-            <th>{{ product.stock }}</th>
-            <th>{{ product.price }}</th>
-            <th>{{ product.ratio }}</th>
+            <th>{{ litigation.id_litigation }}</th>
+            <th>{{ litigation.date_litigation is empty ? "" : litigation.date_litigation|date("d/m/Y")}}</th>
+            <th>{{ litigation.fk_acqusition is empty ? "NC" : litigation.fk_acqusition }}</th>
+            <th>{{ litigation.fk_sale is empty ? "NC" : litigation.fk_sale }}</th>
             <th>
-                <a href="/product/show/{{ product.id_product }}"><i class="far fa-eye"></i></a>
-                <a href="/product/edit/{{ product.id_product }}"><i class="fas fa-edit"></i></a>
-                <a href="/product/delete/{{ product.id_product }}"><i class="fas fa-user-times"></i></a>
+                <a href="/litigation/show/{{ litigation.id_litigation }}"><i class="far fa-eye"></i></a>
+                <a href="/litigation/edit/{{ litigation.id_litigation }}"><i class="fas fa-edit"></i></a>
+                <a href="/litigation/delete/{{ litigation.id_litigation }}"><i class="fas fa-user-times"></i></a>
             </th>
         {% else %}
-            <th>Il n'y a pas de produits</th>
+            <th>Il n'y a pas de litiges</th>
             </tr>
         {% endfor %}
     </table>
@@ -71,7 +67,7 @@
                 <ul class="pagination">
                     {# Previous link #}
                     {% if currentPage - 1 != 0 %}
-                        <li><a class="page-link" href="/product/index/{{ currentPage-1 }}" aria-label="Previous">
+                        <li><a class="page-link" href="/litigation/index/{{ currentPage-1 }}" aria-label="Previous">
                                 <span aria-hidden="true">&Lang;</span>
                                 <span class="sr-only">Précédente</span>
                             </a></li>
@@ -87,11 +83,11 @@
                         {% elseif (i > currentPage and pagesCount != i) and (i == currentPage + PageQuantityAroundAfter + 1) %}
                             <li class="m-2">...</li>
                         {% elseif i == 1 or i == pagesCount %}
-                            <li><a class="page-link" href="/product/index/{{ i }}">{{ i }}</a></li>
+                            <li><a class="page-link" href="/litigation/index/{{ i }}">{{ i }}</a></li>
                         {% elseif (i != 1) and (i > currentPage - PageQuantityAroundBefore - 1) %}
-                            <li><a class="page-link" href="/product/index/{{ i }}">{{ i }}</a></li>
+                            <li><a class="page-link" href="/litigation/index/{{ i }}">{{ i }}</a></li>
                         {% elseif (pagesCount != i) and (i < currentPage + PageQuantityAroundAfter + 1) %}
-                            <li><a class="page-link" href="/product/index/{{ i }}">{{ i }}</a></li>
+                            <li><a class="page-link" href="/litigation/index/{{ i }}">{{ i }}</a></li>
                         {% endif %}
                     {% endfor %}
                     {# Next link #}
@@ -107,7 +103,7 @@
             </nav>
         </div>
         <div class="col">
-            <p class="float-right mr-3"> Nb résultats : {{ productsCount }}</p>
+            <p class="float-right mr-3"> Nb résultats : {{ litigationsCount }}</p>
         </div>
     </div>
 {% endblock %}
