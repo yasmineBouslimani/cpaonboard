@@ -281,7 +281,7 @@ class SaleController extends AbstractController
     public function addProfessional()
     {
         /**
-         * Display employee creation page
+         * Display sale creation page
          *
          * @return string
          * @throws \Twig\Error\LoaderError
@@ -314,7 +314,7 @@ class SaleController extends AbstractController
     public function addIndividual()
     {
         /**
-         * Display employee creation page
+         * Display sale creation page
          *
          * @return string
          * @throws \Twig\Error\LoaderError
@@ -348,7 +348,7 @@ class SaleController extends AbstractController
     public function delete(int $id)
     {
         /**
-         * Handle employee deletion
+         * Handle sale deletion
          *
          * @param int $id
          */
