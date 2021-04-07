@@ -13,7 +13,7 @@
     </div>
 
     {% if operation == 'edit' %}
-        {% set formAction = ['/product/edit/', product[0]['id']]|join('') %}
+        {% set formAction = ['/product/edit/', product[0]['id_product']]|join('') %}
     {% elseif operation == 'add' %}
         {% set formAction = '/product/add' %}
     {% endif %}
@@ -34,11 +34,28 @@
                         'labelValue': 'Nom'},
                     {
                         'entityRequest' : product[0],
-                        'record': 'ratio',
-                        'inputType': 'text',
-                        'nameInput': 'ratio',
-                        'idInput': 'ratio',
-                        'labelValue': 'TVA (%)'}
+                        'record': 'fk_productType',
+                        'inputType': 'select',
+                        'selectType': 'Records',
+                        'selectRequest': productTypeRecords,
+                        'selectIdForRecords': 'id_productType',
+                        'selectDisplayForRecords': ['type'],
+                        'nameInput': 'fkProductType',
+                        'idInput': 'fkProductType',
+                        'labelValue': 'Catégorie'},
+                    {
+                        'entityRequest' : product[0],
+                        'record': 'fk_tva',
+                        'inputType': 'select',
+                        'selectType': 'Records',
+                        'selectRequest': tvaRecords,
+                        'selectIdForRecords': 'id_tva',
+                        'selectDisplayForRecords': ['ratio'],
+                        'nameInput': 'fkTva',
+                        'idInput': 'fkTva',
+                        'labelValue': 'TVA appliquée (%)',
+                    },
+
                 ] %}
                 {% set fieldToDisplayCol2 = [
                     {

@@ -1,0 +1,46 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}CPA : Fiche d'utilisateur{% endblock %}
+
+{% block bannerTitle %}Fiche d'utilisateur{% endblock %}
+
+{% block content %}
+    <div class="container w-50 mt-5 user-show">
+        <h1>Fiche collaborateur</h1>
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>Identifiant de connexion</th>
+                <td>{{ user.login }}</td>
+            </tr>
+            <tr>
+                <th>Prénom</th>
+                <td>{{ user.first_name }}</td>
+            </tr>
+            <tr>
+                <th>Nom</th>
+                <td>{{ user.last_name }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.professional_email_address ?: personal_email_address }}</td>
+            </tr>
+            <tr>
+                <th>Permissions accordées</th>
+                <td> {% for key, role in constant('App\\Model\\UserManager::PERMISSIONS') %}
+                        {{ key in permissions ? role }}
+                    {% endfor %}
+                </td>
+            </tr>
+            <tr>
+                <th>Utilisateur actif ?</th>
+                <td>{{ user.is_active ? "Oui" : "Non" }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-between">
+            <a class="btn btn-outline-dark" href="/user/index">Revenir à la liste</a>
+            <a class="btn btn-outline-dark" href="/user/edit/{{ user.id_users }}">Editer</a>
+        </div>
+    </div>
+{% endblock %}

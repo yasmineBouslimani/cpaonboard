@@ -31,7 +31,7 @@ class EmployeeManager extends AbstractManager
             LEFT JOIN contract ON employee.id_employee = contract.fk_employee AND contract.on_going = TRUE
             LEFT JOIN department ON employee.fk_department = department.id_department
             LEFT JOIN employeeFunction ON employee.fk_employeefunction = employeeFunction.id_employeeFunction
-            ORDER BY contact.last_name ASC, contact.first_name ASC
+            ORDER BY employee.is_active DESC, contact.last_name ASC, contact.first_name ASC
             LIMIT '.$limit.' OFFSET '.$offset.';')->fetchAll();
     }
 
