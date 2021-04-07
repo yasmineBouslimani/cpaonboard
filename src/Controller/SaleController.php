@@ -104,6 +104,7 @@ class SaleController extends AbstractController
     public function ComputeProductSaleData(array $allProducts, ProductManager $productManager, $id_sale): array
     {
         /**
+         * Compute Product Sale Data with the fields of a sale record form.
          * @param array $allProducts
          * @param ProductManager $productManager
          * @param array $productSaleData
@@ -186,14 +187,10 @@ class SaleController extends AbstractController
             $productId = $productSale['fk_id_product'];
             $saleId = $productSale['fk_id_sale'];
             if ($saleManager->selectProductsForSaleByProductAndSaleId($productId, $saleId)) {
-                var_dump("yes : ");
-                var_dump($productSale);
                 $saleManager->updateAssociativeTable(
                     'product_sale', 'fk_id_product', 'fk_id_sale', $productSale);
             }
             else{
-                var_dump("no : ");
-                var_dump($productSale);
                 $saleManager->insert('product_sale', $productSale, null,true);
             }
 
@@ -307,7 +304,7 @@ class SaleController extends AbstractController
         else
         {
             $data = $this->getDataEnumforSale(2);
-            $productsRecords = $saleManager->selectProductsForSale();
+            $productsRecords = $saleManager->selectProductsForNewSale();
         }
         return $this->twig->render('sale/show.html.twig', ['statusEnum' => $data['statusEnum'],
             'customerRecords' => $data['customerRecords'], 'customerType' => '2',
@@ -341,7 +338,7 @@ class SaleController extends AbstractController
         else
         {
             $data = $this->getDataEnumforSale(1);
-            $productsRecords = $saleManager->selectProductsForSale();
+            $productsRecords = $saleManager->selectProductsForNewSale();
         }
         return $this->twig->render('sale/show.html.twig', ['statusEnum' => $data['statusEnum'],
             'customerRecords' => $data['customerRecords'], 'customerType' => '1',

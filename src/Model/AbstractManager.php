@@ -99,8 +99,6 @@ abstract class AbstractManager
             $fieldsToUpdate = $fieldsToUpdate . '`' . $key . '`=\'' . $value . '\',';
         }
         $fieldsToUpdate = substr($fieldsToUpdate, 0, -1);
-        var_dump('UPDATE ' . $table . $fieldsToUpdate . ' 
-            WHERE `' . $foreignKeyOneName . '`='. $foreignKeyOneValue . ' AND `'. $foreignKeyTwoName . '`='. $foreignKeyTwoValue);
         $statement = $this->pdo->prepare(
             'UPDATE ' . $table . $fieldsToUpdate . ' 
             WHERE `' . $foreignKeyOneName . '`='. $foreignKeyOneValue . ' AND `'. $foreignKeyTwoName . '`='. $foreignKeyTwoValue );

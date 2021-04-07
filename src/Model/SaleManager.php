@@ -47,7 +47,7 @@ class SaleManager extends AbstractManager
             WHERE id_sale = '.$id.';')->fetchAll();
     }
 
-    public function selectProductsForSale(int $id=Null): array
+    public function selectProductsForSale(int $id): array
     {
         /**
          * Get all row from table product and product_sale when criterion are meet.
@@ -62,6 +62,22 @@ class SaleManager extends AbstractManager
             LEFT JOIN product_sale ON product_sale.fk_id_product = 
                 (SELECT product.id_product 
                 WHERE product_sale.fk_id_product=product.id_product AND product_sale.fk_id_sale = '.$id.')
+            LEFT JOIN producttype ON producttype.id_producttype = product.fk_productType
+            LEFT JOIN tva ON tva.id_tva = product.fk_tva
+            ORDER BY producttype.type ASC, product.price ASC, product.label ASC ;')->fetchAll();
+    }
+
+    public function selectProductsForNewSale(): array
+    {
+        /**
+         * Get all row from table product.
+         *
+         * @return array
+         */
+        return $this->pdo->query(
+            'SELECT product.id_product, product.label, product.stock, product.price, product.fk_tva,
+                producttype.type, tva.id_tva, tva.ratio
+            FROM product
             LEFT JOIN producttype ON producttype.id_producttype = product.fk_productType
             LEFT JOIN tva ON tva.id_tva = product.fk_tva
             ORDER BY producttype.type ASC, product.price ASC, product.label ASC ;')->fetchAll();
