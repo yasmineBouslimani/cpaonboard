@@ -321,8 +321,7 @@ CREATE TABLE `litigation` (
 --
 LOCK TABLES `litigation` WRITE;
 INSERT INTO `litigation` (`id_litigation`, `date_litigation`, `comment_litigation`, `fk_acquisition`, `fk_sale`) VALUES
-(1, '2021-02-25 00:00:00', 'Souhaite un geste commercial', 1, 1),
-(2, '2021-12-03 00:00:00', 'Cloturé', 2, 2);
+(1, '2021-02-25 00:00:00', 'Souhaite un geste commercial', 1, 1);
 UNLOCK TABLES;
 -- --------------------------------------------------------
 
@@ -486,8 +485,7 @@ CREATE TABLE `sale` (
 --
 LOCK TABLES `sale` WRITE;
 INSERT INTO `sale` (`id_sale`, `date_sale`, `global_price_original`, `discount_percentage`, `global_price_finalised`, `to_deliver`, `status_sale`, `fk_users`, `fk_customer`) VALUES
-(1, '2021-02-25', '678.40', '45.00', '538.72', 1, 'En cours', 1, 1),
-(2, '2021-02-26', '50.00', NULL, NULL, 0, 'En attente', 1, 1);
+(1, '2021-02-25', '678.40', '45.00', '538.72', 1, 'En cours', 1, 1);
 UNLOCK TABLES;
 -- --------------------------------------------------------
 

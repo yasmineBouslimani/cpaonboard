@@ -206,11 +206,15 @@ class SaleController extends AbstractController
             header('location:/auth/login');
         }*/
 
+        $saleManager = new SaleManager();
+
         $data = $this->getDataforSale($id, 2);
+        $productsRecords = $saleManager->selectProductsForSale($id);
 
         return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
             'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '2',
-            'productsRecords' => $data['productsRecords'],'operation' => 'show']);
+            'productsRecords' => $productsRecords,'operation' => 'show']);
+
     }
 
     public function showIndividual(int $id)
@@ -223,11 +227,15 @@ class SaleController extends AbstractController
         }*/
 
 
+        $saleManager = new SaleManager();
+
         $data = $this->getDataforSale($id, 1);
+        $productsRecords = $saleManager->selectProductsForSale($id);
 
         return $this->twig->render('sale/show.html.twig', ['sale' => $data['sale'],
             'statusEnum' => $data['statusEnum'], 'customerRecords' => $data['customerRecords'], 'customerType' => '1',
-            'productsRecords' => $data['productsRecords'], 'operation' => 'show']);
+            'productsRecords' => $productsRecords, 'operation' => 'show']);
+
     }
 
     public function editProfessional(int $id)
