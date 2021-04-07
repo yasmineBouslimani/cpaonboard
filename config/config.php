@@ -9,7 +9,6 @@
  * @link     https://github.com/WildCodeSchool/simple-mvc
  */
 
-
 define('APP_DEV', true);
 
 //Model (for connexion data, see unversionned db.php)
