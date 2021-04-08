@@ -78,7 +78,7 @@ CREATE TABLE `contact` (
 --
 LOCK TABLES `contact` WRITE;
 INSERT INTO `contact` (`id_contact`, `first_name`, `last_name`, `corporate_name`, `address_street_number`, `address_street`, `professional_email_address`, `personal_email_address`, `cellphone_number`, `phone_number`, `address_city`, `address_zip_code`, `address_addition`, `fk_id_provider2`, `fk_id_employee2`, `fk_id_customer2`) VALUES
-(1, 'Henri', 'de Lauret', NULL, 34, 'Rue du Temple', 'henri@gmail.com', NULL, '0656784539', NULL, 'BORDEAUX', 33000, NULL, NULL, 1, NULL),
+(1, 'Henri', 'Delauret', NULL, 34, 'Rue du Temple', 'henri@gmail.com', NULL, '0656784539', NULL, 'BORDEAUX', 33000, NULL, NULL, 1, NULL),
 (2, 'Elise', 'Lunet', NULL, 106, 'Cours Verdun', 'elise@gmail.com', NULL, '0563456785', NULL, 'BORDEAUX', 33300, '2° étage', NULL, NULL, 1),
 (3, 'Anna', 'Bonnet', 'LEADER PIECES AUTO', 67, 'Rue Gennet', 'anna@gmail.com', NULL, '0767867647', '0567854368', 'LANGON', 45000, NULL, 1, NULL, NULL),
 (4, 'Marie', 'Berthelot', NULL, 45, 'Rue André Gardon', 'anff@cpaonboard.com', '', '', '0675782736', 'BORDEAUX', 33000, '', NULL, 2, NULL),
