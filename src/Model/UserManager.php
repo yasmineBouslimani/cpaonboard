@@ -5,6 +5,8 @@ namespace App\Model;
 class UserManager extends AbstractManager
 {
 
+    public const TABLE = 'users';
+
     const PERMISSIONS = [
         "AU" => "Administration des utilisateurs",
         "GP" => "Gestion des produits",
@@ -13,14 +15,8 @@ class UserManager extends AbstractManager
         "DA" => "Demande d'achat",
         "GA" => "Gestion des achats",
         "GC" => "Gestion des collaborateurs"
-
-
     ];
-    public const TABLE = 'users';
 
-    /**
-     *  Initializes this class.
-     */
     public function __construct()
     {
         parent::__construct(self::TABLE);
