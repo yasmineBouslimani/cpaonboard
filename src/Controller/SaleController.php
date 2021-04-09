@@ -14,9 +14,9 @@ class SaleController extends AbstractController
         /**
          * Display sales listing
          */
-        /*if ($_SESSION['is_admin'] == "1") {
-            header('location:/auth/login');
-        }*/
+        if (!in_array("GV", $_SESSION['permissions'])) {
+            header('location:/admin/index');
+        }
 
         $saleManager = new SaleManager();
 
@@ -149,11 +149,11 @@ class SaleController extends AbstractController
     public function ComputeSaleData(array $allData, array $productSaleData)
     {
         /**
-     * @param array $allData
-     * @param array $productSaleData
-     * @param $saleData
-     * @return mixed
-     */
+         * @param array $allData
+         * @param array $productSaleData
+         * @param $saleData
+         * @return mixed
+         */
         $saleData = [];
         $globalPriceOriginal = 0;
         $globalPriceFinalised = 0;
@@ -202,9 +202,9 @@ class SaleController extends AbstractController
         /**
          * Display a sale record for read purpose only.
          */
-        /*if ($_SESSION['is_admin'] == "1") {
-            header('location:/auth/login');
-        }*/
+        if (!in_array("GV", $_SESSION['permissions'])) {
+            header('location:/admin/index');
+        }
 
         $saleManager = new SaleManager();
 
@@ -222,10 +222,9 @@ class SaleController extends AbstractController
         /**
          * Display a sale record for read purpose only.
          */
-        /*if ($_SESSION['is_admin'] == "1") {
-            header('location:/auth/login');
-        }*/
-
+        if (!in_array("GV", $_SESSION['permissions'])) {
+            header('location:/admin/index');
+        }
 
         $saleManager = new SaleManager();
 
@@ -243,9 +242,10 @@ class SaleController extends AbstractController
         /**
          * Display a sale record for modification purpose.
          */
-        /*if ($_SESSION['is_admin'] == "1") {
-            header('location:/auth/login');
-        }*/
+        if (!in_array("GV", $_SESSION['permissions'])) {
+            header('location:/admin/index');
+        }
+
         $saleManager = new SaleManager();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -267,9 +267,10 @@ class SaleController extends AbstractController
         /**
          * Display a sale record for modification purpose.
          */
-        /*if ($_SESSION['is_admin'] == "1") {
-            header('location:/auth/login');
-        }*/
+        if (!in_array("GV", $_SESSION['permissions'])) {
+            header('location:/admin/index');
+        }
+
         $saleManager = new SaleManager();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
