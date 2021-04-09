@@ -42,28 +42,57 @@ class SaleManager extends AbstractManager
          */
         return $this->pdo->query(
             'SELECT sale.id_sale, sale.status_sale, sale.date_sale, sale.to_deliver, 
-                sale.global_price_original, sale.discount, sale.global_price_finalised
+                sale.global_price_original, sale.discount_percentage, sale.global_price_finalised
             FROM sale
             WHERE id_sale = '.$id.';')->fetchAll();
     }
 
-    public function selectProductsForSale(): array
+    public function selectProductsForSale(int $id): array
     {
         /**
-         * Get all row from table sales when criterion are meet.
+         * Get all row from table product and product_sale when criterion are meet.
          *
          * @return array
          */
         return $this->pdo->query(
-            'SELECT sale.id_sale, product_sale.quantity, product_sale.discount, product_sale.finalised_price,
-                product.id_product, product.label, product.stock, product.price, product.fk_tva, producttype.type, tva.id_tva,
-                tva.ratio
-            FROM sale
-            LEFT JOIN product_sale ON product_sale.fk_id_sale = sale.id_sale
-            RIGHT JOIN product ON product.id_product = product_sale.fk_id_product 
+            'SELECT product_sale.quantity, product_sale.discount_percentage, product_sale.finalised_price,
+                product_sale.fk_id_sale, product.id_product, product.label, product.stock, product.price, product.fk_tva,
+                producttype.type, tva.id_tva, tva.ratio
+            FROM product
+            LEFT JOIN product_sale ON product_sale.fk_id_product = 
+                (SELECT product.id_product 
+                WHERE product_sale.fk_id_product=product.id_product AND product_sale.fk_id_sale = '.$id.')
             LEFT JOIN producttype ON producttype.id_producttype = product.fk_productType
             LEFT JOIN tva ON tva.id_tva = product.fk_tva
             ORDER BY producttype.type ASC, product.price ASC, product.label ASC ;')->fetchAll();
     }
 
+    public function selectProductsForNewSale(): array
+    {
+        /**
+         * Get all row from table product.
+         *
+         * @return array
+         */
+        return $this->pdo->query(
+            'SELECT product.id_product, product.label, product.stock, product.price, product.fk_tva,
+                producttype.type, tva.id_tva, tva.ratio
+            FROM product
+            LEFT JOIN producttype ON producttype.id_producttype = product.fk_productType
+            LEFT JOIN tva ON tva.id_tva = product.fk_tva
+            ORDER BY producttype.type ASC, product.price ASC, product.label ASC ;')->fetchAll();
+    }
+
+    public function selectProductsForSaleByProductAndSaleId(int $fkIdProduct, int $fkIdSale): array
+    {
+        /**
+         * Get record by sale and product id in product_sale table.
+         *
+         * @return array
+         */
+        return $this->pdo->query(
+            'SELECT product_sale.fk_id_product , product_sale.fk_id_sale
+            FROM product_sale
+            WHERE fk_id_product = '. $fkIdProduct .' AND `fk_id_sale`='. $fkIdSale . ';')->fetchAll();
+    }
 }

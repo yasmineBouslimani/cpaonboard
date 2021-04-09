@@ -9,9 +9,17 @@
 {% block content %}
     <div>
         {% if operation == 'edit' %}
-            {% set formAction = ['/sale/edit/', sale[0]['id_sale']]|join('') %}
-        {% elseif operation == 'add'  %}
-            {% set formAction = '/sale/add' %}
+            {% if customerType == '1' %}
+                {% set formAction = ['/sale/editIndividual/', sale[0]['id_sale']]|join('') %}
+            {% else %}
+                {% set formAction = ['/sale/editProfessional', sale[0]['id_sale']]|join('')  %}
+            {% endif %}
+        {% elseif operation == 'edit' %}
+            {% if customerType == '1' %}
+                {% set formAction = ['/sale/addIndividual', sale[0]['id_sale']]|join('')  %}
+            {% else %}
+                {% set formAction = ['/sale/addProfessional', sale[0]['id_sale']]|join('')  %}
+            {% endif %}
         {% endif %}
         <form method="post" action="{{ formAction }}" class="form-group">
             <input type="hidden"
@@ -62,10 +70,11 @@
                             'record': 'id_customer',
                             'inputType': 'select',
                             'selectType': 'Records',
-                            'selectValueForRecords': customerSelectValueForRecords,
                             'selectRequest': customerRecords,
-                            'nameInput': '',
-                            'idInput': '',
+                            'selectIdForRecords': 'id_customer',
+                            'selectDisplayForRecords': customerSelectValueForRecords,
+                            'nameInput': 'idCustomer',
+                            'idInput': 'idCustomer',
                             'labelValue': 'Client'},
                         {
                             'entityRequest': sale[0],
@@ -95,11 +104,12 @@
                         'idInput': 'quantity'
                         },
                         {
-                            'record':'discount',
-                            'nameInput': 'discount',
-                            'idInput': 'discount'
+                            'record':'discount_percentage',
+                            'nameInput': 'productDiscount',
+                            'idInput': 'productDiscount'
                         }
                     ] %}
+                    {% set lengthFillableFields = fillableFields | length %}
                     {% set tabIndexBeforeCard = tabIndex %}
                     {% include 'Sale/_cardProductTable.html.twig' %}
 {#                    {% set tabIndex =  tabIndex + LengthArrayCol1+LengthArrayCol2 %}#}
@@ -118,13 +128,6 @@
                                 'labelValue': 'Montant global HT'},
                             {
                                 'entityRequest': sale[0],
-                                'record': 'discount',
-                                'inputType': 'number',
-                                'nameInput': 'discount',
-                                'idInput': 'discount',
-                                'labelValue': 'Remise globale appliquée au montant HT (en %)'},
-                            {
-                                'entityRequest': sale[0],
                                 'record': 'global_price_finalised',
                                 'inputType': 'number',
                                 'nameInput': 'globalPriceFinalised',
@@ -132,14 +135,13 @@
                                 'labelValue': 'Montant global TTC'}
                         ] %}
                         {% set fieldToDisplayCol2 = [
-                            {},
                             {
                                 'entityRequest': sale[0],
-                                'record': '',
+                                'record': 'discount_percentage',
                                 'inputType': 'number',
-                                'nameInput': 'discountSum',
-                                'idInput': 'discountSum',
-                                'labelValue': 'Montant remisé'}
+                                'nameInput': 'discountSalePercentage',
+                                'idInput': 'discountSalePercentage',
+                                'labelValue': 'Remise globale appliquée au montant HT (en %)'}
                         ] %}
                         {% set LengthArrayCol1 = fieldToDisplayCol1 | length %}
                         {% set LengthArrayCol2 = fieldToDisplayCol2 | length %}

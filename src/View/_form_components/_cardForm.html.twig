@@ -101,8 +101,7 @@
                                 {# IF CHECKBOX FIELD #}
                             {% elseif  currentInputCol1 == 'checkbox'%}
                                 {# Check or uncheck checkbox #}
-                                <p>{{ currentRecordCol1 }}</p>
-                                {% if currentRecordCol1 == 0%}
+                                {% if  currentRecordCol1 == 0%}
                                     {% set checkboxSelectedCol1 = '' %}
                                 {% else %}
                                     {% set checkboxSelectedCol1 = 'checked'%}
@@ -110,7 +109,7 @@
                                 <input type="checkbox"
                                        name="{{ currentNameInputCol1 }}"
                                        id="{{ currentIdInputCol1 }}"
-                                       class="form-control"
+                                       class="form-check-inline"
                                        tabindex="{{ tabIndexBeforeCard+1 }}"
                                        {{ checkboxSelectedCol1 }}
                                         {{ disabled }}/></br>
@@ -216,7 +215,7 @@
                                 <input type="checkbox"
                                        name="{{ currentNameInputCol2 }}"
                                        id="{{ currentIdInputCol2 }}"
-                                       class="form-control"
+                                       class="form-check-inline"
                                        tabindex="{{ tabIndexForCol2 }}"
                                        {{ checkboxSelectedCol2 }}
                                         {{ disabled }}/></br>

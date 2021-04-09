@@ -85,6 +85,20 @@ class ProductManager extends AbstractManager
         return $statement->fetchAll();
     }
 
+    public function getProductInformationsForPriceComputation(int $id): array
+    {
+        /**
+         * Get needed informations  by product for compute price.
+         *
+         * @param int product id
+         * @return array
+         */
+        return $this->pdo->query(
+            'SELECT product.price, product.fk_tva, tva.id_tva, tva.ratio
+            FROM product
+            LEFT JOIN tva ON tva.id_tva = product.fk_tva
+            WHERE id_product = ' . $id . ';')->fetchAll();
+    }
 
     public function updateProduct(array $product):bool
     {

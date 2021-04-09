@@ -45,7 +45,7 @@ abstract class AbstractManager
         return $this->pdo->query('SHOW COLUMNS FROM ' . $table . ' LIKE \'' . $enumField . '\';')->fetchAll();
     }
 
-    public function insert(string $table, array $recordFields,array $recordFk=null): int
+    public function insert(string $table, array $recordFields,array $recordFk=null, bool $isAssociativeTable=false): int
     {
         if (!is_null($recordFk)){
             foreach ($recordFk as $key => $value) {
@@ -66,7 +66,13 @@ abstract class AbstractManager
         // prepared request
         $statement = $this->pdo->prepare('INSERT INTO ' . $table . $labelsToUpdate .' VALUES ' . $valuesToUpdate);
         $statement->execute();
-        return (int)$this->pdo->lastInsertId();
+        if ($isAssociativeTable){
+            return 0;
+        }
+        else{
+            return (int)$this->pdo->lastInsertId();
+        }
+
     }
 
     public function update(string $table, array $recordFields): bool
@@ -82,6 +88,21 @@ abstract class AbstractManager
             'UPDATE ' . $table . $fieldsToUpdate . ' WHERE `' . $idFieldName . '`='. $id);
         $statement->execute();
         return $id;
+    }
+
+    public function updateAssociativeTable(string $table, string $foreignKeyOneName, string $foreignKeyTwoName, array $recordFields)
+    {
+        $foreignKeyOneValue = $recordFields[$foreignKeyOneName];
+        $foreignKeyTwoValue = $recordFields[$foreignKeyTwoName];
+        $fieldsToUpdate = ' SET ';
+        foreach($recordFields as $key => $value) {
+            $fieldsToUpdate = $fieldsToUpdate . '`' . $key . '`=\'' . $value . '\',';
+        }
+        $fieldsToUpdate = substr($fieldsToUpdate, 0, -1);
+        $statement = $this->pdo->prepare(
+            'UPDATE ' . $table . $fieldsToUpdate . ' 
+            WHERE `' . $foreignKeyOneName . '`='. $foreignKeyOneValue . ' AND `'. $foreignKeyTwoName . '`='. $foreignKeyTwoValue );
+        $statement->execute();
     }
 
     public function delete(string $table, int $idRecord)

@@ -132,6 +132,11 @@ th .fas, .far {
     color: var(--alertCPA);
 }
 
+.form-check-inline {
+    width: 20px;
+    height: 20px;
+}
+
 .extract-pdf-btn {
     background-color: var(--blueCPA);
     width: 208px;
