@@ -6,9 +6,15 @@ class UserManager extends AbstractManager
 {
 
     const PERMISSIONS = [
-        "manager" => "Manager",
-        "director" => "Directeur",
-        "admin" => "Administrateur",
+        "AU" => "Administration des utilisateurs",
+        "GP" => "Gestion des produits",
+        "GCPP" => "Gestion des clients professionnels et particuliers",
+        "GL" => "Gestion des litiges",
+        "DA" => "Demande d'achat",
+        "GA" => "Gestion des achats",
+        "GC" => "Gestion des collaborateurs"
+
+
     ];
     public const TABLE = 'users';
 
@@ -80,9 +86,26 @@ WHERE id_users = :id_users");
         $statement->bindValue('id_users', $user['id_users'], \PDO::PARAM_INT);
         $statement->bindValue('login', $user['login'], \PDO::PARAM_STR);
         $statement->bindValue('is_active', $user['is_active'], \PDO::PARAM_INT);
-        $statement->bindValue('permissions', $user['permissions'] , \PDO::PARAM_STR);
+        $statement->bindValue('permissions', $user['permissions'], \PDO::PARAM_STR);
 
         return $statement->execute();
+    }
+
+    public function insertUser(array $user): int
+    {
+        $statement = $this->pdo->prepare(
+        "INSERT INTO $this->table (`login`,`is_active`,
+        `permissions`, `fk_id_employee`) 
+        VALUES (:login, :is_active, :permissions, :fk_id_employee)");
+
+        $statement->bindValue('login', $user['login'], \PDO::PARAM_STR);
+        $statement->bindValue('is_active', $user['is_active'], \PDO::PARAM_INT);
+        $statement->bindValue('permissions', $user['permissions'], \PDO::PARAM_STR);
+        $statement->bindValue('fk_id_employee', $user['fk_id_employee'], \PDO::PARAM_INT);
+
+        if ($statement->execute()) {
+            return (int)$this->pdo->lastInsertId();
+        }
     }
 
 }

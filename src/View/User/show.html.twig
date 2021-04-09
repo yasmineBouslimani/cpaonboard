@@ -27,8 +27,8 @@
             </tr>
             <tr>
                 <th>Permissions accordées</th>
-                <td> {% for key, role in constant('App\\Model\\UserManager::PERMISSIONS') %}
-                        {{ key in permissions ? role }}
+                <td>{% for key, role in constant('App\\Model\\UserManager::PERMISSIONS') %}
+                {{ key in permissions ? role }}
                     {% endfor %}
                 </td>
             </tr>

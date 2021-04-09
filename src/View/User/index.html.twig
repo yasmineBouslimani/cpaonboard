@@ -3,6 +3,17 @@
 {% block bannerTitle %}Liste des utilisateurs de la plateforme{% endblock %}
 
 {% block content %}
+    <div class="container-bouton mr-auto w-50">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link mr-3 text-white btn extract-pdf-btn" href="{{ root }}/user/add/">
+                    <i class="fas fa-plus-square" style="color: white"></i>Ajouter un utilisateur
+                </a>
+            </li>
+        </ul>
+    </div>
+
+
     <nav>
         <div class="nav nav-tabs w-5" id="nav-tab" role="tablist">
             <a class="nav-item nav-link active w-50" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab"

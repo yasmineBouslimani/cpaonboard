@@ -3,6 +3,7 @@
 
 namespace App\Controller;
 
+use App\Model\EmployeeManager;
 use App\Model\UserManager;
 
 class UserController extends AbstractController
@@ -72,6 +73,28 @@ class UserController extends AbstractController
                 'user' => $user,
             ]
         );
+    }
+
+    public function add()
+    {
+        $employeeManager = new EmployeeManager();
+        $employees = $employeeManager->selectAll();
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userManager = new UserManager();
+            $user['login'] = $_POST['login'];
+            $user['is_active'] = $_POST['is_active'];
+            $user['permissions'] = json_encode($_POST['permissions']);
+            $user['fk_id_employee'] = $_POST['fk_id_employee'];
+
+            $id = $userManager->insertUser($user);
+            header('Location:/user/show/' . $id);
+        }
+
+        return $this->twig->render('User/add.html.twig', [
+            'employees' => $employees,
+        ]);
+
     }
 
 }
