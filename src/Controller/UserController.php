@@ -11,12 +11,9 @@ class UserController extends AbstractController
 
     public function index()
     {
-        /**
-         * @return string
-         * @throws \Twig\Error\LoaderError
-         * @throws \Twig\Error\RuntimeError
-         * @throws \Twig\Error\SyntaxError
-         */
+        if (!in_array("AU", $_SESSION['permissions'])) {
+            header('location:/admin/index');
+        }
         $userManager = new UserManager();
         $inactiveUsers = $userManager->selectAllInactiveUsers();
         $activeUsers = $userManager->selectAllActiveUsers();
@@ -30,13 +27,11 @@ class UserController extends AbstractController
 
     public function show($id)
     {
-        /**
-         * @param $id
-         * @return string
-         * @throws \Twig\Error\LoaderError
-         * @throws \Twig\Error\RuntimeError
-         * @throws \Twig\Error\SyntaxError
-         */
+
+        if (!in_array("AU", $_SESSION['permissions'])) {
+            header('location:/admin/index');
+        }
+
         $userManager = new UserManager();
         $user = $userManager->getUserWithEmployeeById($id);
         $permissions = json_decode($user['permissions']);
@@ -50,13 +45,9 @@ class UserController extends AbstractController
 
     public function edit(int $id)
     {
-        /**
-         * @param int $id
-         * @return string
-         * @throws \Twig\Error\LoaderError
-         * @throws \Twig\Error\RuntimeError
-         * @throws \Twig\Error\SyntaxError
-         */
+        if (!in_array("AU", $_SESSION['permissions'])) {
+            header('location:/admin/index');
+        }
         $userManager = new UserManager();
         $user = $userManager->getUserWithEmployeeById($id);
 
@@ -77,6 +68,10 @@ class UserController extends AbstractController
 
     public function add()
     {
+        if (!in_array("AU", $_SESSION['permissions'])) {
+            header('location:/admin/index');
+        }
+
         $employeeManager = new EmployeeManager();
         $employees = $employeeManager->selectAll();
 
@@ -96,5 +91,4 @@ class UserController extends AbstractController
         ]);
 
     }
-
 }
