@@ -6,7 +6,7 @@
 ```php
 define('APP_DB_HOST', 'your_db_host');
 define('APP_DB_NAME', 'your_db_name');
-define('APP_DB_USER', 'your_db_user_wich_is_not_root');
+define('APP_DB_USER', 'your_db_user');
 define('APP_DB_PWD', 'your_db_password');
 ```
 4. Import `db_cpaonboard_V3.sql` in your SQL server,
@@ -17,9 +17,10 @@ define('APP_DB_PWD', 'your_db_password');
 
 ## URLs availables
 
-* Home page at [localhost:8000/](localhost:8000/)
-* Products list at [localhost:8000/product/index](localhost:8000/product/index)
-* Product details [localhost:8000/product/show/:id](localhost:8000/product/show/2)
-* Product edit [localhost:8000/product/edit/:id](localhost:8000/product/edit/2)
-* Product add [localhost:8000/product/add](localhost:8000/product/add)
-* Product deletion [localhost:8000/product/delete/:id](localhost:8000/product/delete/2)
+* Login page at [http://localhost:8000/auth/login](http://localhost:8000/auth/login)
+* Home page at [http://localhost:8000/admin/index/](http://localhost:8000/admin/index/)
+* Employees list at [localhost:8000/employee/index](localhost:8000/employee/index)
+* Employee details [localhost:8000/employee/show/:id/read](localhost:8000/employee/show/1/read)
+* Employee edit [localhost:8000/employee/edit/:id](localhost:8000/employee/edit/1)
+* Employee add [localhost:8000/employee/add](localhost:8000/employee/add)
+* Employee deletion [localhost:8000/employee/delete/:id](localhost:8000/employee/delete/2)
