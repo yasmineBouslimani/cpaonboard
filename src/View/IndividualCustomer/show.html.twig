@@ -216,13 +216,6 @@
                 {% endfor %}
             </div>
             <div>
-                {# ADD VEHICLE #}
-                {% if operation == 'edit' or operation == 'add' %}
-                    {# TODO : add method for vehicle#}
-                    <a href="" class="btn btn-secondary btn-sm float-right mr-5" aria-label="Add">Nouveau véhicule</a>
-                {% endif %}
-            </div>
-            <div>
                 {# SUBMIT FORM AND CANCEL BUTTON#}
                 {% if operation == 'edit' or operation == 'add'  %}
                     <input type="submit" value="Enregistrer" class="btn btn-primary"/>
