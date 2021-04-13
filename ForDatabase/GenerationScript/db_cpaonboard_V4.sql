@@ -79,7 +79,7 @@ CREATE TABLE `contact` (
 LOCK TABLES `contact` WRITE;
 INSERT INTO `contact` (`id_contact`, `first_name`, `last_name`, `corporate_name`, `address_street_number`, `address_street`, `professional_email_address`, `personal_email_address`, `cellphone_number`, `phone_number`, `address_city`, `address_zip_code`, `address_addition`, `fk_id_provider2`, `fk_id_employee2`, `fk_id_customer2`) VALUES
 (1, 'Henri', 'Delauret', NULL, 34, 'Rue du Temple', 'henri@gmail.com', NULL, '0656784539', NULL, 'BORDEAUX', 33000, NULL, NULL, 1, NULL),
-(2, 'Elise', 'Lunet', NULL, 106, 'Cours Verdun', 'elise@gmail.com', NULL, '0563456785', NULL, 'BORDEAUX', 33300, '2° étage', NULL, NULL, 1),
+(2, 'Elise', 'Lunet', NULL, 106, 'Cours Verdun', NULL, 'elise@gmail.com', '0656784798', '0563456785', 'BORDEAUX', 33300, '2° étage', NULL, NULL, 1),
 (3, 'Anna', 'Bonnet', 'LEADER PIECES AUTO', 67, 'Rue Gennet', 'anna@gmail.com', NULL, '0767867647', '0567854368', 'LANGON', 45000, NULL, 1, NULL, NULL),
 (4, 'Marie', 'Berthelot', NULL, 45, 'Rue André Gardon', 'anff@cpaonboard.com', '', '', '0675782736', 'BORDEAUX', 33000, NULL, NULL, 2, NULL),
 (5, 'Myriam', 'Mitier', NULL, 67, 'Rue du Noyer', '', 'm.mitter@gmail.com', '0675376847', NULL, 'Bordeaux', 33400, '4e étage - Bat C', NULL, 3, NULL),
@@ -88,7 +88,7 @@ INSERT INTO `contact` (`id_contact`, `first_name`, `last_name`, `corporate_name`
 (9, 'Nathalie', 'Perlet', NULL, 27, 'rue de la rose', 'nperlet@gmail.com', '', '055585672', '', 'PESSAC', 33600, NULL, NULL, 4, NULL),
 (10, 'Laurent', 'Dupuis', NULL, 43, 'rue des jonquilles', 'ldpuis@gmail.com', NULL, '055665653', NULL, 'PESSAC', 33600, NULL, NULL, 5, NULL),
 (11, 'Chloé', 'Laforge', NULL, 4, 'avenue de Paris', 'claforge@gmail.com', NULL, '056545682', '511853268', 'BORDEAUX', 33300, NULL, NULL, 6, NULL),
-(12, 'Pauline', 'Perlet', NULL, 0, '', NULL, '', '', '', '', 0, '', NULL, NULL, 5);
+(12, 'Pauline', 'Perlet', NULL, 0, '', NULL, 'pperlet@gmail.com', '', '', '', 0, '', NULL, NULL, 5);
 UNLOCK TABLES;
 -- --------------------------------------------------------
 
