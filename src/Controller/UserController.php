@@ -88,6 +88,15 @@ class UserController extends AbstractController
         return $this->twig->render('User/add.html.twig', [
             'employees' => $employees,
         ]);
+    }
 
+    public function delete(int $id)
+    {
+        if (!in_array("AU", $_SESSION['permissions'])) {
+            header('location:/admin/index');
+        }
+        $userManager = new UserManager();
+        $userManager->delete('users', $id);
+        header('Location:/admin/index');
     }
 }
