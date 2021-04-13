@@ -8,13 +8,14 @@ class UserManager extends AbstractManager
     public const TABLE = 'users';
 
     const PERMISSIONS = [
-        "AU" => "Administration des utilisateurs",
-        "GP" => "Gestion des produits",
-        "GCPP" => "Gestion des clients professionnels et particuliers",
-        "GL" => "Gestion des litiges",
-        "DA" => "Demande d'achat",
-        "GA" => "Gestion des achats",
-        "GC" => "Gestion des collaborateurs"
+        "AU"    => "Administration des utilisateurs",
+        "GP"    => "Gestion des produits",
+        "GCPP"  => "Gestion des clients professionnels et particuliers",
+        "GL"    => "Gestion des litiges",
+        "DA"    => "Demande d'achat",
+        "GA"    => "Gestion des achats",
+        "GV"    => "Gestion des ventes",
+        "GC"    => "Gestion des collaborateurs"
     ];
 
     public function __construct()
