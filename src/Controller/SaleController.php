@@ -14,7 +14,7 @@ class SaleController extends AbstractController
         /**
          * Display sales listing
          */
-        if (!in_array("GV", $_SESSION['permissions'])) {
+        if (!in_array("AU", $_SESSION['permissions'])) {
             header('location:/admin/index');
         }
 
@@ -202,7 +202,7 @@ class SaleController extends AbstractController
         /**
          * Display a sale record for read purpose only.
          */
-        if (!in_array("GV", $_SESSION['permissions'])) {
+        if (!in_array("AU", $_SESSION['permissions'])) {
             header('location:/admin/index');
         }
 
@@ -222,7 +222,7 @@ class SaleController extends AbstractController
         /**
          * Display a sale record for read purpose only.
          */
-        if (!in_array("GV", $_SESSION['permissions'])) {
+        if (!in_array("AU", $_SESSION['permissions'])) {
             header('location:/admin/index');
         }
 
@@ -242,10 +242,9 @@ class SaleController extends AbstractController
         /**
          * Display a sale record for modification purpose.
          */
-        if (!in_array("GV", $_SESSION['permissions'])) {
+        if (!in_array("AU", $_SESSION['permissions'])) {
             header('location:/admin/index');
         }
-
         $saleManager = new SaleManager();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -267,10 +266,9 @@ class SaleController extends AbstractController
         /**
          * Display a sale record for modification purpose.
          */
-        if (!in_array("GV", $_SESSION['permissions'])) {
+        if (!in_array("AU", $_SESSION['permissions'])) {
             header('location:/admin/index');
         }
-
         $saleManager = new SaleManager();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
