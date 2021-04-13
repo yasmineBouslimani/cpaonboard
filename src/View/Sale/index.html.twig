@@ -9,12 +9,6 @@
 
 {% block content %}
     <div>
-        <div class="row">
-            <div class="col" >
-                <a href="/sale/addIndividual" class="btn btn-primary btn-sm float-right mb-3 mr-3">Ajout vente client particulier</a>
-                <a href="/sale/addProfessional" class="btn btn-primary btn-sm float-right mb-3 mr-3">Ajout vente client professionel</a>
-            </div>
-        </div>
         <table id="datatable_sales" class="table table-striped table-hover">
             <thead class="thead-dark">
             <tr>
@@ -47,7 +41,6 @@
                             <a href="/sale/showProfessional/{{sale['id_sale']}}/read"><i class="far fa-eye"></i></a>
                             <a href="/sale/editProfessional/{{sale['id_sale']}}"><i class="fas fa-edit"></i></a>
                         {% endif %}
-                        <a href="/sale/delete/{{sale['id_sale']}}/read"><i class="fas fa-user-times"></i></a>
                     </th>
                 </tr>
             {%  endfor %}
