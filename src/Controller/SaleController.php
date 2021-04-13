@@ -288,90 +288,17 @@ class SaleController extends AbstractController
 
     public function addProfessional()
     {
-        /**
-         * Display sale creation page
-         *
-         * @return string
-         * @throws \Twig\Error\LoaderError
-         * @throws \Twig\Error\RuntimeError
-         * @throws \Twig\Error\SyntaxError
-         */
-        $saleManager = new SaleManager();
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-            $datafromForm = $this->getFormDataForUpdateOrAdd($_POST);
-
-            $idEmployee = $saleManager->insert('employee', $datafromForm['employeeData']);
-            $contactFk = ['fk_id_employee2' => $idEmployee];
-            $saleManager->insert('contact', $datafromForm['contactData'], $contactFk);
-            $contractFk = ['fk_employee' => $idEmployee];
-            $saleManager->insert('contract', $datafromForm['contractData'], $contractFk);
-
-            header('Location:/employee/index');
-        }
-        else
-        {
-            $data = $this->getDataEnumforSale(2);
-            $productsRecords = $saleManager->selectProductsForNewSale();
-        }
-        return $this->twig->render('sale/show.html.twig', ['statusEnum' => $data['statusEnum'],
-            'customerRecords' => $data['customerRecords'], 'customerType' => '2',
-            'productsRecords' => $productsRecords, 'operation' => 'add']);
+        /* TODO ON FOLLOWING VERSION */
     }
 
     public function addIndividual()
     {
-        /**
-         * Display sale creation page
-         *
-         * @return string
-         * @throws \Twig\Error\LoaderError
-         * @throws \Twig\Error\RuntimeError
-         * @throws \Twig\Error\SyntaxError
-         */
-
-        $saleManager = new SaleManager();
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-            $datafromForm = $this->getFormDataForUpdateOrAdd($_POST);
-
-            $idEmployee = $saleManager->insert('employee', $datafromForm['employeeData']);
-            $contactFk = ['fk_id_employee2' => $idEmployee];
-            $saleManager->insert('contact', $datafromForm['contactData'], $contactFk);
-            $contractFk = ['fk_employee' => $idEmployee];
-            $saleManager->insert('contract', $datafromForm['contractData'], $contractFk);
-
-            header('Location:/employee/index');
-        }
-        else
-        {
-            $data = $this->getDataEnumforSale(1);
-            $productsRecords = $saleManager->selectProductsForNewSale();
-        }
-        return $this->twig->render('sale/show.html.twig', ['statusEnum' => $data['statusEnum'],
-            'customerRecords' => $data['customerRecords'], 'customerType' => '1',
-            'productsRecords' => $productsRecords, 'operation' => 'add']);
+        /* TODO ON FOLLOWING VERSION */
     }
 
     public function delete(int $id)
     {
-        /**
-         * Handle sale deletion
-         *
-         * @param int $id
-         */
-        $saleManager = new SaleManager();
-
-        $contactId = $saleManager->GetIdRecordsByForeignKeys('contact','fk_id_employee2', $id);
-        $contractsId = $saleManager->GetIdRecordsByForeignKeys('contract','fk_employee', $id);
-
-        $saleManager->delete('contact', $contactId[0]['id_contact']);
-        foreach($contractsId as $contract) {
-            $saleManager->delete('contract', $contract['id_contract']);
-        }
-        $saleManager->delete('employee', $id);
-
-        header('Location:/employee/index');
+        /* TODO ON FOLLOWING VERSION */
     }
 
     function cancel() {
