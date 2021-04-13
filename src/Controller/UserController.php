@@ -27,7 +27,6 @@ class UserController extends AbstractController
 
     public function show($id)
     {
-
         if (!in_array("AU", $_SESSION['permissions'])) {
             header('location:/admin/index');
         }
