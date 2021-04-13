@@ -19,27 +19,32 @@
             {% else %}
                 {% set selectedActive = 'checked' %}
             {% endif %}
+            {% if operation == 'edit' or operation == 'add'  %}
+                {% set disabled = '' %}
+            {% else %}
+                {% set disabled = 'disabled' %}
+            {% endif %}
             <input type="hidden"
                    name="idEmployee"
                    id="idEmployee"
                    class="form-control"
                    tabindex="1"
                    value="{{ employee[0]['id_employee'] }}"
-                    {{ disabled }}/>
+            />
             <input type="hidden"
                    name="idContact"
                    id="idContact"
                    class="form-control"
                    tabindex="2"
                    value="{{ employee[0]['id_contact'] }}"
-                    {{ disabled }}/>
+            />
             <input type="hidden"
                    name="idContract"
                    id="idContract"
                    class="form-control"
                    tabindex="2"
                    value="{{ employee[0]['id_contract'] }}"
-                    {{ disabled }}/></br>
+            /></br>
             <div>
                 <label for="isActive" class="mr-1 pb-2" >Actif</label>
                 <input type="checkbox"
