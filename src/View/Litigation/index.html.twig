@@ -7,18 +7,11 @@
     <div class="navbar-collapse" id="navbarSupportedContent">
         <div class="container-bouton mr-auto w-50">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link mr-3 text-white btn extract-pdf-btn" href="{{ root }}/litigation/add/">
-                        <i class="fas fa-plus-square" style="color: white"></i>Ajouter un litige
-                    </a>
-                </li>
                 <a class="nav-link mr-3 text-white btn extract-pdf-btn" href="{{ root }}/litigation/extractcsv">
                     <i class="fas fa-file-csv mx-2" style="color: white"></i> Extraire en .csv</a>
 
             </ul>
         </div>
-
-
 
         <form class="form-inline my-2 my-lg-0" method="post" action="{{ root }}/litigation/search">
 
@@ -43,13 +36,11 @@
         {% for litigation in litigations %}
             <tr>
             <th>{{ litigation.id_litigation }}</th>
-            <th>{{ litigation.date_litigation is empty ? "" : litigation.date_litigation|date("d/m/Y")}}</th>
+            <th>{{ litigation.date_litigation is empty ? "" : litigation.date_litigation|date("d/m/Y") }}</th>
             <th>{{ litigation.fk_acqusition is empty ? "NC" : litigation.fk_acqusition }}</th>
             <th>{{ litigation.fk_sale is empty ? "NC" : litigation.fk_sale }}</th>
             <th>
                 <a href="/litigation/show/{{ litigation.id_litigation }}"><i class="far fa-eye"></i></a>
-                <a href="/litigation/edit/{{ litigation.id_litigation }}"><i class="fas fa-edit"></i></a>
-                <a href="/litigation/delete/{{ litigation.id_litigation }}"><i class="fas fa-user-times"></i></a>
             </th>
         {% else %}
             <th>Il n'y a pas de litiges</th>
