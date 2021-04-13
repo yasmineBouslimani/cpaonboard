@@ -48,7 +48,11 @@
                             <td>
                                 <a href="/user/show/{{ activeUser.id_users }}"><i class="far fa-eye"></i></a>
                                 <a href="/user/edit/{{ activeUser.id_users }}"><i class="fas fa-edit"></i></a>
+
+                                {%  if "AU" in session.permissions %}
                                 <a href="/user/delete/{{ activeUser.id_users }}"><i class="fas fa-user-times"></i></a>
+                                {% endif %}
+
                             </td>
                         </tr>
                     {% else %}
