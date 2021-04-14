@@ -100,4 +100,34 @@ class UserController extends AbstractController
         $userManager->delete('users', $id);
         header('Location:/user/index');
     }
+
+
+    public function cpaDatum()
+    {
+        $userManager = new UserManager();
+        $user['login'] = 'BDXDG';
+        $user['password'] = password_hash('secret', PASSWORD_DEFAULT);
+        $user['is_active'] = 1;
+        $user['permissions'] = json_encode(["AU", "GP", "GCPP", "GL", "DA", "GA", "GV", "GC"]);
+        $user['fk_id_employee'] = 1;
+        $userManager->insertUser($user);
+        $user['login'] = 'BDXRH';
+        $user['password'] = password_hash('secret', PASSWORD_DEFAULT);
+        $user['is_active'] = 1;
+        $user['permissions'] = json_encode(["GC"]);
+        $user['fk_id_employee'] = 3;
+        $userManager->insertUser($user);
+        $user['login'] = 'BDXVD';
+        $user['password'] = password_hash('secret', PASSWORD_DEFAULT);
+        $user['is_active'] = 1;
+        $user['permissions'] = json_encode(["GP", "GCPP", "GL", "GV"]);
+        $user['fk_id_employee'] = 5;
+        $userManager->insertUser($user);
+        $user['login'] = 'BDXCO';
+        $user['password'] = password_hash('secret', PASSWORD_DEFAULT);
+        $user['is_active'] = 1;
+        $user['permissions'] = json_encode(["GP", "GCPP", "GL", "GA", "GV"]);
+        $user['fk_id_employee'] = 2;
+        $userManager->insertUser($user);
+    }
 }
