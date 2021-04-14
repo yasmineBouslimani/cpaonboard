@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Model\EmployeeManager;
-use Symfony\Component\Console\Logger\ConsoleLogger;
 
 class EmployeeController extends AbstractController
 {
@@ -12,9 +11,9 @@ class EmployeeController extends AbstractController
         /**
          * Display employees listing
          */
-        /*if ($_SESSION['is_admin'] == "1") {
-            header('location:/auth/login');
-        }*/
+        if (!in_array("GC",$_SESSION['permissions'])) {
+            header('location:/admin/index');
+        }
 
         $employeeManager = new EmployeeManager();
 
@@ -135,10 +134,9 @@ class EmployeeController extends AbstractController
         /**
          * Display an employee record for read purpose only.
          */
-        /*if ($_SESSION['is_admin'] == "1") {
-            header('location:/auth/login');
-        }*/
-
+        if (!in_array("GC",$_SESSION['permissions'])) {
+            header('location:/admin/index');
+        }
 
         $employeeController = new EmployeeController();
         $data = $employeeController->getDataforEmployee($id);
@@ -154,9 +152,9 @@ class EmployeeController extends AbstractController
         /**
          * Display an employee record for modification purpose.
          */
-        /*if ($_SESSION['is_admin'] == "1") {
-            header('location:/auth/login');
-        }*/
+        if (!in_array("GC",$_SESSION['permissions'])) {
+            header('location:/admin/index');
+        }
 
         $employeeController = new EmployeeController();
 
@@ -188,6 +186,10 @@ class EmployeeController extends AbstractController
          * @throws \Twig\Error\RuntimeError
          * @throws \Twig\Error\SyntaxError
          */
+
+        if (!in_array("GC",$_SESSION['permissions'])) {
+            header('location:/admin/index');
+        }
 
         $employeeController = new EmployeeController();
 
@@ -221,6 +223,11 @@ class EmployeeController extends AbstractController
          *
          * @param int $id
          */
+
+        if (!in_array("GC",$_SESSION['permissions'])) {
+            header('location:/admin/index');
+        }
+
         $employeeManager = new EmployeeManager();
 
         $contactId = $employeeManager->GetIdRecordsByForeignKeys('contact','fk_id_employee2', $id);

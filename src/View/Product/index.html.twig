@@ -7,11 +7,6 @@
     <div class="navbar-collapse" id="navbarSupportedContent">
         <div class="container-bouton mr-auto w-50">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link mr-3 text-white btn extract-pdf-btn" href="{{ root }}/product/add/">
-                        <i class="fas fa-plus-square" style="color: white"></i>Ajouter un produit
-                    </a>
-                </li>
                 <a class="nav-link mr-3 text-white btn extract-pdf-btn" href="{{ root }}/product/extractcsv">
                     <i class="fas fa-file-csv mx-2" style="color: white"></i> Extraire en .csv</a>
 
@@ -52,8 +47,6 @@
             <th>{{ product.ratio }}</th>
             <th>
                 <a href="/product/show/{{ product.id_product }}"><i class="far fa-eye"></i></a>
-                <a href="/product/edit/{{ product.id_product }}"><i class="fas fa-edit"></i></a>
-                <a href="/product/delete/{{ product.id_product }}"><i class="fas fa-user-times"></i></a>
             </th>
         {% else %}
             <th>Il n'y a pas de produits</th>

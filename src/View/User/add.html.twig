@@ -1,13 +1,13 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}CPA : Editer une fiche d'utilisateur{% endblock %}
+{% block title %}CPA : Ajouter une fiche d'utilisateur{% endblock %}
 
-{% block bannerTitle %}Editer - Fiche d'utilisateur{% endblock %}
+{% block bannerTitle %}Ajouter - Fiche d'utilisateur{% endblock %}
 
 {% block content %}
     <div class="container w-50 mt-5 user-show">
 
-        <form role="form" method="POST" action="/user/edit/{{ user.id_users }}" class="mt-4">
+        <form role="form" method="POST" action="/user/add" class="mt-4">
 
             <div class="form-group">
 
@@ -19,6 +19,30 @@
                        class="form-control"
                        value="{{ user.login }}">
 
+            </div>
+            <div class="form-group">
+
+                <label class="control-label" for="password">
+                    Mot de passe de connexion :
+                </label>
+
+                <input type="text" id="password" name="password"
+                       class="form-control"
+                       value="{{ user.password }}">
+
+            </div>
+
+            <div class="form-group">
+                <label class="control-label" for="login">
+                    Employée concerné :
+                </label>
+                <select class="form-control" aria-label="Selectionnez un employee" name="fk_id_employee"
+                        id="fk_id_employee">
+                    {% for employee in employees %}
+                        <option value="{{ employee.id_employee }}">
+                            {{ employee.employee_hr_id }}</option>
+                    {% endfor %}
+                </select>
             </div>
 
             <div class="form-group">
@@ -66,7 +90,7 @@
 
                 <div class="col-md-6">
                     <button type="submit" class="btn btn-primary btn-block p-2">
-                        Modifier
+                        Ajouter
                     </button>
                 </div>
             </div>

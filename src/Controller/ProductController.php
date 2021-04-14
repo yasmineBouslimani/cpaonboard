@@ -35,10 +35,6 @@ class ProductController extends AbstractController
 
     public function show(int $id)
     {
-        /*   if (!in_array("product_management", $_SESSION['permissions'])) {
-               header('location:/admin/index');
-           }*/
-
         $data = $this->getDataForProduct($id);
 
         return $this->twig->render('Product/show.html.twig', [

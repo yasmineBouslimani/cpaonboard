@@ -17,10 +17,11 @@ class AuthController extends AbstractController
         $userData = $userManager->selectOneByUserLogin($_POST['login']);
         $detailsError = "";
 
-        if (($_POST['password'] == $userData['password'])) {
+        if (password_verify($_POST['password'], $userData['password'])) {
             $_SESSION['login'] = ucfirst($_POST['login']);
             $_SESSION['id'] = $userData['id_users'];
-            $_SESSION['fk_id_userType'] = $userData['fk_id_userType'];
+            $_SESSION['permissions'] = json_decode($userData['permissions']);
+
             header('Location: /admin/index/');
         } else {
             $detailsError = "Vos details sont incorrects. ";
