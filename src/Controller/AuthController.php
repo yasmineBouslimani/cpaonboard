@@ -17,7 +17,7 @@ class AuthController extends AbstractController
         $userData = $userManager->selectOneByUserLogin($_POST['login']);
         $detailsError = "";
 
-        if (($_POST['password'] == $userData['password'])) {
+        if (password_verify($_POST['password'], $userData['password'])) {
             $_SESSION['login'] = ucfirst($_POST['login']);
             $_SESSION['id'] = $userData['id_users'];
             $_SESSION['permissions'] = json_decode($userData['permissions']);

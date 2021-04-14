@@ -77,6 +77,7 @@ class UserController extends AbstractController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $userManager = new UserManager();
             $user['login'] = $_POST['login'];
+            $user['password'] = password_hash($_POST['password'], PASSWORD_DEFAULT);
             $user['is_active'] = $_POST['is_active'];
             $user['permissions'] = json_encode($_POST['permissions']);
             $user['fk_id_employee'] = $_POST['fk_id_employee'];
@@ -93,10 +94,10 @@ class UserController extends AbstractController
     public function delete(int $id)
     {
         if (!in_array("AU", $_SESSION['permissions'])) {
-            header('location:/admin/index');
+            header('location:/user/index');
         }
         $userManager = new UserManager();
         $userManager->delete('users', $id);
-        header('Location:/admin/index');
+        header('Location:/user/index');
     }
 }

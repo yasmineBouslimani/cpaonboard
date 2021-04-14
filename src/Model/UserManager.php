@@ -91,11 +91,12 @@ WHERE id_users = :id_users");
     public function insertUser(array $user): int
     {
         $statement = $this->pdo->prepare(
-        "INSERT INTO $this->table (`login`,`is_active`,
+        "INSERT INTO $this->table (`login`,`password`,`is_active`,
         `permissions`, `fk_id_employee`) 
-        VALUES (:login, :is_active, :permissions, :fk_id_employee)");
+        VALUES (:login, :password, :is_active, :permissions, :fk_id_employee)");
 
         $statement->bindValue('login', $user['login'], \PDO::PARAM_STR);
+        $statement->bindValue('password', $user['password'], \PDO::PARAM_STR);
         $statement->bindValue('is_active', $user['is_active'], \PDO::PARAM_INT);
         $statement->bindValue('permissions', $user['permissions'], \PDO::PARAM_STR);
         $statement->bindValue('fk_id_employee', $user['fk_id_employee'], \PDO::PARAM_INT);
