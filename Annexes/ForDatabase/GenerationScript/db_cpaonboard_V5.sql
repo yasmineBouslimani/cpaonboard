@@ -19,6 +19,9 @@
 -- Table structure for table `acquisition`
 --
 
+CREATE DATABASE  IF NOT EXISTS `cpaonboard` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_bin */ ;
+USE `cpaonboard`;
+
 DROP TABLE IF EXISTS `acquisition`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
