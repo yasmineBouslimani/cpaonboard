@@ -78,10 +78,11 @@ class UserManager extends AbstractManager
     {
 
         $statement = $this->pdo->prepare("UPDATE $this->table SET  
-                 `login` = :login,  `permissions` =  :permissions, `is_active` = :is_active
+                 `login` = :login, `password` = :password, `permissions` =  :permissions, `is_active` = :is_active
 WHERE id_users = :id_users");
         $statement->bindValue('id_users', $user['id_users'], \PDO::PARAM_INT);
         $statement->bindValue('login', $user['login'], \PDO::PARAM_STR);
+        $statement->bindValue('password', $user['password'], \PDO::PARAM_STR);
         $statement->bindValue('is_active', $user['is_active'], \PDO::PARAM_INT);
         $statement->bindValue('permissions', $user['permissions'], \PDO::PARAM_STR);
 
